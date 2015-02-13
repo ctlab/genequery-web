@@ -1,0 +1,7 @@
+numpy==1.9.1
+Django==1.7.4
+djorm-pgarray==1.2
+fisher==0.1.4
+psycopg2==2.5.4
+pylibmc==1.4.1
+scipy==0.15.1

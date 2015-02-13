@@ -1,0 +1,44 @@
+<div class="search-result">
+    <hr>
+    <div class="media">
+        <div class="media-body">
+            <h4 class="media-heading">{{ result.title }}</h4>
+            <p class="text-left ex-type">
+                <ul class="list-inline list-unstyled ex-type label-grey">
+                    <li><span><i class="glyphicon glyphicon-calendar"></i>{{ result.status }}</span></li>
+                    <li>|</li>
+                    <li><span><i class="glyphicon glyphicon-info-sign"></i>{{ result.experiment_type }}</span></li>
+                    <li>|</li>
+                    <li><a href="http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc={{ result.series }}" target="_blank">{{ result.series }}</a></li>
+                    <li>|</li>
+                    <li><a href="http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc={{ result.platform }}" target="_blank">{{ result.platform }}</a></li>
+                    {% if result.series_url %}
+                        <li>|</li>
+                        <li><a href="{{ result.series_url }}" data-lightbox="image-{{ result.series }}-{{ result.platform }}"
+                               data-title="{{ result.series }} {{ result.platform }}">view heat-map</a></li>
+                    {% endif %}
+                    {% if result.score %}
+                        <li>|</li>
+                        <li><span><i class="glyphicon glyphicon-star"></i>{{ result.score }}</span></li>
+                    {% endif %}
+                </ul>
+            </p>
+            <div id="modal-image-{{ result.series }}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <img src="/media/modules/GSE77_GPL81.png" class="img-responsive">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="module-description">
+                <p>{{ result.summary }}</p>
+                {% if result.overall_design %}
+                    <label class="overall_design">Overall design</label>
+                    <p>{{ result.overall_design }}</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>

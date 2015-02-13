@@ -1,0 +1,10 @@
+<div class="header">
+    <nav>
+        <ul class="nav nav-pills pull-right">
+            <li role="presentation" class="{% if menu_active == 'searcher' %}active{% endif %}"><a href="{% url 'searcher:index' %}">Search</a></li>
+            <li role="presentation" class="{% if menu_active == 'about' %}active{% endif %}"><a href="{% url 'about' %}">About</a></li>
+            <li role="presentation" class="{% if menu_active == 'contacts'%}active{% endif %}"><a href="{% url 'contacts' %}">Contacts</a></li>
+        </ul>
+    </nav>
+    <h3 class="text-muted"><a class="deco-none" href="{% url 'index' %}">GeneQuery<sup>&alpha;</sup></a></h3>
+</div>
