@@ -51,7 +51,6 @@ $(document).ready(function() {
 
     $('body').scrollToTop({
         distance: $("#search-btn").offset().top,
-        speed: 0,
         easing: 'easeOutExpo',
         animation: 'fade', // fade, slide, none
         animationSpeed: 500,
