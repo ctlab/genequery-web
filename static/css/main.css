@@ -42,7 +42,13 @@ a.deco-none {
 .module-description {
     max-height: 4em;
     font-size: 12pt;
+    line-height: 1.25;
 }
+
+.module-description p{
+    margin-bottom: 0;
+}
+
 .ex-type {
     font-size: 11px;
 }
