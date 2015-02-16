@@ -2,7 +2,7 @@
     <hr>
     <div class="media">
         <div class="media-body">
-            <h4 class="media-heading">{{ result.title }}</h4>
+            <h4 class="media-heading text-justify">{{ result.title }}</h4>
             <p class="text-left ex-type">
                 <ul class="list-inline list-unstyled ex-type label-grey">
                     <li><span><i class="glyphicon glyphicon-calendar"></i>{{ result.status }}</span></li>
@@ -32,7 +32,7 @@
                     </div>
                 </div>
             </div>
-            <div class="module-description">
+            <div class="module-description text-justify">
                 <p>{{ result.summary }}</p>
                 {% if result.overall_design %}
                     <p><label class="overall_design">Overall design</label></p>
