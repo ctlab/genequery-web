@@ -24,7 +24,7 @@ def fisher_empirical_p_values(species, modules, query_module, max_empirical_p_va
 
     :param modules: iterable [(series, platform, module_number, set(entrez_ids))]
     :param query_module: [entrez_id]
-    :return: [(species, platform, module_number, log(p-value), log(empirical p-value)]
+    :return: [(series, platform, module_number, log(p-value), log(empirical p-value)]
     """
     module_ids, overlaps, lengths = calculate_overlaps(modules, query_module)
     series_overlap = {(s, p): sum(overlaps[s, p].values()) for s, p in overlaps}
