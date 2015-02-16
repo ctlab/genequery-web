@@ -13,3 +13,10 @@ class ContactsPageView(BaseTemplateView):
     menu_active = 'contacts'
 
 contacts_page_view = ContactsPageView.as_view()
+
+
+class ExamplePageView(BaseTemplateView):
+    template_name = 'example.html'
+    menu_active = 'example'
+
+example_page_view = ExamplePageView.as_view()
