@@ -16,6 +16,12 @@ def get_module_heat_map_url(series, platform):
     return '{}/{}'.format(settings.MEDIA_URL, path_to_image) if os.path.exists(path) else None
 
 
+def get_gmt_url(species, series, platform):
+    path_to_file = 'gmt/{}/{}_{}.gmt'.format(species, series, platform)
+    path = here(settings.MEDIA_ROOT, path_to_file)
+    return '{}/{}'.format(settings.MEDIA_URL, path_to_file) if os.path.exists(path) else None
+
+
 def parse_module_id(db_module_key):
     """
     Returns [(series, platform, module)] parsed from db module key.

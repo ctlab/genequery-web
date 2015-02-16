@@ -12,7 +12,7 @@ from datasources.modulegenes import ModuleGenesDataSource, ModuleGenesChunkDataS
 
 from searcher.forms import SearchQueryForm
 from searcher.models import IdMap, ModuleDescription
-from utils import get_module_heat_map_url, log_get
+from utils import get_module_heat_map_url, log_get, get_gmt_url
 from utils.constants import ENTREZ, SYMBOL, INF
 from utils.mixins import BaseTemplateView
 
@@ -73,6 +73,7 @@ class SearchProcessorView(View):
             context['platform'] = r[1]
             context['module_number'] = r[2]
             context['series_url'] = get_module_heat_map_url(r[0], r[1])
+            context['gmt_url'] = get_gmt_url(species, r[0], r[1])
             context['score'] = round(r[3], 2) if r[3] != -INF else HTML_NEG_INF
             context['adjusted_score'] = round(r[4], 2) if r[4] != -INF else HTML_NEG_INF
             rendered.append(render_to_string('search-result.html', {'result': context}))

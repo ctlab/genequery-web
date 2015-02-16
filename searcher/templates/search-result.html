@@ -7,7 +7,12 @@
                 <ul class="list-inline list-unstyled ex-type label-grey">
                     <li><span><i class="glyphicon glyphicon-calendar"></i>{{ result.status }}</span></li>
                     <li>|</li>
-                    <li><a href="http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc={{ result.series }}" target="_blank">{{ result.series }}</a></li>
+                    <li>
+                        <a href="http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc={{ result.series }}" target="_blank">{{ result.series }}</a>
+                        {% if result.gmt_url %}
+                            [<a href="{{ result.gmt_url }}">download GMT</a>]
+                        {% endif %}
+                    </li>
                     <li>|</li>
                     <li><a href="http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc={{ result.platform }}" target="_blank">{{ result.platform }}</a></li>
                     <li>|</li>
