@@ -51,6 +51,12 @@ a.deco-none {
 .ex-type {
     font-size: 11px;
 }
+
+.address-grey {
+    font-size: 11px;
+    color: #808080;
+}
+
 textarea {
     max-height: 400px;
 }
