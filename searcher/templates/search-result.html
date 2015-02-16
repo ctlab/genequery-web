@@ -17,7 +17,11 @@
                     {% endif %}
                     {% if result.score %}
                         <li>|</li>
-                        <li><span><i class="glyphicon glyphicon-star"></i>{{ result.score }}</span></li>
+                        <li>{{ result.score }}</li>
+                    {% endif %}
+                    {% if result.adjusted_score %}
+                        <li>|</li>
+                        <li>{{ result.adjusted_score }}</li>
                     {% endif %}
                 </ul>
             </p>

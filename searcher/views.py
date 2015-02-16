@@ -5,6 +5,7 @@ import xmlrpclib
 from django.conf import settings
 from django.http import JsonResponse, HttpResponseServerError
 from django.template.loader import render_to_string
+from django.utils.html import format_html
 from django.views.generic import View
 from algo.fisher_empirical import fisher_empirical_p_values
 from datasources.modulegenes import ModuleGenesDataSource, ModuleGenesChunkDataSource
@@ -17,6 +18,8 @@ from utils.mixins import BaseTemplateView
 
 
 LOG = logging.getLogger('genequery')
+
+HTML_NEG_INF = format_html('-&infin;')
 
 
 def convert_to_entrez(species, genes, original_type):
@@ -69,7 +72,8 @@ class SearchProcessorView(View):
             context.update(descriptions[r[0]])
             context['platform'] = r[1]
             context['series_url'] = get_module_heat_map_url(r[0], r[1])
-            context['score'] = -r[4] if r[4] != -INF else 'infinity'
+            context['score'] = round(r[3], 2) if r[3] != -INF else HTML_NEG_INF
+            context['adjusted_score'] = round(r[4], 2) if r[4] != -INF else HTML_NEG_INF
             rendered.append(render_to_string('search-result.html', {'result': context}))
 
         recap = render_to_string('search-recap.html', {
