@@ -42,6 +42,7 @@ a.deco-none {
 .module-description {
     max-height: 4em;
     font-size: 12pt;
+    line-height: 1.25;
 }
 
 .module-description p{
@@ -68,7 +69,6 @@ textarea {
 
 html, body {
     height: 100%;
-    line-height: 1.25;
 }
 
 /* Wrapper for page content to push down footer */
