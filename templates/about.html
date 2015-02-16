@@ -1,39 +1,81 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block container %}
     <div class="blog-header">
         <div class="row">
             <div class="col-sm-8 blog-main">
-                <div class="blog-post">
-                    <h2 class="blog-post-title">Sample blog post</h2>
-                    <p class="blog-post-meta">January 1, 2014 by <a href="#">Ivan Arbuzov</a></p>
+                <div class="blog-post text-justify" style="font-size: 14px; line-height: 1.5;">
+                    <p>GeneQuery is an expression-based phenotype searching engine for mouse and human. Unlike other
+                    tools, like <a href="http://david.abcc.ncifcrf.gov/" target="_blank">DAVID</a> or
+                    <a href="https://www.broadinstitute.org/gsea/msigdb/index.jsp" target="_blank">MsigDB</a>,
+                    GeneQuery does not use manually curated gene sets associated with a
+                    particular pathway or perturbation. Instead, we use
+                    <a href="http://labs.genetics.ucla.edu/horvath/CoexpressionNetwork/Rpackages/WGCNA/" target="_blank">WGCNA</a>
+                    clustering to obtain a vast database of co-expression clusters from available GEO microarray experiments. The data used span ~ 3,000 mouse
+                    and ~ 3,800 human data series that included 8-100 samples, thus covering a substantial fraction (30%
+                    for mouse, 17% for human) of <i>all published microarray expression profiling experiments</i>. We believe
+                    that this approach finds more meaningful results and better accounts for biological complexity and
+                    variation.</p>
+                    <p>To start using GeneQuery, all you need is a list of genes that you have found to be significant in your
+                    experiment. It can be a list of differentially expressed genes (we suggest using up- and down-regulated
+                    signatures separately), or candidate regulated genes from a DNase-Seq or a ChIP-Seq experiment.
+                    GeneQuery accepts the following types of gene IDs: Entrez, universal gene symbol (HGNC/MGNC),
+                    RefSeq, and Ensembl. It is also natively supports a search with orthologous genes – that is, you can
+                    search a list of human genes against the mouse database, and still get meaningful results (in fact, we
+                    encourage you to try it).</p>
+                    <p>We found it to be extremely important to be able to evaluate the significance of each match correctly.
+                    As many other methods, we use Fisher’s exact test to find p-value of individual overlap of a co-
+                    expressed module with your query gene set. However, we used extensive simulations with random
+                    gene sets, and developed an empirical p-value adjustment method that corrects for both query size and
+                    multiple comparisons:</p>
 
-                    <p>This blog post shows a few different types of content that's supported and styled with Bootstrap. Basic typography, images, and code are all supported.</p>
-                    <hr>
-                    <p>Cum sociis natoque penatibus et magnis <a href="#">dis parturient montes</a>, nascetur ridiculus mus. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Sed posuere consectetur est at lobortis. Cras mattis consectetur purus sit amet fermentum.</p>
-                    <blockquote>
-                        <p>Curabitur blandit tempus porttitor. <strong>Nullam quis risus eget urna mollis</strong> ornare vel eu leo. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-                    </blockquote>
-                    <p>Etiam porta <em>sem malesuada magna</em> mollis euismod. Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.</p>
-                    <h2>Heading</h2>
-                    <p>Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
-                    <h3>Sub-heading</h3>
-                    <p>Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p>
-                    <pre><code>Example code block</code></pre>
-                    <p>Aenean lacinia bibendum nulla sed consectetur. Etiam porta sem malesuada magna mollis euismod. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa.</p>
-                    <h3>Sub-heading</h3>
-                    <p>Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aenean lacinia bibendum nulla sed consectetur. Etiam porta sem malesuada magna mollis euismod. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-                    <ul>
-                        <li>Praesent commodo cursus magna, vel scelerisque nisl consectetur et.</li>
-                        <li>Donec id elit non mi porta gravida at eget metus.</li>
-                        <li>Nulla vitae elit libero, a pharetra augue.</li>
-                    </ul>
-                    <p>Donec ullamcorper nulla non metus auctor fringilla. Nulla vitae elit libero, a pharetra augue.</p>
-                    <ol>
-                        <li>Vestibulum id ligula porta felis euismod semper.</li>
-                        <li>Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</li>
-                        <li>Maecenas sed diam eget risus varius blandit sit amet non magna.</li>
-                    </ol>
-                    <p>Cras mattis consectetur purus sit amet fermentum. Sed posuere consectetur est at lobortis.</p>
+                    <div class="row">
+                        <div class="col-lg-10">
+                            <img src="{% static 'img/adjusted_p_value.png' %}" class="img-responsive" alt="Cinque Terre">
+                        </div>
+                    </div>
+                    <p>This approach allows us to rank results in a more meaningful
+                    way and remove insignificant hits from the final output.</p>
+
+                    <p>When output is obtained, results are ranked according to adjusted p-value. Each result corresponds to
+                    a matching module, which number is specified. The output also contains name,
+                    abstract, and links to GEO dataset that was matched. To see if module actually represents certain
+                    meaningful group of co-expressed genes, click on “heatmap” and find the module number that
+                    was matched.</p>
+
+                    <p>You also can see the <a ur="/example" target="_blank">example</a>.</p>
+
+                    <p>If you have more technical questions or a bug report, please do not hesitate contacting us.</p>
+
+{#                    <h2 class="blog-post-title">Sample blog post</h2>#}
+{#                    <p class="blog-post-meta">January 1, 2014 by <a href="#">Ivan Arbuzov</a></p>#}
+{#                    <p>This blog post shows a few different types of content that's supported and styled with Bootstrap. Basic typography, images, and code are all supported.</p>#}
+{#                    <hr>#}
+{#                    <p>Cum sociis natoque penatibus et magnis <a href="#">dis parturient montes</a>, nascetur ridiculus mus. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Sed posuere consectetur est at lobortis. Cras mattis consectetur purus sit amet fermentum.</p>#}
+{#                    <blockquote>#}
+{#                        <p>Curabitur blandit tempus porttitor. <strong>Nullam quis risus eget urna mollis</strong> ornare vel eu leo. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>#}
+{#                    </blockquote>#}
+{#                    <p>Etiam porta <em>sem malesuada magna</em> mollis euismod. Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.</p>#}
+{#                    <h2>Heading</h2>#}
+{#                    <p>Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>#}
+{#                    <h3>Sub-heading</h3>#}
+{#                    <p>Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p>#}
+{#                    <pre><code>Example code block</code></pre>#}
+{#                    <p>Aenean lacinia bibendum nulla sed consectetur. Etiam porta sem malesuada magna mollis euismod. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa.</p>#}
+{#                    <h3>Sub-heading</h3>#}
+{#                    <p>Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aenean lacinia bibendum nulla sed consectetur. Etiam porta sem malesuada magna mollis euismod. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>#}
+{#                    <ul>#}
+{#                        <li>Praesent commodo cursus magna, vel scelerisque nisl consectetur et.</li>#}
+{#                        <li>Donec id elit non mi porta gravida at eget metus.</li>#}
+{#                        <li>Nulla vitae elit libero, a pharetra augue.</li>#}
+{#                    </ul>#}
+{#                    <p>Donec ullamcorper nulla non metus auctor fringilla. Nulla vitae elit libero, a pharetra augue.</p>#}
+{#                    <ol>#}
+{#                        <li>Vestibulum id ligula porta felis euismod semper.</li>#}
+{#                        <li>Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</li>#}
+{#                        <li>Maecenas sed diam eget risus varius blandit sit amet non magna.</li>#}
+{#                    </ol>#}
+{#                    <p>Cras mattis consectetur purus sit amet fermentum. Sed posuere consectetur est at lobortis.</p>#}
                 </div>
             </div>
         </div>
