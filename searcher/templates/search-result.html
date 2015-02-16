@@ -10,10 +10,14 @@
                     <li><a href="http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc={{ result.series }}" target="_blank">{{ result.series }}</a></li>
                     <li>|</li>
                     <li><a href="http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc={{ result.platform }}" target="_blank">{{ result.platform }}</a></li>
+                    <li>|</li>
+                    <li>Module {{ result.module_number }}</li>
                     {% if result.series_url %}
-                        <li>|</li>
-                        <li><a href="{{ result.series_url }}" data-lightbox="image-{{ result.series }}-{{ result.platform }}"
-                               data-title="{{ result.series }} {{ result.platform }}">view heat-map</a></li>
+                        [<a href="{{ result.series_url }}"
+                            data-lightbox="image-{{ result.series }}-{{ result.platform }}"
+                            data-title="{{ result.series }} {{ result.platform }} [module {{ result.module_number }}]">
+                        heatmap
+                        </a>]
                     {% endif %}
                     {% if result.score %}
                         <li>|</li>

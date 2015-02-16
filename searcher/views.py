@@ -71,6 +71,7 @@ class SearchProcessorView(View):
             context = {}
             context.update(descriptions[r[0]])
             context['platform'] = r[1]
+            context['module_number'] = r[2]
             context['series_url'] = get_module_heat_map_url(r[0], r[1])
             context['score'] = round(r[3], 2) if r[3] != -INF else HTML_NEG_INF
             context['adjusted_score'] = round(r[4], 2) if r[4] != -INF else HTML_NEG_INF
