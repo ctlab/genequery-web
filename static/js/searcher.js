@@ -192,7 +192,7 @@ $(document).ready(function () {
         } else {
             $.ajax({
                 type: "GET",
-                url: "/searcher/search/",
+                url: "search/",
                 data: getFormData(),
 
                 beforeSend: function () {
