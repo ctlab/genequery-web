@@ -11,8 +11,8 @@ $(document).ready(function () {
 
     var example_gene_set = "Cd274\nNos2\nIrg1\nGbp2\nCxcl9\nPtgs2\nSaa3\nGbp5\nIigp1\nGbp4\nGbp3\nIl1rn\nIl1b\nOasl1" +
         "\nGbp6\nCd86\nRsad2\nCcl5\nTgtp2\nClic5\nZbp1\nGbp7\nSocs3\nSerpina3g\nProcr\nIgtp\nSlco3a1\nLy6a\nSlc7a2\nC3" +
-        "\nCd40\nIfit1\nFam26f\nClec4e\nBst1\nIsg15\nIrf1\nAcsl1\nCd38\nIfit2\nThbs1\nIfi47\nIfi44\nIrgm2\nIl15ra\nAss1\\" +
-        "nSlfn1\nNod\nIl18bp\nSerpinb9";
+        "\nCd40\nIfit1\nFam26f\nClec4e\nBst1\nIsg15\nIrf1\nAcsl1\nCd38\nIfit2\nThbs1\nIfi47\nIfi44\nIrgm2\nIl15ra\nAss1\n" +
+        "Slfn1\nNod\nIl18bp\nSerpinb9";
 
     function runExample() {
         $('#mm').prop('checked', true);

@@ -10,7 +10,8 @@
                     <li>
                         <a href="http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc={{ result.series }}" target="_blank">{{ result.series }}</a>
                         {% if result.gmt_url %}
-                            [<a href="{{ result.gmt_url }}">download GMT</a>]
+                            &nbsp;
+                            [<a href="{{ result.gmt_url }}">modules GMT</a>]
                         {% endif %}
                     </li>
                     <li>|</li>
@@ -30,7 +31,7 @@
                     {% endif %}
                     {% if result.adjusted_score %}
                         <li>|</li>
-                        <li>{{ result.adjusted_score }}</li>
+                        <li>lg(p-value<sub>adj</sub>): {{ result.adjusted_score }}</li>
                     {% endif %}
                 </ul>
             </p>
