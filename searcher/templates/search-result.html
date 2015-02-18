@@ -25,9 +25,9 @@
                         heatmap
                         </a>]
                     {% endif %}
-                    {% if result.score %}
+                    {% if result.overlap_size and result.module_size %}
                         <li>|</li>
-                        <li>{{ result.score }}</li>
+                        <li>overlap ratio: <sup>{{ result.overlap_size }}</sup>&frasl;<sub>{{ result.module_size }}</sub></li>
                     {% endif %}
                     {% if result.adjusted_score %}
                         <li>|</li>
@@ -35,15 +35,6 @@
                     {% endif %}
                 </ul>
             </p>
-            <div id="modal-image-{{ result.series }}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-body">
-                            <img src="/media/modules/GSE77_GPL81.png" class="img-responsive">
-                        </div>
-                    </div>
-                </div>
-            </div>
             <div class="module-description text-justify">
                 <p>{{ result.summary }}</p>
                 {% if result.overall_design %}

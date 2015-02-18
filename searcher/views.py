@@ -35,7 +35,7 @@ def convert_to_entrez(species, genes, original_type):
 
 class SearchProcessorView(View):
     @log_get(LOG)
-    def get(self, request, *args, **kwargs):
+    def get(self, request):
         if not request.is_ajax():
             LOG.warning("Not ajax request.")
             return self.http_method_not_allowed(request)
@@ -74,8 +74,9 @@ class SearchProcessorView(View):
             context['module_number'] = r[2]
             context['series_url'] = get_module_heat_map_url(r[0], r[1])
             context['gmt_url'] = get_gmt_url(species, r[0], r[1])
-            context['score'] = round(r[3], 2) if r[3] != -INF else HTML_NEG_INF
             context['adjusted_score'] = round(r[4], 2) if r[4] != -INF else HTML_NEG_INF
+            context['overlap_size'] = r[5]
+            context['module_size'] = r[6]
             rendered.append(render_to_string('search-result.html', {'result': context}))
 
         recap = render_to_string('search-recap.html', {
@@ -86,6 +87,7 @@ class SearchProcessorView(View):
             'total': len(rendered),
         })
         return JsonResponse({'data': rendered, 'recap': recap})
+
 
 search_processor_view = SearchProcessorView.as_view()
 
@@ -121,5 +123,23 @@ def calculate_fisher_p_values_via_db(species, entrez_ids, low_ram=False):
 class SearchPageView(BaseTemplateView):
     template_name = 'search.html'
     menu_active = 'searcher'
+
+    def get_context_data(self, **kwargs):
+        context = super(SearchPageView, self).get_context_data()
+        fake_result = {
+            'series': 'GSE46356', 'platform': 'GPL6246', 'module_number': 4,
+            'series_url': '/media/modules/GSE46356_GPL6246.png',
+            'gmt_url': '/media/gmt/mm/GSE46356_GPL6246.gmt', 'adjusted_score': -123.45, 'overlap_size': 123,
+            'module_size': 456, 'status': 'Public on Jan 18, 2012 ',
+            'title': 'Suppressor of cytokine signaling-1 influences bacterial clearance and pathology during the infection with Mycobacterium tuberculosis',
+            'summary': 'Tuberculosis results from an interaction between a chronically persistent pathogen counteracted by IFN-g-mediated immune responses. '
+                       'Modulation of IFN-g signaling could therefore constitute a major immune evasion mechanism for M. tuberculosis. SOCS1 plays a major '
+                       'role in the inhibition of IFN-g-mediated responses. We found that M. tuberculosis infection stimulates SOCS1 expression in mouse and '
+                       'human myeloid cells. Significantly higher levels of SOCS1 were induced after in vitro or in vivo infection with virulent M. ',
+            'overall_design': 'Relative gene expressions were determined by normalized intensity values. GeneSpring analysis was performed using the '
+                              'Treg transcriptome data with following comparisons: no GvHD d90 versus no GvHD d150, no GvHD d90 versus acute GvHD, no GvHD '}
+        context['fake_result'] = fake_result
+        return context
+
 
 search_page_view = SearchPageView.as_view()

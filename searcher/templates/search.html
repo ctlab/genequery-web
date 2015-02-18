@@ -11,68 +11,10 @@
     {% include 'search-form.html' %}
     <div class="response">
         <div class="search-results">
-    {#        <div class="search-results-recap">#}
-    {#            Entered 100 genes in symbol format, found 98 unique Entrez IDs.#}
-    {#        </div>#}
-    {#        <div class="search-result">#}
-    {#            <hr>#}
-    {#            <div class="media">#}
-    {#                <div class="media-body">#}
-    {#                    <h4 class="media-heading">Examination of inflammatory transcripts during a transfer model of type I diabetes.</h4>#}
-    {#                    <p class="text-left ex-type">#}
-    {#                        <ul class="list-inline list-unstyled ex-type label-grey">#}
-    {#                            <li><span><i class="glyphicon glyphicon-calendar"></i> Public on Feb 16, 2011 </span></li>#}
-    {#                            <li>|</li>#}
-    {#                            <li><span><i class="glyphicon glyphicon-info-sign"></i> Expression profiling by array</span></li>#}
-    {#                            <li>|</li>#}
-    {#                            <li><a href="http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE23508" target="_blank">GSE23508</a></li>#}
-    {#                            <li>|</li>#}
-    {#                            <li><a href="http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GPL7202" target="_blank">GPL7202</a></li>#}
-    {#                            <li>|</li>#}
-    {#                            <li><a href="/media/modules/GSE10000_GPL1261.png" data-lightbox="image-1" data-title="GSE23508 GPL7202">Image #1</a></li>#}
-    {#                        </ul>#}
-    {#                    </p>#}
-    {#                    <div class="module-description">#}
-    {#                        <p>In an accompanying paper we found specific localization of diabetogenic T cells only to islets of Langerhans bearing the#}
-    {#                        specific antigen. Instrumental in the specific localization was the presence of intra-islet dendritic cells bearing the#}
-    {#                        β-cell-peptide-MHC complex. Here we report that the entry of diabetogenic CD4 T cells very rapidly triggered inflammatory#}
-    {#                        gene expression changes in islets and vessels by up-regulating chemokines and adhesion molecules. VCAM-1 expression was notable#}
-    {#                        in blood vessels and so was ICAM-1. ICAM-1 was also found on β-cells. These expression changes induced the entry of non-specific#}
-    {#                        T cells that otherwise did not localize to the islets. In contrast to the entry of diabetogenic CD4 T cells, the entrance of#}
-    {#                        non-specific T cells required a chemokine response and VCAM-1 expression by the islets. Interferon-gamma was important for the</p>#}
-        {#                    <label class="overall_design">Overall design</label>#}
-    {#                        <p>early gene expression changes in the islets. By microarray analysis we detected up-regulation of a group of interferon-inducible genes as early as 8 hours post T cell transfer.#}
-    {#                        These studies provide a baseline to examine the development of therapeutics that can modulate islet localization of diabetogenic T cells to control this autoimmune disease.</p>#}
-    {#                    </div>#}
-    {#                </div>#}
-    {#            </div>#}
-    {#        </div>#}
-    {##}
-    {#        <div class="search-result">#}
-    {#            <hr>#}
-    {#            <div class="media">#}
-    {#                <div class="media-body">#}
-    {#                    <h4 class="media-heading">Examination of inflammatory transcripts during a transfer model of type I diabetes.</h4>#}
-    {#                    <p class="text-left ex-type">Expression profiling by array</p>#}
-    {#                    <div class="module-description">#}
-    {#                        In an accompanying paper we found specific localization of diabetogenic T cells only to islets of Langerhans bearing the#}
-    {#                        specific antigen. Instrumental in the specific localization was the presence of intra-islet dendritic cells bearing the#}
-    {#                        β-cell-peptide-MHC complex. Here we report that the entry of diabetogenic CD4 T cells very rapidly triggered inflammatory#}
-    {#                        gene expression changes in islets and vessels by up-regulating chemokines and adhesion molecules. VCAM-1 expression was notable#}
-    {#                        in blood vessels and so was ICAM-1. ICAM-1 was also found on β-cells. These expression changes induced the entry of non-specific#}
-    {#                        T cells that otherwise did not localize to the islets. In contrast to the entry of diabetogenic CD4 T cells, the entrance of#}
-    {#                        non-specific T cells required a chemokine response and VCAM-1 expression by the islets. Interferon-gamma was important for the#}
-    {#                        early gene expression changes in the islets. By microarray analysis we detected up-regulation of a group of interferon-inducible genes as early as 8 hours post T cell transfer.#}
-    {#                        These studies provide a baseline to examine the development of therapeutics that can modulate islet localization of diabetogenic T cells to control this autoimmune disease.#}
-    {#                    </div>#}
-    {#                    <ul class="list-inline list-unstyled">#}
-    {#                        <li><span><i class="glyphicon glyphicon-calendar"></i> Public on Feb 16, 2011 </span></li>#}
-    {#                        <li>|</li>#}
-    {#                        <span><i class="glyphicon glyphicon-eye-open"></i> 20 total samples</span>#}
-    {#                    </ul>#}
-    {#                </div>#}
-    {#            </div>#}
-    {#        </div>#}
+{#            {% include 'search-recap.html' with entered=100 id_format='symbol' entrez_unique=99 total=30 time=1.2345 %}#}
+{#            {% for i in "xxxxxxxxxxx" %}#}
+{#                {% include 'search-result.html' with result=fake_result%}#}
+{#            {% endfor %}#}
         </div>
         <div class="row text-center loader" hidden><img src="{% static 'img/ajax-loader.gif' %}"/></div>
     </div>
