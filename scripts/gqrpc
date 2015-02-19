@@ -21,7 +21,7 @@ GQ_PROCESS_TYPE=python
 
 # Where to write the process identifier - this is used to track if the service is already running 
 # Note: the script noted in the GQ_RUN_COMMAND must actually write this file 
-PID_FILE=$GQ_SCRIPTS_DIR/gqrpc.pid
+PID_FILE=${GQ_SCRIPTS_DIR}/gqrpc.pid
 
 # Load system specific optional arguments 
 # Create and populate this file with machine specific settings 
@@ -30,14 +30,14 @@ if [ -f /etc/sysconfig/gqrpc ]; then
 fi
 
 # Is the service already running? If so, capture the process id 
-if [ -f $PID_FILE ]; then 
-    PID=`cat $PID_FILE` 
+if [ -f ${PID_FILE} ]; then
+    PID=`cat ${PID_FILE}`
 else 
     PID="" 
 fi
 
 set_status() {
-echo ${PID}
+    echo ${PID}
 	if [ "${PID}" != "" ]; then
 	    RPC_STATUS=1		
 	else
@@ -47,11 +47,11 @@ echo ${PID}
 
 start() { 
 	set_status
-    if [ $RPC_STATUS != 0 ]; then 
+    if [ ${RPC_STATUS} != 0 ]; then
         # Check to see if the /proc dir for this process exists 
         if [ -a /proc/${PID} ]; then 
             # check to make sure this is likely the running service 
-            ps aux | grep ${PID} | grep $GQ_PROCESS_TYPE >> /dev/null 
+            ps aux | grep ${PID} | grep ${GQ_PROCESS_TYPE} >> /dev/null
             # If it is a process of the right type assume that it is gqrpc and just return
             # otherwise remove the subsys lock file and start gqrpc
             if [ "$?" = "0" ]; then 
@@ -69,28 +69,28 @@ start() {
         fi 
     fi 
     echo -n "Starting ${NAME}"    
-    su - $GQ_SCRIPT_USER -c "/bin/sh -c \"$GQ_RUN_COMMAND > /dev/null 2>&1\"" & RETVAL=$? 
+    su - ${GQ_SCRIPT_USER} -c "/bin/sh -c \"$GQ_RUN_COMMAND > /dev/null 2>&1\"" & RETVAL=$?
     touch /var/lock/gqrpclock
 }
 stop() {
     set_status
-    if [ $RPC_STATUS != 0 ]; then 
-        echo -n "killing " $PID 
+    if [ ${RPC_STATUS} != 0 ]; then
+        echo -n "killing " ${PID}
         if ! kill ${PID} > /dev/null 2>&1; then
             echo
     		echo "$NAME is not running"
     		return
     	fi 
      	echo -n "Stopping ${NAME}" 
-        for i in {1..30} 
+        for i in {1..30}
         do 
-            if [ -n "`ps aux | grep $GQ_PROCESS_TYPE | grep ${RPC_PYSCRIPT_FILE}`" ]; then 
+            if [ -n "`ps aux | grep ${GQ_PROCESS_TYPE} | grep ${RPC_PYSCRIPT_FILE}`" ]; then
                 sleep 1 # Still running, wait a second. 
                 echo -n . 
             else 
                 # stopped 
                 rm -f /var/lock/gqrpclock
-                rm -f $PID_FILE 
+                rm -f ${PID_FILE}
                 echo 
 		        return
             fi 
@@ -113,14 +113,14 @@ case "$1" in
     ;; 
   restart)	
 	set_status
-	if [ $RPC_STATUS == 1 ]; then
+	if [ ${RPC_STATUS} == 1 ]; then
 		stop
 	fi
       start
     ;;
   status)
       set_status
-      if [ $RPC_STATUS == 1 ]; then
+      if [ ${RPC_STATUS} == 1 ]; then
         echo "$NAME is running"
       else
         echo "$NAME is not running"
