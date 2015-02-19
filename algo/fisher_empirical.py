@@ -34,7 +34,7 @@ def fisher_empirical_p_values(species, modules, query_module, max_empirical_p_va
             continue
         p_value = right_p_value(
             overlaps[s, p][m],
-            lengths[s, p][m],
+            lengths[s, p][m] - overlaps[s, p][m],
             series_overlap[s, p] - overlaps[s, p][m],
             6000 - series_overlap[s, p] - lengths[s, p][m] + overlaps[s, p][m]
         )
