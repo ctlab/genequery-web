@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 
+LOCAL_APPS = ()
+
 try:
     from logic_settings import *
 except:
@@ -38,17 +40,23 @@ TEMPLATE_LOADERS = (
 
 # Application definition
 
-INSTALLED_APPS = (
+TEST_RUNNER = 'django.test.runner.DiscoverRunner'
+
+DJANGO_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+)
 
+PROJECT_APPS = (
     'searcher',
     'main',
 )
+
+INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS + LOCAL_APPS
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
