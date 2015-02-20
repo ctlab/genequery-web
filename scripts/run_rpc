@@ -1,8 +1,0 @@
-# Execute the actual python script 
-# The "$@" passes in any parameters into the python exectuable 
-# The '&' puts the process into background (as a daemon) 
-# The 'echo $! > mydaemon.pid'  write the process id to a file
-
-python ../rpc/stats.py "$@" & 
-echo $! > gqrpc.pid
-sleep 30
