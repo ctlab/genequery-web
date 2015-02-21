@@ -5,9 +5,13 @@ from utils import get_gene_id_type, ENTREZ, REFSEQ, SYMBOL
 from searcher import models
 
 
+SPECIES_REQUIRED = 'Species not specified.'
+GENE_LIST_REQUIRED = 'Gene list is empty.'
+
+
 class SearchQueryForm(forms.Form):
-    species = forms.ChoiceField(models.SPECIES, required=True, error_messages={'required': 'Species not specified.'})
-    genes = forms.CharField(required=True, error_messages={'required': 'Gene list is empty.'})
+    species = forms.ChoiceField(models.SPECIES, required=True, error_messages={'required': SPECIES_REQUIRED})
+    genes = forms.CharField(required=True, error_messages={'required': GENE_LIST_REQUIRED})
 
     genes_id_type = None
 

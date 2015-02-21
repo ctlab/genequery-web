@@ -63,3 +63,8 @@ class GQTestRunner(DiscoverRunner):
         suite = super(GQTestRunner, self).build_suite(test_labels, extra_tests, **kwargs)
         return split_suite(suite)
 
+
+class GQTestCase(TestCase):
+    def assert_200(self, response):
+        self.assertEqual(response.status_code, 200)
+

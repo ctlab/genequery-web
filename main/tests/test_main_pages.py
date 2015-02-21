@@ -1,5 +1,6 @@
 from django.core.urlresolvers import reverse
-from django.test import TestCase, Client
+from django.test import Client
+from utils.test import GQTestCase
 
 MENU_ACTIVE = 'menu_active'
 
@@ -12,7 +13,7 @@ class BasePageTest(object):
 
     def test_status_code(self):
         response = self.client.get(reverse(self.url_name))
-        self.assertEqual(response.status_code, 200)
+        self.assert_200(response)
 
     def test_page_text(self):
         response = self.client.get(reverse(self.url_name))
@@ -27,26 +28,26 @@ class BasePageTest(object):
             response.context[MENU_ACTIVE], self.menu_link))
 
 
-class AboutPageTestCase(TestCase, BasePageTest):
+class AboutPageTestCase(GQTestCase, BasePageTest):
     menu_link = 'about'
     url_name = 'about'
     page_text = 'To start using GeneQuery, all you need is'
 
 
-class ContactsPageTestCase(TestCase, BasePageTest):
+class ContactsPageTestCase(GQTestCase, BasePageTest):
     menu_link = 'contacts'
     url_name = 'contacts'
     page_text = ['Alex Predeus', 'Ivan Arbuzov', 'Maxim Artyomov Lab']
 
 
-class ExamplePageTestCase(TestCase, BasePageTest):
+class ExamplePageTestCase(GQTestCase, BasePageTest):
     menu_link = 'example'
     url_name = 'example'
     page_text = ['Following is a list of 50 genes',
                  '<a href="/searcher/?example=true" role="button" target="_blank">Run it on search page</a>']
 
 
-class SearcherPageTestCase(TestCase, BasePageTest):
+class SearcherPageTestCase(GQTestCase, BasePageTest):
     menu_link = 'searcher'
     url_name = 'searcher:index'
     page_text = ['Homo sapiens', 'Mus musculus', 'Run example', 'Gene list']
