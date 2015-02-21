@@ -40,7 +40,7 @@ TEMPLATE_LOADERS = (
 
 # Application definition
 
-TEST_RUNNER = 'django.test.runner.DiscoverRunner'
+TEST_RUNNER = 'utils.test.GQTestRunner'
 
 DJANGO_APPS = (
     'django.contrib.admin',
@@ -57,6 +57,8 @@ PROJECT_APPS = (
 )
 
 INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS + LOCAL_APPS
+
+FIXTURE_DIRS = ('test_data',)
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
