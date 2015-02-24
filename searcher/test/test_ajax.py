@@ -36,6 +36,16 @@ class QueryFormErrorTestCase(GQTestCase):
         self.assertFalse(SPECIES_REQUIRED in data['error'])
 
     def test_genes_same_type(self):
-        response = self.client.get(self.url, {'species': 'mm'}, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+        response = self.client.get(self.url, {'species': 'mm', 'genes': ['12345 NMP_1234.5 ASDF']},
+                                   HTTP_X_REQUESTED_WITH='XMLHttpRequest')
         self.assert_200(response)
-        self.assertTrue("error" in get_json(response))
+        data = get_json(response)
+        self.assertTrue("error" in data and 'same' in data['error'])
+
+    def test_gene_too_long(self):
+        response = self.client.get(self.url, {'species': 'mm',
+                                              'genes': ['aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa']},
+                                   HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+        self.assert_200(response)
+        data = get_json(response)
+        self.assertTrue("error" in data and 'too long' in data['error'])
