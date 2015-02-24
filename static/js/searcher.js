@@ -16,7 +16,7 @@ $(document).ready(function () {
 
     function runExample() {
         $('#mm').prop('checked', true);
-        $('#genes').text(example_gene_set).trigger('autosize.resize');
+        $('#genes').val(example_gene_set).trigger('autosize.resize');
         $('#search-form').submit();
     }
 

@@ -12,7 +12,7 @@ from datasources.modulegenes import ModuleGenesDataSource, ModuleGenesChunkDataS
 
 from searcher.forms import SearchQueryForm
 from searcher.models import IdMap, ModuleDescription
-from utils import get_module_heat_map_url, log_get, get_gmt_url
+from utils import get_module_heat_map_url, log_get, get_gmt_url, gene_list_pprint
 from utils.constants import ENTREZ, SYMBOL, INF
 from utils.mixins import BaseTemplateView
 
@@ -46,9 +46,10 @@ class SearchProcessorView(View):
             return JsonResponse({'error': message})
 
         genes_id_type = form.get_genes_id_type()
-        LOG.info("Get request {}. Query type: {}.".format(form.cleaned_data, genes_id_type))
         species = form.cleaned_data['species']
         genes = form.cleaned_data['genes']
+        LOG.info('get request: genes {}, species {}, query type: '.format(
+            gene_list_pprint(genes), species, genes_id_type))
         start_time = time()
         entrez_ids = convert_to_entrez(species, genes, genes_id_type)
 

@@ -8,7 +8,7 @@ from django.conf import settings
 from algo.fisher_empirical import fisher_empirical_p_values
 
 from datasources.modulegenes import ModuleGenesDataSource
-from utils import is_valid_species
+from utils import is_valid_species, gene_list_pprint
 
 
 logging.config.dictConfig(settings.LOGGING)
@@ -38,7 +38,7 @@ class ModuleGenesAccessFunctions:
         log.info("{} modules are loaded in {} sec.".format(self.data_source.total_modules(), round(time() - t, 3)))
 
     def calculate_fisher_empirical_p_values(self, species, entrez_ids, max_empirical_p_value=0.01):
-        log.info('Get data {}, {}'.format(species, entrez_ids))
+        log.info('Get data {}, {}'.format(species, gene_list_pprint(entrez_ids)))
         try:
             if not is_valid_species(species):
                 message = "Unknown species: {}".format(species)

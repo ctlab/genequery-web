@@ -74,5 +74,9 @@ def get_gene_id_type(gene):
     return SYMBOL
 
 
+def gene_list_pprint(genes):
+    return '[{}]'.format(','.join(['"{}"'.format(x) for x in genes]))
+
+
 class GeneQueryException(Exception):
     pass
