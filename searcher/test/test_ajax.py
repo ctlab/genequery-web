@@ -14,8 +14,6 @@ class QueryFormErrorTestCase(GQTestCase):
     client = Client()
     url = reverse('searcher:search')
 
-    # def assertHasError(self, data, msg):
-
     def test_no_form_data(self):
         response = self.client.get(self.url, {}, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
         self.assert_200(response)
@@ -36,3 +34,8 @@ class QueryFormErrorTestCase(GQTestCase):
         data = get_json(response)
         self.assertTrue(GENE_LIST_REQUIRED in data['error'])
         self.assertFalse(SPECIES_REQUIRED in data['error'])
+
+    def test_genes_same_type(self):
+        response = self.client.get(self.url, {'species': 'mm'}, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+        self.assert_200(response)
+        self.assertTrue("error" in get_json(response))
