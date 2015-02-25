@@ -47,6 +47,10 @@ class QueryFormErrorTestCase(GQTestCase):
         self.assertTrue(GENE_LIST_REQUIRED in data['error'])
         self.assertFalse(SPECIES_REQUIRED in data['error'])
 
+    def test_unknown_species(self):
+        response = self.send_ajax(self.url, data={'species': 'sh'})
+        self.assertAllIn('error', 'sh', response.content)
+
     def test_genes_mixed_type(self):
         response = self.send_ajax(self.url, data={'species': 'mm', 'genes': ['12345 NMP_1234.5 ASDF']})
         data = get_json(response)

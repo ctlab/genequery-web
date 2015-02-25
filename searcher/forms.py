@@ -42,5 +42,5 @@ class SearchQueryForm(forms.Form):
     def get_error_messages_as_list(self):
         messages = []
         for m in self.errors.values():
-            messages += map(lambda x: x.message, m.data)
+            messages.append(m[0])
         return messages
