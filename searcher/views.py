@@ -70,7 +70,7 @@ class SearchProcessorView(View):
         rendered = []
         for r in modules_with_p_value:
             context = {}
-            context.update(descriptions.get(r[0]) or {})
+            context.update(descriptions.get(r[0], {}))
             context['series'] = r[0]
             context['platform'] = r[1]
             context['module_number'] = r[2]

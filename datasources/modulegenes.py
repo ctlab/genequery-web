@@ -30,11 +30,12 @@ class ModuleGenesDataSource:
     data_items = {MM: [], HS: []}
 
     def __init__(self, raw_db_connection=False, species=None):
-        rows = _load_data(raw_db_connection, species=species)
-        self._total_modules = len(rows)
-        for sp, module_id, genes in rows:
-            series, platform, module_num = parse_module_id(module_id)
-            self.data_items[sp].append((series, platform, module_num, set(genes)))
+        if self.data_items == {MM: [], HS: []}:
+            rows = _load_data(raw_db_connection, species=species)
+            self._total_modules = len(rows)
+            for sp, module_id, genes in rows:
+                series, platform, module_num = parse_module_id(module_id)
+                self.data_items[sp].append((series, platform, module_num, set(genes)))
 
     def total_modules(self):
         return self._total_modules

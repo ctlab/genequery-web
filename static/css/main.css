@@ -19,7 +19,13 @@ label .form-inline .radio label {
 }
 
 .search-result {
-    margin: 10px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    margin-right: 20%;
+}
+
+.search-results {
+    padding-left: 10px;
 }
 
 a.deco-none {
@@ -34,14 +40,14 @@ a.deco-none {
 
 .search-results-recap {
     font-size: 11px;
-    margin-left: 10px;
-    margin-bottom: -10px;
+    /*margin-left: 10px;*/
+    margin-bottom: 10px;
     margin-top: 20px;
 }
 
 .module-description {
-    max-height: 4em;
-    font-size: 12pt;
+    max-height: 1pt;
+    font-size: 11px;
     line-height: 1.25;
 }
 
@@ -50,7 +56,8 @@ a.deco-none {
 }
 
 .ex-type {
-    font-size: 11px;
+    font-size: 10px;
+    margin-top: -5px;
 }
 
 textarea {
@@ -67,7 +74,7 @@ textarea {
 #wrap {
     min-height: 100%;
     margin: 0 auto -60px;
-    padding: 0 0 60px;
+    padding: 0 0 100px;
 }
 
 #footer {
