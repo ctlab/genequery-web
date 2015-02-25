@@ -3,7 +3,7 @@
 {% block custom_js %}
     <script src="{% static 'js/searcher.js' %}"></script>
     <script src="{% static 'js/jquery.autosize.min.js' %}"></script>
-    <script src="{% static 'js/readmore.min.js' %}"></script>
+    <script src="{% static 'js/readmore.js' %}"></script>
     <script src="{% static 'js/jquery-scrollToTop.min.js' %}"></script>
     <script src="{% static 'js/lightbox.min.js' %}"></script>
 {% endblock %}
@@ -11,10 +11,10 @@
     {% include 'search-form.html' %}
     <div class="response">
         <div class="search-results">
-{#            {% include 'search-recap.html' with entered=100 id_format='symbol' entrez_unique=99 total=30 time=1.2345 %}#}
-{#            {% for i in "xxxxxxxxxxx" %}#}
-{#                {% include 'search-result.html' with result=fake_result%}#}
-{#            {% endfor %}#}
+            {% include 'search-recap.html' with entered=100 id_format='symbol' entrez_unique=99 total=30 time=1.2345 %}
+            {% for i in "xxxxxxxxxxx" %}
+                {% include 'search-result.html' with result=fake_result%}
+            {% endfor %}
         </div>
         <div class="row text-center loader" hidden><img src="{% static 'img/ajax-loader.gif' %}"/></div>
     </div>

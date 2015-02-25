@@ -1,9 +1,10 @@
-label .form-inline .radio label {
-    padding-left: 10px;
+html, body {
+    height: 100%;
+    color: #696969;
 }
 
-.label-grey {
-    color: #808080;
+label .form-inline .radio label {
+    padding-left: 10px;
 }
 
 .overall_design {
@@ -36,7 +37,6 @@ a.deco-none {
     margin-left: 10px;
     margin-bottom: -10px;
     margin-top: 20px;
-    color: #808080;
 }
 
 .module-description {
@@ -53,11 +53,6 @@ a.deco-none {
     font-size: 11px;
 }
 
-.address-grey {
-    font-size: 11px;
-    color: #808080;
-}
-
 textarea {
     max-height: 400px;
 }
@@ -67,9 +62,6 @@ textarea {
     margin: 10%;
 }
 
-html, body {
-    height: 100%;
-}
 
 /* Wrapper for page content to push down footer */
 #wrap {

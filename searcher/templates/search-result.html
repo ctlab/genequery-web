@@ -4,7 +4,7 @@
         <div class="media-body">
             <h4 class="media-heading text-justify">{{ result.title }}</h4>
             <p class="text-left ex-type">
-                <ul class="list-inline list-unstyled ex-type label-grey">
+                <ul class="list-inline list-unstyled ex-type search-result-info">
                     {% if result.status %}
                         <li><span><i class="glyphicon glyphicon-calendar"></i>{{ result.status }}</span></li>
                         <li>|</li>
@@ -45,7 +45,7 @@
                     <p>{{ result.overall_design }}</p>
                 {% endif %}
             {% else %}
-                <p><small class="label-grey">No summary.</small></p>
+                <p><small>No summary.</small></p>
             {% endif %}
             </div>
         </div>

@@ -9,6 +9,12 @@ $(document).ready(function () {
     var readmoreLoadChunkSize = 20;
     var runExampleTimeout = 250;
 
+    var readmoreargs = {
+        moreLink: '<a href="#">more...</a>',
+        lessLink: '<a href="#">less</a>',
+        speed: 300
+    };
+
     var example_gene_set = "Cd274\nNos2\nIrg1\nGbp2\nCxcl9\nPtgs2\nSaa3\nGbp5\nIigp1\nGbp4\nGbp3\nIl1rn\nIl1b\nOasl1" +
         "\nGbp6\nCd86\nRsad2\nCcl5\nTgtp2\nClic5\nZbp1\nGbp7\nSocs3\nSerpina3g\nProcr\nIgtp\nSlco3a1\nLy6a\nSlc7a2\nC3" +
         "\nCd40\nIfit1\nFam26f\nClec4e\nBst1\nIsg15\nIrf1\nAcsl1\nCd38\nIfit2\nThbs1\nIfi47\nIfi44\nIrgm2\nIl15ra\nAss1\n" +
@@ -62,10 +68,7 @@ $(document).ready(function () {
 
     $('#genes').autosize();
 
-    $('.module-description').readmore({
-        moreLink: '<a href="#">more</a>',
-        lessLink: '<a href="#">less</a>'
-    });
+    $('.module-description').readmore(readmoreargs);
 
     $('body').scrollToTop({
         distance: $("#search-btn").offset().top,
@@ -143,10 +146,7 @@ $(document).ready(function () {
         if (totalResults == 0 || firstNotReadmore >= totalResults) return;
         to = Math.min(totalResults, to);
         var $descriptions = $('.module-description').slice(firstNotReadmore, to);
-        $descriptions.readmore({
-            moreLink: '<a href="#">more</a>',
-            lessLink: '<a href="#">less</a>'
-        });
+        $descriptions.readmore(readmoreargs);
         lastScrollTop = $descriptions.last().offset().top;
         firstNotReadmore = to;
         console.log(lastScrollTop, firstNotReadmore, to);
