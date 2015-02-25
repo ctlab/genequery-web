@@ -31,7 +31,7 @@ class SearchQueryForm(forms.Form):
             t = get_gene_id_type(gene)
             if t != id_type:
                 raise forms.ValidationError(
-                    'Gene id types should be the same (both {} and {} are presents in query).'.format(id_type, t))
+                    'Gene id types should be the same (both {} and {} are presents in query): {}'.format(id_type, t, gene))
             id_validator(gene)
         self.genes_id_type = id_type
         return genes

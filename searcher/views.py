@@ -24,7 +24,7 @@ HTML_NEG_INF = format_html('-&infin;')
 
 def convert_to_entrez(species, genes, original_type):
     if original_type == ENTREZ:
-        return genes
+        return list(set(map(int, genes)))
     genes_set = set(map(lambda x: x.upper(), genes))
     if original_type == SYMBOL:
         kwargs = {'symbol_id__in': genes_set}
@@ -70,7 +70,8 @@ class SearchProcessorView(View):
         rendered = []
         for r in modules_with_p_value:
             context = {}
-            context.update(descriptions[r[0]])
+            context.update(descriptions.get(r[0]) or {})
+            context['series'] = r[0]
             context['platform'] = r[1]
             context['module_number'] = r[2]
             context['series_url'] = get_module_heat_map_url(r[0], r[1])

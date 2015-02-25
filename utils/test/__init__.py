@@ -2,9 +2,31 @@ from unittest import TestSuite
 from django.core.management import call_command
 from django.test import TestCase
 from django.test.runner import DiscoverRunner
+from django.conf import settings
 
 
-class SharedFixtureTestCase(TestCase):
+class GQTestCase(TestCase):
+    def assert_200(self, response):
+        self.assertEqual(response.status_code, 200)
+
+    def assertAllIn(self, *args):
+        if len(args) < 2:
+            return
+        container = args[-1]
+        members = args[:-1]
+        if not isinstance(members, (list, tuple)):
+            members = [members]
+        for m in members:
+            self.assertIn(m, container)
+
+    def send_ajax(self, url, data={}, ok=True):
+        response = self.client.get(url, data, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+        if ok:
+            self.assert_200(response)
+        return response
+
+
+class SharedFixtureTestCase(GQTestCase):
     def _fixture_setup(self):
         pass
 
@@ -40,9 +62,11 @@ class GQTestSuit(TestSuite):
                              inhibit_post_migrate=self._tests[0].available_apps is not None)
 
     def run(self, result, debug=False):
-        self._load_data()
+        if recreate_db():
+            self._load_data()
         super(GQTestSuit, self).run(result, debug)
-        self._flush_data()
+        if recreate_db():
+            self._flush_data()
 
 
 def split_suite(suite):
@@ -63,8 +87,25 @@ class GQTestRunner(DiscoverRunner):
         suite = super(GQTestRunner, self).build_suite(test_labels, extra_tests, **kwargs)
         return split_suite(suite)
 
+    def run_tests(self, test_labels, extra_tests=None, **kwargs):
+        import logging
+        logging.disable(logging.CRITICAL)
+        self.setup_test_environment()
+        suite = self.build_suite(test_labels, extra_tests)
+        old_config = None
+        if recreate_db():
+            old_config = self.setup_databases()
+        else:
+            # TODO do it better
+            from django.db import connections, DEFAULT_DB_ALIAS
+            connection = connections[DEFAULT_DB_ALIAS]
+            connection.settings_dict['NAME'] = connection.creation._get_test_db_name()
+        result = self.run_suite(suite)
+        if old_config:
+            self.teardown_databases(old_config)
+        self.teardown_test_environment()
+        return self.suite_result(suite, result)
 
-class GQTestCase(TestCase):
-    def assert_200(self, response):
-        self.assertEqual(response.status_code, 200)
 
+def recreate_db():
+    return not getattr(settings, 'NOT_RECREATE_TEST_DB', False)

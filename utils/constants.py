@@ -1,7 +1,6 @@
 import re
 
 ENTREZ_PATTERN = re.compile('^[0-9\s]*$')
-REFSEQ_PATTERN = re.compile('^[0-9\sNMR_]*$')
 
 ENTREZ = 'entrez'
 REFSEQ = 'refseq'
