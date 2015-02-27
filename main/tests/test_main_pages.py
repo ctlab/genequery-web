@@ -51,3 +51,12 @@ class SearcherPageTestCase(GQTestCase, BasePageTest):
     menu_link = 'searcher'
     url_name = 'searcher:index'
     page_text = ['Homo sapiens', 'Mus musculus', 'Run example', 'Gene list']
+
+
+class IndexPageTestCase(GQTestCase):
+    def test_redirect(self):
+        client = Client()
+        response = client.get(reverse('index'), follow=True)
+        self.assert_200(response)
+        self.assertEqual(len(response.redirect_chain), 1)
+        self.assertIn(reverse('searcher:index'), response.redirect_chain[0][0])
