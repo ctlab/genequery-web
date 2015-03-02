@@ -115,7 +115,7 @@ class QueryBaseTestCase(SharedFixtureTestCase):
             data={'species': 'mm',
                   'genes': SYMBOL_MM})
         data = get_json(response)
-        self.assertAllIn('Entered 50', '13 unique Entrez', '28 modules', data['recap'])
+        self.assertAllIn('Entered 50', '13 unique Entrez', '7 modules', data['recap'])
         self.assertIn('GSE26695', data['data'][0])
 
     def test_filter_unique_entrez(self):
@@ -126,5 +126,5 @@ class QueryBaseTestCase(SharedFixtureTestCase):
             data={'species': 'mm',
                   'genes': ' '.join(map(str, genes))})
         data = get_json(response)
-        self.assertAllIn('Entered 26', '13 unique Entrez', '6 modules', data['recap'])
+        self.assertAllIn('Entered 26', '13 unique Entrez', '3 modules', data['recap'])
         self.assertIn('GSE10202', data['data'][0])

@@ -1,53 +1,35 @@
-{#<hr>#}
-<div class="search-result">
-    <div class="media">
-        <div class="media-body">
-            <h4 class="media-heading text-justify">{{ result.title }}</h4>
-            <p class="text-left ex-type">
-                <ul class="list-inline list-unstyled ex-type search-result-info">
-                    {% if result.status %}
-                        <li><span><i class="glyphicon glyphicon-calendar"></i>{{ result.status }}</span></li>
-                        <li>|</li>
-                    {% endif %}
-                    <li>
-                        <a href="http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc={{ result.series }}" target="_blank">{{ result.series }}</a>
-                        {% if result.gmt_url %}
-                            &nbsp;
-                            [<a href="{{ result.gmt_url }}">modules GMT</a>]
-                        {% endif %}
-                    </li>
-                    <li>|</li>
-                    <li><a href="http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc={{ result.platform }}" target="_blank">{{ result.platform }}</a></li>
-                    <li>|</li>
-                    <li>Module {{ result.module_number }}</li>
-                    {% if result.series_url %}
-                        [<a href="{{ result.series_url }}"
-                            data-lightbox="image-{{ result.series }}-{{ result.platform }}"
-                            data-title="{{ result.series }} {{ result.platform }} [module {{ result.module_number }}]">
-                        heatmap
-                        </a>]
-                    {% endif %}
-                    {% if result.overlap_size and result.module_size %}
-                        <li>|</li>
-                        <li>overlap ratio: <sup>{{ result.overlap_size }}</sup>&frasl;<sub>{{ result.module_size }}</sub></li>
-                    {% endif %}
-                    {% if result.adjusted_score %}
-                        <li>|</li>
-                        <li>lg(p-value<sub>adj</sub>): {{ result.adjusted_score }}</li>
-                    {% endif %}
-                </ul>
-            </p>
-            <div class="module-description text-justify">
-            {% if result.summary %}
-                <p>{{ result.summary }}</p>
-                {% if result.overall_design %}
-                    <p><label class="overall_design">Overall design</label></p>
-                    <p>{{ result.overall_design }}</p>
-                {% endif %}
-            {% else %}
-                <p><small>No summary.</small></p>
+<div class="row search-result">
+    <div class="col-lg-1 col-result-number text-right">{{ result.rank }}</div>
+    <div class="col-lg-11 col-result">
+        <h4 class="media-heading text-justify">{{ result.title }}</h4>
+        <p class="text-left ex-type">
+        <ul class="list-inline list-unstyled ex-type search-result-info">
+            {% if result.adjusted_score %}
+                <li>lg(<i>p</i>-value<sub>adj</sub>): {{ result.adjusted_score }}</li>
+                <li>|</li>
             {% endif %}
-            </div>
-        </div>
+            {% if result.overlap_size and result.module_size %}
+                <li>Overlap: <sup>{{ result.overlap_size }}</sup>&frasl;<sub>{{ result.module_size }}</sub></li>
+                <li>|</li>
+            {% endif %}
+            <li>
+                <a href="http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc={{ result.series }}" target="_blank">{{ result.series }}</a>
+                {% if result.gmt_url %}
+                    &nbsp;
+                    [<a href="{{ result.gmt_url }}">modules GMT</a>]
+                {% endif %}
+            </li>
+            <li>|</li>
+            <li><a href="http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc={{ result.platform }}" target="_blank">{{ result.platform }}</a></li>
+            <li>|</li>
+            <li>Module {{ result.module_number }}</li>
+            {% if result.series_url %}
+                [<a href="{{ result.series_url }}"
+                    data-lightbox="image-{{ result.series }}-{{ result.platform }}"
+                    data-title="{{ result.series }} {{ result.platform }} [module {{ result.module_number }}]">
+                heatmap
+                </a>]
+            {% endif %}
+        </ul>
     </div>
 </div>

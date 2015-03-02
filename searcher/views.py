@@ -64,13 +64,15 @@ class SearchProcessorView(View):
         max_search_result_size = getattr(settings, 'MAX_SEARCH_RESULT_SIZE', len(p_values))
         modules_with_p_value = sorted_p_values[:max_search_result_size]
         series_ids_set = set([x[0] for x in modules_with_p_value])
-        descriptions = {e['series']: e for e in ModuleDescription.objects.filter(series__in=series_ids_set).values()}
+        descriptions = {e['series']: e for e in ModuleDescription.objects.filter(
+            series__in=series_ids_set).values('title', 'series')}
         processing_time = round(time() - start_time, 3)
 
         rendered = []
-        for r in modules_with_p_value:
+        for i, r in enumerate(modules_with_p_value):
             context = {}
             context.update(descriptions.get(r[0], {}))
+            context['rank'] = i + 1
             context['series'] = r[0]
             context['platform'] = r[1]
             context['module_number'] = r[2]
@@ -118,7 +120,7 @@ def calculate_fisher_p_values_via_db(species, entrez_ids, low_ram=False):
     if low_ram:
         data_source = ModuleGenesChunkDataSource(species=species)
     else:
-        data_source = ModuleGenesDataSource(species=species)
+        data_source = ModuleGenesDataSource()
     return fisher_empirical_p_values(species, data_source.items(species), set(entrez_ids))
 
 
@@ -129,7 +131,7 @@ class SearchPageView(BaseTemplateView):
     def get_context_data(self, **kwargs):
         context = super(SearchPageView, self).get_context_data()
         fake_result = {
-            'series': 'GSE46356', 'platform': 'GPL6246', 'module_number': 4,
+            'series': 'GSE46356', 'platform': 'GPL6246', 'module_number': 4, 'rank': 222,
             'series_url': '/media/modules/GSE46356_GPL6246.png',
             'gmt_url': '/media/gmt/mm/GSE46356_GPL6246.gmt', 'adjusted_score': -123.45, 'overlap_size': 123,
             'module_size': 456, 'status': 'Public on Jan 18, 2012 ',

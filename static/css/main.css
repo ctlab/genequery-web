@@ -11,21 +11,13 @@ label .form-inline .radio label {
     padding-left: 0;
     margin-bottom: 0;
 }
-.well{
-    background: 	rgb(255,255,255);
-    padding: 10px 19px;
-    border-left: 0;
-    border-right: 0;
-}
 
 .search-result {
-    margin-bottom: 20px;
-    margin-top: 20px;
-    margin-right: 20%;
+    margin-top: 5px;
+    margin-right: 10px;
 }
 
 .search-results {
-    padding-left: 10px;
 }
 
 a.deco-none {
@@ -34,21 +26,20 @@ a.deco-none {
 }
 
 .search-form {
-    margin-left: 10px;
-    margin-right: 10px;
 }
 
 .search-results-recap {
     font-size: 11px;
-    /*margin-left: 10px;*/
     margin-bottom: 10px;
     margin-top: 20px;
 }
 
 .module-description {
     max-height: 1pt;
-    font-size: 11px;
+    font-size: 12px;
     line-height: 1.25;
+    margin-top: -10px;
+    margin-bottom: 10px;
 }
 
 .module-description p{
@@ -56,7 +47,7 @@ a.deco-none {
 }
 
 .ex-type {
-    font-size: 10px;
+    font-size: 12px;
     margin-top: -5px;
 }
 
@@ -69,12 +60,23 @@ textarea {
     margin: 10%;
 }
 
+.col-result-number {
+    margin-left: -100px;
+    padding-left: 0;
+    padding-right: 0;
+}
 
-/* Wrapper for page content to push down footer */
+.col-result {
+    padding-right: 0;
+}
+
 #wrap {
-    min-height: 100%;
     margin: 0 auto -60px;
     padding: 0 0 100px;
+}
+
+h4.media-heading {
+    font-size: 14px;
 }
 
 #footer {

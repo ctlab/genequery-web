@@ -68,7 +68,7 @@ $(document).ready(function () {
 
     $('#genes').autosize();
 
-    $('.module-description').readmore(readmoreargs);
+    //$('.module-description').readmore(readmoreargs);
 
     $('body').scrollToTop({
         distance: $("#search-btn").offset().top,
@@ -152,13 +152,13 @@ $(document).ready(function () {
         console.log(lastScrollTop, firstNotReadmore, to);
     }
 
-    $(window).scroll(function (event) {
-        var st = $(this).scrollTop();
-        if (st > lastScrollTop - minDistanceBeforeReadmore) {
-            setReadmore(firstNotReadmore + readmoreLoadChunkSize);
-        }
-
-    });
+    //$(window).scroll(function (event) {
+    //    var st = $(this).scrollTop();
+    //    if (st > lastScrollTop - minDistanceBeforeReadmore) {
+    //        setReadmore(firstNotReadmore + readmoreLoadChunkSize);
+    //    }
+    //
+    //});
 
     function asyncReadmore(to) {
         setTimeout(function () {
@@ -174,7 +174,7 @@ $(document).ready(function () {
         } else {
             fillSearchResults(json['recap'], json['data']);
             scrollToRecap();
-            asyncReadmore(25);
+            //asyncReadmore(25);
             console.log('ok');
         }
     }

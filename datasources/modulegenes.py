@@ -6,11 +6,15 @@ from utils import parse_module_id
 from utils.constants import MM, HS
 
 
+def get_db_connection():
+    import psycopg2
+    return psycopg2.connect("dbname={} user={} host='localhost' password={}".format(
+        settings.DATABASE_NAME, settings.DATABASE_USER, settings.DATABASE_PASSWORD))
+
+
 def _load_data(raw_db_connection=False, species=None):
     if raw_db_connection:
-        import psycopg2
-        conn = psycopg2.connect("dbname={} user={} host='localhost' password={}".format(
-            settings.DATABASE_NAME, settings.DATABASE_USER, settings.DATABASE_PASSWORD))
+        conn = get_db_connection()
         cur = conn.cursor()
         if species:
             cur.execute("SELECT * FROM {} WHERE species='{}'".format(ModuleGenes._meta.db_table, species))
@@ -26,19 +30,27 @@ def _load_data(raw_db_connection=False, species=None):
     return list(query_prefix.values_list('species', 'module', 'entrez_ids'))
 
 
-class ModuleGenesDataSource:
-    data_items = {MM: [], HS: []}
+def get_data_items(raw_db_connection=False):
+    result = {MM: [], HS: []}
+    rows = _load_data(raw_db_connection)
+    for sp, module_id, genes in rows:
+        series, platform, module_num = parse_module_id(module_id)
+        result[sp].append((series, platform, module_num, set(genes)))
+    return result
 
-    def __init__(self, raw_db_connection=False, species=None):
-        if self.data_items == {MM: [], HS: []}:
-            rows = _load_data(raw_db_connection, species=species)
-            self._total_modules = len(rows)
+
+class ModuleGenesDataSource:
+    data_items = {HS: [], MM: []}
+
+    def __init__(self, raw_db_connection=False):
+        if self.data_items == {HS: [], MM: []}:
+            rows = _load_data(raw_db_connection)
             for sp, module_id, genes in rows:
                 series, platform, module_num = parse_module_id(module_id)
                 self.data_items[sp].append((series, platform, module_num, set(genes)))
 
     def total_modules(self):
-        return self._total_modules
+        return len(self.data_items[MM]) + len(self.data_items[HS])
 
     def items(self, species):
         return self.data_items[species]
