@@ -1,7 +1,16 @@
 <div class="row search-result">
+    <div class="search-result-info"
+         data-rank="{{ result.rank }}"
+         data-score="{{ result.original_score }}"
+         data-overlap-size="{{ result.overlap_size }}"
+         data-module-size="{{ result.module_size }}"
+         data-series="{{ result.series }}"
+         data-platform="{{ result.platform }}"
+         data-module-number="{{ result.module_number }}"></div>
+
     <div class="col-lg-1 col-result-number text-right">{{ result.rank }}</div>
     <div class="col-lg-11 col-result">
-        <h4 class="media-heading text-justify">{{ result.title }}</h4>
+        <h4 class="media-heading text-justify data-title">{{ result.title }}</h4>
         <p class="text-left ex-type">
         <ul class="list-inline list-unstyled ex-type search-result-info">
             {% if result.adjusted_score %}

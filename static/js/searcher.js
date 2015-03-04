@@ -141,6 +141,32 @@ SearchPage.prototype = {
                 error: function() {$this.ajaxError()}
             });
         }
+    },
+
+    csv_fields: ['rank', 'score', 'series', 'platform', 'module-number', 'overlap-size', 'module-size'],
+
+    collectData: function() {
+        var data = [];
+        $('.search-result').each(function () {
+            var info = $(this).find('.search-result-info');
+            var row = [];
+            $.each(SearchPage.prototype.csv_fields, function(index, value) {
+                row.push(info.attr('data-' + value));
+            });
+            row.push($(this).find('.data-title').text());
+            data.push(row);
+        });
+        return data;
+    },
+
+    getCSV: function() {
+        var data = this.collectData();
+        var csvContent = SearchPage.prototype.csv_fields.join(";") + ";title\n";
+        data.forEach(function(infoArray, index){
+            var dataString = infoArray.join(";");
+            csvContent += index < data.length ? dataString + "\n" : dataString;
+        });
+        return csvContent;
     }
 
 };
@@ -175,10 +201,31 @@ $(document).ready(function () {
     $('body').scrollToTop({
         distance: $("#search-btn").offset().top,
         easing: 'easeOutExpo',
-        animation: 'fade', // fade, slide, none
+        animation: 'fade',
         animationSpeed: 500,
-        text: 'To Top', // Text for element, can contain HTML
+        text: 'To Top',
         throttle: 250,
         namespace: 'scrollToTop'
     });
+
+    $('.search-results').on('click', '#csv-download', function () {
+        var filename = 'search_results.csv';
+        var blob = new Blob([searchPage.getCSV()], { type: 'text/csv;charset=utf-8;' });
+        if (navigator.msSaveBlob) { // IE 10+
+            navigator.msSaveBlob(blob, filename);
+        } else {
+            var link = document.createElement("a");
+            if (link.download !== undefined) {
+                var url = URL.createObjectURL(blob);
+                link.setAttribute("href", url);
+                link.setAttribute("download", filename);
+                link.style = "visibility:hidden";
+                document.body.appendChild(link);
+                link.click();
+                searchPage.collectData();
+                document.body.removeChild(link);
+            }
+        }
+    });
+
 });

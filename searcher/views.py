@@ -78,6 +78,7 @@ class SearchProcessorView(View):
             context['module_number'] = r[2]
             context['series_url'] = get_module_heat_map_url(r[0], r[1])
             context['gmt_url'] = get_gmt_url(species, r[0], r[1])
+            context['original_score'] = round(r[4], 2)
             context['adjusted_score'] = round(r[4], 2) if r[4] != -INF else HTML_NEG_INF
             context['overlap_size'] = r[5]
             context['module_size'] = r[6]
@@ -134,6 +135,7 @@ class SearchPageView(BaseTemplateView):
             'series': 'GSE46356', 'platform': 'GPL6246', 'module_number': 4, 'rank': 222,
             'series_url': '/media/modules/GSE46356_GPL6246.png',
             'gmt_url': '/media/gmt/mm/GSE46356_GPL6246.gmt', 'adjusted_score': -123.45, 'overlap_size': 123,
+            'original_score': -123.45,
             'module_size': 456, 'status': 'Public on Jan 18, 2012 ',
             'title': 'Suppressor of cytokine signaling-1 influences bacterial clearance and pathology during the infection with Mycobacterium tuberculosis',
             'summary': 'Tuberculosis results from an interaction between a chronically persistent pathogen counteracted by IFN-g-mediated immune responses. '
