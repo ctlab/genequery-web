@@ -1,30 +1,152 @@
-/**
- * Created by smolcoder on 06/02/15.
- */
-$(document).ready(function () {
-    var lastScrollTop = 0;
-    var firstNotReadmore = 0;
-    var totalResults = 0;
-    var minDistanceBeforeReadmore = $(window).height();
-    var readmoreLoadChunkSize = 20;
-    var runExampleTimeout = 250;
+function SearchForm() {
+    this.init = function() {
+        this.mm = $('#mm');
+        this.hs = $('#hs');
+        this.genesInput = $('#genes');
+        this.form = $('#search-form');
 
-    var readmoreargs = {
-        moreLink: '<a href="#">more...</a>',
-        lessLink: '<a href="#">less</a>',
-        speed: 300
+        $('#gene-list-label').popover();
     };
 
-    var example_gene_set = "Cd274\nNos2\nIrg1\nGbp2\nCxcl9\nPtgs2\nSaa3\nGbp5\nIigp1\nGbp4\nGbp3\nIl1rn\nIl1b\nOasl1" +
-        "\nGbp6\nCd86\nRsad2\nCcl5\nTgtp2\nClic5\nZbp1\nGbp7\nSocs3\nSerpina3g\nProcr\nIgtp\nSlco3a1\nLy6a\nSlc7a2\nC3" +
-        "\nCd40\nIfit1\nFam26f\nClec4e\nBst1\nIsg15\nIrf1\nAcsl1\nCd38\nIfit2\nThbs1\nIfi47\nIfi44\nIrgm2\nIl15ra\nAss1\n" +
-        "Slfn1\nNod\nIl18bp\nSerpinb9";
+    this.init();
+}
 
-    function runExample() {
-        $('#mm').prop('checked', true);
-        $('#genes').val(example_gene_set).trigger('autosize.resize');
-        $('#search-form').submit();
+SearchForm.prototype = {
+    getFormDataInJson: function() {
+        var form = this.form.serializeArray();
+        var data = {};
+        $.each(form, function () {
+            if (data[this.name] !== undefined) {
+                if (!data[this.name].push) {
+                    data[this.name] = [data[this.name]];
+                }
+                data[this.name].push(this.value || '');
+            } else {
+                data[this.name] = this.value || '';
+            }
+        });
+        return data;
+    },
+
+    getData: function() {
+        return this.form.serialize();
+    },
+
+    validate: function() {
+        var data = this.getFormDataInJson();
+        var messages = [];
+        if (data['species'] == null || data['species'] == '') {
+            messages.push('Species not specified.');
+        }
+        if (data['genes'] == '') {
+            messages.push('Gene list is empty.');
+        }
+        return messages.join(' ');
     }
+};
+
+function SearchPage() {
+    this.init = function() {
+        this.searchResults = $('.search-results');
+        this.runExampleTimeout = 250; // in milliseconds
+
+        this.searchForm = new SearchForm();
+        var $this = this;
+        this.searchForm.form.submit(function(event) {
+            event.preventDefault();
+            (function scrollToResults() {
+                $('html, body').animate({
+                    scrollTop: $("#search-btn").offset().top
+                }, 500);
+            })();
+            $this.sendSearchQuery();
+        });
+    };
+    this.init();
+}
+
+SearchPage.prototype = {
+    runExample: function() {
+        var example_genes = ("Cd274 Nos2 Irg1 Gbp2 Cxcl9 Ptgs2 Saa3 Gbp5 Iigp1 Gbp4 Gbp3 Il1rn Il1b Oasl1 Gbp6 Cd86" +
+            "Rsad2 Ccl5 Tgtp2 Clic5 Zbp1 Gbp7 Socs3 Serpina3g Procr Igtp Slco3a1 Ly6a Slc7a2 C3 Cd40 Ifit1 Fam26f" +
+            "Clec4e Bst1 Isg15 Irf1 Acsl1 Cd38 Ifit2 Thbs1 Ifi47 Ifi44 Irgm2 Il15ra Ass1 Slfn1 Nod Il18bp Serpinb9").replace(/\s/g, '\n');
+
+        this.searchForm.mm.prop('checked', true);
+        this.searchForm.genesInput.val(example_genes).trigger('autosize.resize');
+        this.searchForm.form.submit();
+    },
+
+    clearResults: function() {
+        this.searchResults.html('');
+    },
+
+    showLoader: function() {
+        $('.loader').fadeIn('slow');
+    },
+
+    hideLoader: function() {
+        $('.loader').fadeOut('fast');
+    },
+
+    fillSearchResults: function(recap, results) {
+        this.searchResults.append(recap);
+        for (var i = 0; i < results.length; ++i) {
+            this.searchResults.append(results[i])
+        }
+    },
+
+    scrollToRecap: function() {
+        $('html, body').animate({
+            scrollTop: $(".search-results-recap").offset().top - 10
+        }, 500);
+    },
+
+    setError: function(message) {
+        var error = '<div class="alert alert-danger search-form" role="alert">' +
+                    '<span class="sr-only">Error:</span>' + message + '</div>';
+        this.searchResults.append(error);
+    },
+
+    ajaxSuccess: function(json) {
+        this.hideLoader();
+        if (json['error']) {
+            this.setError(json['error']);
+        } else {
+            this.fillSearchResults(json['recap'], json['data']);
+            this.scrollToRecap();
+        }
+    },
+
+    ajaxError: function() {
+        this.hideLoader();
+        this.setError("Server error.");
+    },
+
+    sendSearchQuery: function() {
+        this.clearResults();
+        var errorMessage = this.searchForm.validate();
+        if (errorMessage != '') {
+            this.setError(errorMessage);
+        } else {
+            var $this = this;
+            $.ajax({
+                type: "GET",
+                url: "search/",
+                data: $this.searchForm.getData(),
+
+                beforeSend: function () {
+                    $this.showLoader();
+                },
+                success: function(data) {$this.ajaxSuccess(data)},
+                error: function() {$this.ajaxError()}
+            });
+        }
+    }
+
+};
+
+$(document).ready(function () {
+    var searchPage = new SearchPage();
 
     function getUrlParameter(sParam) {
         var sPageURL = window.location.search.substring(1);
@@ -38,37 +160,17 @@ $(document).ready(function () {
         return null;
     }
 
-    $('#gene-list-label').popover();
-
     if (getUrlParameter('example') == 'true') {
         setTimeout(function () {
-            runExample();
-        }, runExampleTimeout);
+            searchPage.runExample();
+        }, searchPage.runExampleTimeout);
     }
 
-    $('#example-btn').click(runExample);
-
-    $('#search-form').on('submit', function (event) {
-        event.preventDefault();
-        scrollToResults();
-        send_search_query();
+    $('#example-btn').click(function() {
+        searchPage.runExample();
     });
 
-    function scrollToResults() {
-        $('html, body').animate({
-            scrollTop: $("#search-btn").offset().top
-        }, 500);
-    }
-
-    function scrollToRecap() {
-        $('html, body').animate({
-            scrollTop: $(".search-results-recap").offset().top - 10
-        }, 500);
-    }
-
     $('#genes').autosize();
-
-    //$('.module-description').readmore(readmoreargs);
 
     $('body').scrollToTop({
         distance: $("#search-btn").offset().top,
@@ -79,129 +181,4 @@ $(document).ready(function () {
         throttle: 250,
         namespace: 'scrollToTop'
     });
-
-    function clearResults() {
-        $('.search-results').html('');
-        lastScrollTop = 0;
-        firstNotReadmore = 0;
-        totalResults = 0;
-    }
-
-    function hideLoader() {
-        $('.loader').fadeOut('fast');
-    }
-
-    function showLoader() {
-        $('.loader').fadeIn('slow');
-    }
-
-    function getFormData() {
-        return $('#search-form').serialize()
-    }
-
-    function setError(message) {
-        var error = '<div class="alert alert-danger search-form" role="alert">' +
-            '<span class="sr-only">Error:</span>' + message + '</div>';
-        $('.search-results').append(error);
-    }
-
-    function fillSearchResults(recap, results) {
-        var results_div = $('.search-results');
-        results_div.append(recap);
-        for (var i = 0; i < results.length; ++i) {
-            results_div.append(results[i])
-        }
-        totalResults = results.length;
-    }
-
-    function getFormDataInJson() {
-        var form = $('#search-form').serializeArray();
-        var data = {};
-        $.each(form, function () {
-            if (data[this.name] !== undefined) {
-                if (!data[this.name].push) {
-                    data[this.name] = [data[this.name]];
-                }
-                data[this.name].push(this.value || '');
-            } else {
-                data[this.name] = this.value || '';
-            }
-        });
-        return data;
-    }
-
-    function validateForm() {
-        var data = getFormDataInJson();
-        var messages = [];
-        if (data['species'] == null || data['species'] == '') {
-            messages.push('Species not specified.');
-        }
-        if (data['genes'] == '') {
-            messages.push('Gene list is empty.');
-        }
-        return messages.join(' ');
-    }
-
-    function setReadmore(to) {
-        if (totalResults == 0 || firstNotReadmore >= totalResults) return;
-        to = Math.min(totalResults, to);
-        var $descriptions = $('.module-description').slice(firstNotReadmore, to);
-        $descriptions.readmore(readmoreargs);
-        lastScrollTop = $descriptions.last().offset().top;
-        firstNotReadmore = to;
-        console.log(lastScrollTop, firstNotReadmore, to);
-    }
-
-    //$(window).scroll(function (event) {
-    //    var st = $(this).scrollTop();
-    //    if (st > lastScrollTop - minDistanceBeforeReadmore) {
-    //        setReadmore(firstNotReadmore + readmoreLoadChunkSize);
-    //    }
-    //
-    //});
-
-    function asyncReadmore(to) {
-        setTimeout(function () {
-            setReadmore(to);
-        }, 100);
-    }
-
-    function ajaxSuccess(json) {
-        hideLoader();
-        if (json['error']) {
-            setError(json['error']);
-            console.log('error', json['error']);
-        } else {
-            fillSearchResults(json['recap'], json['data']);
-            scrollToRecap();
-            //asyncReadmore(25);
-            console.log('ok');
-        }
-    }
-
-    function ajaxError(xhr, errmsg, err) {
-        hideLoader();
-        setError("Server error.");
-    }
-
-    function send_search_query() {
-        clearResults();
-        var errorMessage = validateForm();
-        if (errorMessage != '') {
-            setError(errorMessage);
-        } else {
-            $.ajax({
-                type: "GET",
-                url: "search/",
-                data: getFormData(),
-
-                beforeSend: function () {
-                    showLoader();
-                },
-                success: ajaxSuccess,
-                error: ajaxError
-            });
-        }
-
-    }
 });
