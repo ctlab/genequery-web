@@ -8,14 +8,16 @@
     <script src="{% static 'js/lightbox.min.js' %}"></script>
 {% endblock %}
 {% block container %}
-    {% include 'search-form.html' %}
-    <div class="response">
-        <div class="search-results">
-{#            {% include 'search-recap.html' with entered=100 id_format='symbol' entrez_unique=99 total=30 time=1.2345 %}#}
-{#            {% for i in "xxxxxxxxxxx" %}#}
-{#                {% include 'search-result.html' with result=fake_result%}#}
-{#            {% endfor %}#}
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">{% include 'search-form.html' %}</div>
         </div>
-        <div class="row text-center loader" hidden><img src="{% static 'img/ajax-loader.gif' %}"/></div>
-    </div>
+        <div class="response">
+            <div class="search-results">
+{#                {% include 'search-recap.html' with entered=100 id_format='symbol' entrez_unique=99 total=30 time=1.2345 %}#}
+{#                {% for i in "xxxxxxxxxxx" %}#}
+{#                    {% include 'search-result.html' with result=fake_result%}#}
+{#                {% endfor %}#}
+            </div>
+            <div class="row text-center loader" hidden><img src="{% static 'img/ajax-loader.gif' %}"/></div>
+        </div>
 {% endblock %}

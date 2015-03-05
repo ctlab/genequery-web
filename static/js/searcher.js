@@ -161,9 +161,10 @@ SearchPage.prototype = {
 
     getCSV: function() {
         var data = this.collectData();
-        var csvContent = SearchPage.prototype.csv_fields.join(";") + ";title\n";
+        var delimiter = ',';
+        var csvContent = SearchPage.prototype.csv_fields.join(delimiter) + delimiter + "title\n";
         data.forEach(function(infoArray, index){
-            var dataString = infoArray.join(";");
+            var dataString = infoArray.join(delimiter);
             csvContent += index < data.length ? dataString + "\n" : dataString;
         });
         return csvContent;

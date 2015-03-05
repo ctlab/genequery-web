@@ -1,6 +1,6 @@
 <div class="row search-results-recap">
-    <div class="col-sm-12">
+    <div class="col-md-10 col-md-offset-1">
         Entered {{ entered }} genes in {{ id_format }} format, where {{ entrez_unique }} unique Entrez IDs. Found {{ total }} modules in {{ time }} sec.
-        {% if total %}<input type="submit" value="Download as CSV" id="csv-download" class="btn btn-link btn-xs">{% endif %}
+        {% if total %}<input type="submit" value="Download as CSV" id="csv-download" class="btn btn-primary btn-xs">{% endif %}
     </div>
 </div>
