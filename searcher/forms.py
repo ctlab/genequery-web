@@ -28,6 +28,8 @@ class SearchQueryForm(forms.Form):
         else:
             raise forms.ValidationError('Gene {} has unknown id type.'.format(genes[0]))
         for gene in genes:
+            if isinstance(gene, unicode):
+                raise forms.ValidationError('Use only digits and latin letters')
             t = get_gene_id_type(gene)
             if t != id_type:
                 raise forms.ValidationError(

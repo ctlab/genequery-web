@@ -102,7 +102,7 @@ SearchPage.prototype = {
     },
 
     setError: function(message) {
-        var error = '<div class="alert alert-danger search-form" role="alert">' +
+        var error = '<div class="col-md-10 col-md-offset-1 alert alert-danger search-form" role="alert">' +
                     '<span class="sr-only">Error:</span>' + message + '</div>';
         this.searchResults.append(error);
     },
