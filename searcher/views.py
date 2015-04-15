@@ -64,34 +64,34 @@ class SearchProcessorView(View):
         max_search_result_size = getattr(settings, 'MAX_SEARCH_RESULT_SIZE', len(p_values))
         modules_with_p_value = sorted_p_values[:max_search_result_size]
         series_ids_set = set([x[0] for x in modules_with_p_value])
-        descriptions = {e['series']: e for e in ModuleDescription.objects.filter(
+        titles = {e['series']: e for e in ModuleDescription.objects.filter(
             series__in=series_ids_set).values('title', 'series')}
         processing_time = round(time() - start_time, 3)
 
-        rendered = []
+        results = []
         for i, r in enumerate(modules_with_p_value):
-            context = {}
-            context.update(descriptions.get(r[0], {}))
-            context['rank'] = i + 1
-            context['series'] = r[0]
-            context['platform'] = r[1]
-            context['module_number'] = r[2]
-            context['series_url'] = get_module_heat_map_url(r[0], r[1])
-            context['gmt_url'] = get_gmt_url(species, r[0], r[1])
-            context['original_score'] = round(r[4], 2)
-            context['adjusted_score'] = round(r[4], 2) if r[4] != -INF else HTML_NEG_INF
-            context['overlap_size'] = r[5]
-            context['module_size'] = r[6]
-            rendered.append(render_to_string('search-result.html', {'result': context}))
-
-        recap = render_to_string('search-recap.html', {
+            result = {
+                'title': titles[r[0]]['title'],  # TODO .get
+                'rank': i + 1,
+                'series': r[0],
+                'platform': r[1],
+                'module_number': r[2],
+                'series_url': get_module_heat_map_url(r[0], r[1], r[2]),
+                'gmt_url': get_gmt_url(species, r[0], r[1]),
+                'original_score': round(r[4], 2),
+                'adjusted_score': round(r[4], 2) if r[4] != -INF else -INF,
+                'overlap_size': r[5],
+                'module_size': r[6],
+            }
+            results.append(result)
+        recap = {
             'time': processing_time,
-            'entered': len(genes),
+            'genes_entered': len(genes),
             'id_format': genes_id_type,
-            'entrez_unique': len(entrez_ids),
-            'total': len(rendered),
-        })
-        return JsonResponse({'data': rendered, 'recap': recap})
+            'unique_entrez': len(entrez_ids),
+            'total': len(results),
+        }
+        return JsonResponse({'data': results, 'recap': recap})
 
 
 search_processor_view = SearchProcessorView.as_view()

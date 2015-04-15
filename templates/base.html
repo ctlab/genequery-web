@@ -36,13 +36,12 @@
         </script>
     </head>
     <body>
-    <div id="wrap">
-        <div class="container-fluid main-container">
-            {% include "menu.html" %}
-            {% block container %}{% endblock %}
+        <div id="wrap">
+            <div class="container-fluid main-container">
+                {% include "menu.html" %}
+                {% block container %}{% endblock %}
+            </div>
         </div>
-    </div>
-            {% include "footer.html" %}
-{#    </div>#}
+        {% include "footer.html" %}
     </body>
 </html>
