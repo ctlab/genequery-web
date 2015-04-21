@@ -22,6 +22,11 @@ a.deco-none {
     text-decoration:none;
 }
 
+a,
+a label {
+    cursor: pointer;
+}
+
 .main-container {
     max-width: 95%;
 }
