@@ -4,14 +4,13 @@ import xmlrpclib
 
 from django.conf import settings
 from django.http import JsonResponse, HttpResponseServerError
-from django.template.loader import render_to_string
 from django.utils.html import format_html
 from django.views.generic import View
 from algo.fisher_empirical import fisher_empirical_p_values
 from datasources.modulegenes import ModuleGenesDataSource, ModuleGenesChunkDataSource
 
 from searcher.forms import SearchQueryForm
-from searcher.models import IdMap, ModuleDescription
+from searcher.models import IdMap, ModuleDescription, ModuleGenes
 from utils import get_module_heat_map_url, log_get, get_gmt_url, gene_list_pprint
 from utils.constants import ENTREZ, SYMBOL, INF
 from utils.mixins import BaseTemplateView
@@ -21,8 +20,8 @@ LOG = logging.getLogger('genequery')
 
 HTML_NEG_INF = format_html('-&infin;')
 
-
-def convert_to_entrez(species, genes, original_type):
+# TODO remove with_original_type later
+def convert_to_entrez(species, genes, original_type, with_original_type=False):
     if original_type == ENTREZ:
         return list(set(map(int, genes)))
     genes_set = set(map(lambda x: x.upper(), genes))
@@ -30,7 +29,10 @@ def convert_to_entrez(species, genes, original_type):
         kwargs = {'symbol_id__in': genes_set}
     else:
         kwargs = {'refseq_id__in': genes_set}
-    return list(set(IdMap.objects.filter(species=species).filter(**kwargs).values_list('entrez_id', flat=True)))
+    if not with_original_type:
+        return list(set(IdMap.objects.filter(species=species).filter(**kwargs).values_list('entrez_id', flat=True)))
+    return list(set(IdMap.objects.filter(species=species).filter(**kwargs).values_list(
+        'entrez_id', original_type + '_id')))
 
 
 class SearchProcessorView(View):
@@ -95,6 +97,39 @@ class SearchProcessorView(View):
 
 
 search_processor_view = SearchProcessorView.as_view()
+
+
+class GetOverlapView(View):
+    @log_get(LOG)
+    def get(self, request):
+        if not request.is_ajax():
+            LOG.warning("Not ajax request.")
+            return self.http_method_not_allowed(request)
+        form = SearchQueryForm(request.GET)
+        if not form.is_valid():
+            message = '\n'.join(form.get_error_messages_as_list())
+            LOG.info("Invalid form data: {}".format(message))
+            return JsonResponse({'error': message})
+
+        genes_id_type = form.get_genes_id_type()
+        species = form.cleaned_data['species']
+        genes = form.cleaned_data['genes']
+        module_number = request.GET['module']
+        module = set(ModuleGenes.objects.get(species=species, module=module_number).entrez_ids)
+
+        result = []
+        if genes_id_type == ENTREZ:
+            result = list(module & set(convert_to_entrez(species, genes, genes_id_type)))
+        else:
+            query_entrez_ids = convert_to_entrez(species, genes, genes_id_type, with_original_type=True)
+            for entrez, original in query_entrez_ids:
+                if entrez in module:
+                    result.append(original)
+
+        return JsonResponse({'genes': result})
+
+
+get_overlap = GetOverlapView.as_view()
 
 
 def calculate_fisher_p_values(species, entrez_ids):

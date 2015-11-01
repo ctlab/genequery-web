@@ -6,24 +6,12 @@
             {'width': 70,'title': 'Experiment title'},
             {'width': 2,'title': 'Module'},
             {'width': 6,'title': 'p-value'},
-            {'width': 10,'title': 'Overlap'},
+            {'width': 7,'title': 'Overlap'},
             {'width': 5,'title': 'GSE'},
             {'width': 5,'title': 'GMT'}
         ];
 
         var chunkSize = 50;
-
-        function paintOverlap(canvas, overlap_size, module_size) {
-            var overlap = overlap_size / module_size;
-            var ctx = canvas.getContext("2d");
-            ctx.fillStyle='#d0e2f2';
-            ctx.fillRect(0, 0, Math.ceil(overlap * 100), 20);
-            ctx.strokeStyle = '#d0e2f2';
-            ctx.strokeRect(0, 0, 100, 20);
-            ctx.font="12px Arial";
-            ctx.fillStyle = "#337ab7";
-            ctx.fillText(overlap_size + "/" + module_size, 10, 15);
-        }
 
         function makeColumnWidthProportions() {
             var result = [];
@@ -76,11 +64,12 @@
             $('<td>').text(row['adjusted_score']).appendTo($tr);
 
             // overlap
-            var overlap_length = parseFloat(row['overlap_size']),
-                module_length = parseInt(row['module_size']);
-            var $canvas = $('<canvas>').attr("width", "100").attr("height", "20");
-            paintOverlap($canvas[0], overlap_length, module_length);
-            $('<td>', {align: "center", valign: "middle"}).append($canvas).appendTo($tr);
+            var overlap_length = parseFloat(row['overlap_size']);
+            var module_length = parseInt(row['module_size']);
+            $('<td>', {align: "center", valign: "middle"})
+                .append($('<a>', {'class': 'overlap', 'data-module': sr + '_' + pl + '#' + mn})
+                    .text(overlap_length + '/' + module_length))
+                .appendTo($tr);
 
             // series
             $('<td>').append($('<a>', {
@@ -176,8 +165,22 @@
                 return data;
             },
 
-            getData: function() {
+            getDataAsUrl: function() {
                 return this.form.serialize();
+            },
+
+            getDataAsObj: function() {
+                var paramObj = {};
+                $.each(this.form.serializeArray(), function(_, kv) {
+                    if (paramObj.hasOwnProperty(kv.name)) {
+                        paramObj[kv.name] = $.makeArray(paramObj[kv.name]);
+                        paramObj[kv.name].push(kv.value);
+                    }
+                    else {
+                        paramObj[kv.name] = kv.value;
+                    }
+                });
+                return paramObj;
             },
 
             validate: function() {
@@ -293,7 +296,7 @@
                     $.ajax({
                         type: "GET",
                         url: "search/",
-                        data: $this.searchForm.getData(),
+                        data: $this.searchForm.getDataAsUrl(),
 
                         beforeSend: function () {
                             $this.showLoader();
@@ -353,6 +356,25 @@
         });
 
         $('#genes').autosize();
+
+        // TODO refactor this monkey code!
+        $(document).on('click', '.overlap', function() {
+            var formData = searchPage.searchForm.getDataAsObj();
+            $.ajax({
+                type: "GET",
+                url: "search/get_overlap/",
+                data: {
+                    species: formData['species'],
+                    genes: formData['genes'],
+                    module: this.getAttribute('data-module')
+                },
+
+                success: function(data) {
+                    $.featherlight($('<div>', {style: 'white-space: pre;'})
+                        .text(data['genes'].join('\n')));
+                }
+            });
+        });
 
 
         $('.search-results').on('click', '#csv-download', function () {
