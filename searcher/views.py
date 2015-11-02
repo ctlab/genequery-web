@@ -1,5 +1,7 @@
 import logging
 from time import time
+import urllib
+import urllib2
 import xmlrpclib
 
 from django.conf import settings
@@ -133,12 +135,18 @@ get_overlap = GetOverlapView.as_view()
 
 
 def calculate_fisher_p_values(species, entrez_ids):
+    try:
+        return calculate_fisher_p_values_via_rest(species, entrez_ids)
+    except Exception, e:
+        LOG.info("Can't access REST service: {}".format(e))
+
     if not getattr(settings, 'RUN_ON_LOW_RAM', False):
         try:
             return calculate_fisher_p_values_via_rpc(species, entrez_ids)
         except Exception, e:
             LOG.warning("Error while processing RPC: {}. Load data from DB".format(e))
             return calculate_fisher_p_values_via_db(species, entrez_ids, low_ram=False)
+    # TODO remove RAM logic
     LOG.info("Too low RAM. Loading data from DB. Chunk size is {}.".format(
         getattr(settings, 'MODULE_GENES_CHUNK_SIZE', 'default')))
     return calculate_fisher_p_values_via_db(species, entrez_ids, low_ram=True)
@@ -150,6 +158,20 @@ def calculate_fisher_p_values_via_rpc(species, entrez_ids):
     if response['result'] == 'error':
         raise Exception(response['message'])
     return response['data']
+
+
+def calculate_fisher_p_values_via_rest(species, entrez_ids):
+    params = {
+        'species': species,
+        'genes': ' '.join(map(str, entrez_ids)),
+    }
+    url = 'http://{}:{}/{}?{}'.format(
+        settings.REST_HOST, settings.REST_PORT, settings.REST_URI, urllib.urlencode(params)
+    )
+    lines = [x.strip().split() for x in urllib2.urlopen(url).readlines()]
+    return [(gse, gpl, int(module_num), float(logPval), float(logEmpPval), int(overlap_size), int(module_size))
+            for gse, gpl, module_num, logPval, logEmpPval, overlap_size, module_size in lines]
+
 
 
 def calculate_fisher_p_values_via_db(species, entrez_ids, low_ram=False):
