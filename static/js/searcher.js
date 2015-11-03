@@ -302,7 +302,9 @@
                             $this.showLoader();
                         },
                         success: function(data) {$this.ajaxSuccess(data)},
-                        error: function() {$this.ajaxError()}
+                        error: function(xhr, status, error) {
+                            console.log(xhr, status, error);
+                            $this.ajaxError()}
                     });
                 }
             },

@@ -82,8 +82,8 @@ class SearchProcessorView(View):
                 'module_number': r[2],
                 'series_url': get_module_heat_map_url(r[0], r[1], r[2]),
                 'gmt_url': get_gmt_url(species, r[0], r[1]),
-                'original_score': round(r[4], 2),
-                'adjusted_score': round(r[4], 2) if r[4] != -INF else -INF,
+                # 'original_score': round(r[3], 2),
+                'adjusted_score': round(r[4], 2) if r[4] >= -325 else '< -325',
                 'overlap_size': r[5],
                 'module_size': r[6],
             }
