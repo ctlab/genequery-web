@@ -31,7 +31,7 @@ DEBUG = True
 # TEMPLATES
 TEMPLATE_DEBUG = True
 TEMPLATE_DIRS = (
-    BASE_DIR + '/templates/',
+    BASE_DIR + 'templates/',
 )
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
