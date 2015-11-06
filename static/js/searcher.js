@@ -27,7 +27,7 @@
                 rc['unique_entrez'], 'unique Entrez IDs. Found', rc['total'], 'modules in', rc['time'], 'sec.'].join(' ');
             var recapTh = $('<th>', {colspan: 4, class: 'no-right-border'}).text(recap);
             var toTop = $('<th>', {colspan: 1, class: 'no-right-border no-left-border'})
-                .append($('<a>', {id: "toTop"}).text('On top'));
+                .append($('<a>', {id: "toTop"}).text('To top'));
             var csvTh = $('<th>', {colspan: 2, class: 'no-left-border'})
                 .append('<input type="submit" value="Download as CSV" id="csv-download" class="btn btn-primary btn-xs"></th>');
             $('<tr>', {class: 'search-result-recap'}).appendTo($thead).append(recapTh).append(toTop).append(csvTh);
