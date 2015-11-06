@@ -101,13 +101,14 @@
         ResultTable.prototype = {
             loadNextChunk: function() {
                 if (this.rowsLoaded >= this.data.length) {
-                    return;
+                    return 0;
                 }
                 var upper = Math.min(this.data.length, this.rowsLoaded + chunkSize);
                 for (var i = this.rowsLoaded; i < upper; i++) {
                     this.tbody.append(makeRow(this.data[i]))
                 }
                 this.rowsLoaded = upper;
+                return upper;
             },
 
             show: function() {
@@ -115,7 +116,8 @@
                 var w = $(window);
                 var $results = $('.search-results');
 
-                $this.loadNextChunk();
+                while ($this.loadNextChunk() > 0) {}
+
                 $results.empty().append(this.innerTable);
                 $this.innerTable.stickyTableHeaders();
                 $('html, body').animate({
@@ -124,11 +126,11 @@
                 $('#toTop').on('click', function() {
                     w.scrollTop($results.offset().top);
                 });
-                w.scroll(function() {
-                    if ($(document).height() - (w.scrollTop() - w.height()) < 2000) {
-                        $this.loadNextChunk();
-                    }
-                })
+                //w.scroll(function() {
+                //    if ($(document).height() - (w.scrollTop() - w.height()) < 2000) {
+                //        $this.loadNextChunk();
+                //    }
+                //})
             }
         };
         return ResultTable;
