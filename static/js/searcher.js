@@ -313,12 +313,12 @@
                 var data = this.resultData['data'];
                 var delimiter = ',';
                 var csvContent = csv_fields.join(delimiter) + "\n";
-                $.each(data, function(index, value){
+                $.each(data, function(index, value) {
                     var row = '';
                     $.each(csv_fields, function(i, v) {
                         if (i > 0) row += delimiter;
-                        if (v == "title") {
-                            row += "\"" + value[v] + "\"" + 3 * delimiter;
+                        if (v === "title") {
+                            row += "\"" + value[v] + "\"";
                         } else {
                             row += value[v];
                         }
@@ -380,7 +380,12 @@
 
 
         $('.search-results').on('click', '#csv-download', function () {
-            var filename = 'search_results.csv';
+            var formData = searchPage.searchForm.getDataAsObj();
+            var now = new Date();
+            var dateString = now.getHours() + "-" + now.getMinutes() + "_"
+                + now.getMonth() + "-" + (now.getDay() + 1) + "-" + now.getFullYear();
+            var filename = 'genequery_search_result_' + formData['species'] + "_" + dateString + '.csv';
+
             var blob = new Blob([searchPage.getCSV()], { type: 'text/csv;charset=utf-8;' });
             if (navigator.msSaveBlob) { // IE 10+
                 navigator.msSaveBlob(blob, filename);
