@@ -10,8 +10,8 @@ def is_valid_species(species):
     return species in SPECIES
 
 
-def get_module_heat_map_url(series, platform, module_number):
-    path_to_image = here('modules', '{}_{}_module_{}.svg'.format(series, platform, module_number))
+def get_module_heat_map_url(species, series, platform, module_number):
+    path_to_image = here('modules', species, '{}_{}_module_{}.svg'.format(series, platform, module_number))
     path = here(settings.MEDIA_ROOT, path_to_image)
     return here(settings.MEDIA_URL, path_to_image) if os.path.exists(path) else None
 
