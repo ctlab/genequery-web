@@ -13,58 +13,5 @@
         <div class="col-md-6">{% include 'search-form.html' %}</div>
     </div>
     <div class="search-results"></div>
-
-{#            <table class="table-bordered table table-hover">#}
-{#                <col width="2%" />#}
-{#                <col width="70%" />#}
-{#                <col width="5%" />#}
-{#                <col width="10%" />#}
-{#                <col width="5%" />#}
-{#                <col width="5%" />#}
-{#                <col width="3%" />#}
-{#                <thead>#}
-{#                    <tr>#}
-{#                        <th colspan="4" class="no-right-border">Entered {{ entered }} genes in {{ id_format }} format, where {{ entrez_unique }} unique Entrez IDs. Found {{ total }} modules in {{ time }} sec.</th>#}
-{#                        <th colspan="1">to top</th>#}
-{#                        <th colspan="2" class="no-left-border"><input type="submit" value="Download as CSV" id="csv-download" class="btn btn-primary btn-xs"></th>#}
-{#                    </tr>#}
-{#                    <tr>#}
-{#                        <th>#</th>#}
-{#                        <th>Experiment title</th>#}
-{#                        <th>p-v</th>#}
-{#                        <th>Overlap</th>#}
-{#                        <th>GSE</th>#}
-{#                        <th>GMT</th>#}
-{#                        <th>Module</th>#}
-{#                    </tr>#}
-{#                </thead>#}
-{#                <tbody>#}
-{#                <tr>#}
-{#                    <td class="text-right">1</td>#}
-{#                    <td>Suppressor of cytokine signaling-1 influences bacterial clearance and pathology during the infection with Mycobacterium tuberculosis#}
-{#                        Mycobacterium tuberculosis#}
-{#                        Mycobacterium tuberculosis#}
-{#                        Mycobacterium tuberculosis</td>#}
-{#                    <td>-123.45</td>#}
-{#                    <td>4/6</td>#}
-{#                    <td><a href="http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE46356" target="_blank">GSE12345</a></td>#}
-{#                    <td><a href="/media/gmt/mm/GSE46356_GPL6246.gmt"><span class="glyphicon glyphicon-download"></span></a></td>#}
-{#                    <td><a href="/media/modules/GSE46356_GPL6246.png" data-lightbox="image-GSE46356-GPL6246" data-title="GSE46356 GPL6246 [module 4]">heatmap</a></td>#}
-{#                </tr>#}
-{#                <tr>#}
-{#                    <td class="text-right">1</td>#}
-{#                    <td>Suppressor of cytokine signaling-1 influences bacterial clearance and pathology during the infection with Mycobacterium tuberculosis</td>#}
-{#                    <td>-123.45</td>#}
-{#                    <td align="center" valign="middle">#}
-{#                        <canvas id="mycanvas" width="100" height="20">#}
-{#                            LOL your browser does not support HTML5 canvas.#}
-{#                        </canvas>#}
-{#                    </td>#}
-{#                    <td><a href="http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE46356" target="_blank">GSE12345</a></td>#}
-{#                    <td><a href="/media/gmt/mm/GSE46356_GPL6246.gmt">modules GMT</a></td>#}
-{#                    <td><a href="/media/modules/GSE46356_GPL6246.png" data-lightbox="image-GSE46356-GPL6246" data-title="GSE46356 GPL6246 [module 4]">heatmap</a></td>#}
-{#                </tr>#}
-{#                </tbody>#}
-{#            </table>#}
-            <div class="text-center loader" hidden><img src="{% static 'img/ajax-loader.gif' %}"/></div>
+    <div class="text-center loader"><img src="{% static 'img/ajax-loader.gif' %}"/></div>
 {% endblock %}

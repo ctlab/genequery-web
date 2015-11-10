@@ -1,7 +1,10 @@
 data/*
+*.log
 *.DS_Store
 *.swp
 .idea/*
 *.pyc
 media/*
 *local_settings.py
+static/node_modules/*
+static/bower_components/*

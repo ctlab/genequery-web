@@ -1,10 +1,11 @@
 import logging
-from time import time
+from time import time, sleep
 import urllib
 import urllib2
 import xmlrpclib
 
 from django.conf import settings
+from django.core.urlresolvers import reverse
 from django.http import JsonResponse, HttpResponseServerError
 from django.utils.html import format_html
 from django.views.generic import View
@@ -43,6 +44,8 @@ class SearchProcessorView(View):
         if not request.is_ajax():
             LOG.warning("Not ajax request.")
             return self.http_method_not_allowed(request)
+        # sleep(2);
+        # return JsonResponse({'error': "adsf"})
         form = SearchQueryForm(request.GET)
         if not form.is_valid():
             message = '\n'.join(form.get_error_messages_as_list())
@@ -64,7 +67,8 @@ class SearchProcessorView(View):
             LOG.exception(message)
             return HttpResponseServerError(message)
 
-        sorted_p_values = sorted(p_values, key=lambda i: (i[4], i[3]))
+        # sorted_p_values = sorted(p_values, key=lambda i: (i[4], i[3]))
+        sorted_p_values = p_values
         max_search_result_size = getattr(settings, 'MAX_SEARCH_RESULT_SIZE', len(p_values))
         modules_with_p_value = sorted_p_values[:max_search_result_size]
         series_ids_set = set([x[0] for x in modules_with_p_value])
@@ -95,7 +99,7 @@ class SearchProcessorView(View):
             'unique_entrez': len(entrez_ids),
             'total': len(results),
         }
-        return JsonResponse({'data': results, 'recap': recap})
+        return JsonResponse({'rows': results, 'recap': recap})
 
 
 search_processor_view = SearchProcessorView.as_view()
@@ -183,7 +187,7 @@ def calculate_fisher_p_values_via_db(species, entrez_ids, low_ram=False):
 
 
 class SearchPageView(BaseTemplateView):
-    template_name = 'search.html'
+    template_name = 'search-new.html'
     menu_active = 'searcher'
 
     def get_context_data(self, **kwargs):
@@ -202,6 +206,7 @@ class SearchPageView(BaseTemplateView):
             'overall_design': 'Relative gene expressions were determined by normalized intensity values. GeneSpring analysis was performed using the '
                               'Treg transcriptome data with following comparisons: no GvHD d90 versus no GvHD d150, no GvHD d90 versus acute GvHD, no GvHD '}
         context['fake_result'] = fake_result
+        context['request_url'] = reverse('searcher:search')
         return context
 
 

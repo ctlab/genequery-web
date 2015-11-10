@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% load static %}
+{% block custom_js %}
+    <script src="{% static 'js/searcher/main.build.js' %}"></script>
+{% endblock %}
+{% block container %}
+    <div id="search-page"></div>
+    <div hidden>
+        <div id="request-url">{{ request_url }}</div>
+    </div>
+{% endblock %}
