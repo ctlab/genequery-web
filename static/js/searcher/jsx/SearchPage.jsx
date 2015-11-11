@@ -11,6 +11,7 @@ var SearchResultRow = require('./SearchResultRow');
 var ErrorBlock = require('./ErrorBlock');
 
 var Utils = require('../../utils');
+var _ = require('underscore');
 
 var SearchPage = React.createClass({
 
@@ -27,19 +28,31 @@ var SearchPage = React.createClass({
   onSearchSuccess: function(data) {
     console.log('OK', data);
 
-    this.setState({errorMessage: data.error, recap: data.recap, rows: data.rows, showLoading: false});
+    var state = {showLoading: false};
 
-    // TODO do not scroll if data.rows.length == 0
-    Utils.scrollToTop(ReactDOM.findDOMNode(this.refs.search_result_table));
+    if (_.has(data, 'error')) {
+      state.errorMessage = data.error;
+    } else if (_.isObject(data.recap) && _.isArray(data.rows)) {
+      state.recap = data.recap;
+      state.rows = data.rows;
+    } else {
+      state.errorMessage = "Seems like server error. Wrong response format.";
+    }
+
+    this.replaceState(state);
+
+    if (_.isArray(data.rows) && !_.isEmpty(data.rows)) {
+      Utils.scrollToTop(ReactDOM.findDOMNode(this.refs.search_result_table));
+    }
   },
 
   onSearchFail: function(jqxhr, textStatus, error) {
-    this.setState({showLoading: false});
+    this.setState({showLoading: false, errorMessage: "Server error."});
     console.log('FAIL', jqxhr, textStatus, error);
   },
 
   beforeSend: function() {
-    this.setState({showLoading: true, errorMessage: undefined, recap: null, rows: null});
+    this.setState({showLoading: true, errorMessage: undefined, recap: undefined, rows: undefined});
     Utils.scrollToTop(ReactDOM.findDOMNode(this.refs.loader));
   },
 
@@ -77,18 +90,16 @@ var SearchPage = React.createClass({
   },
 
   getTableOrErrorOrNull: function () {
-    console.log(this.state);
-
-    if (this.state.errorMessage !== undefined && this.state.errorMessage !== null) {
+    if (!_.isUndefined(this.state.errorMessage)) {
       return <ErrorBlock message={this.state.errorMessage} />;
     }
 
-    if (this.state.rows === undefined || this.state.rows === null) {
+    if (_.isUndefined(this.state.recap) && _.isUndefined(this.state.rows)) {
       return null;
     }
 
-    if (this.state.rows.length == 0) {
-      return <span>No results were found.</span>;
+    if (_.isArray(this.state.rows) && _.isEmpty(this.state.rows)) {
+      return <span>No modules were found.</span>;
     }
 
     var rows = [];

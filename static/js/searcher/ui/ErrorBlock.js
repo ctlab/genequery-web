@@ -17,8 +17,12 @@ var ErrorBlock = React.createClass({displayName: "ErrorBlock",
 
   render: function () {
     return (
-      React.createElement("div", {className: "alert alert-danger search-form", role: "alert"}, 
-        React.createElement("span", {className: "sr-only"}, "Error:"), " ", this.state.message
+      React.createElement("div", {className: "row"}, 
+        React.createElement("div", {className: "col-md-6"}, 
+          React.createElement("div", {className: "alert alert-danger search-form", role: "alert"}, 
+            React.createElement("span", {className: "sr-only"}, "Error:"), " ", this.state.message
+          )
+        )
       )
     );
   }

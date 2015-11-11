@@ -25,6 +25,9 @@ var Utils = {
 
 
   scrollToTop: function(node, speed) {
+    if (node === null) {
+      return;
+    }
     var element = $(node);
     $('html, body').animate({scrollTop: element.offset().top}, speed == undefined ? 750 : speed);
   }

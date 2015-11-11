@@ -22,7 +22,7 @@ var ResultTable = React.createClass({displayName: "ResultTable",
   // TODO describe PropTypes
 
   componentWillUnmount: function() {
-    //$(ReactDOM.findDOMNode(this.refs.table)).stickyTableHeaders('destroy');
+    $(ReactDOM.findDOMNode(this.refs.table)).floatThead('destroy');
   },
 
   componentDidMount: function() {
