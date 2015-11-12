@@ -2,6 +2,9 @@
  * Created by smolcoder on 09/11/15.
  */
 
+var ReactDOM = require('react-dom');
+var ReactDOMServer = require('react-dom/server');
+
 var Utils = {
 
   getCookie: function(name) {
@@ -30,7 +33,11 @@ var Utils = {
     }
     var element = $(node);
     $('html, body').animate({scrollTop: element.offset().top}, speed == undefined ? 750 : speed);
-  }
+  },
+
+  reactElementToString: function(element) {
+    return ReactDOMServer.renderToStaticMarkup(element);
+  },
 
 };
 

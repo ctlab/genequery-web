@@ -13,6 +13,7 @@ var ErrorBlock = require('./ErrorBlock');
 var Utils = require('../../utils');
 var _ = require('underscore');
 
+
 var SearchPage = React.createClass({displayName: "SearchPage",
 
   getInitialState: function() {
@@ -28,7 +29,7 @@ var SearchPage = React.createClass({displayName: "SearchPage",
   onSearchSuccess: function(data) {
     console.log('OK', data);
 
-    var state = {showLoading: false};
+    var state = {showLoading: false, lastRequestData: this.state.lastRequestData};
 
     if (_.has(data, 'error')) {
       state.errorMessage = data.error;
@@ -51,8 +52,14 @@ var SearchPage = React.createClass({displayName: "SearchPage",
     console.log('FAIL', jqxhr, textStatus, error);
   },
 
-  beforeSend: function() {
-    this.setState({showLoading: true, errorMessage: undefined, recap: undefined, rows: undefined});
+  beforeSend: function(species, genes) {
+    this.setState({
+      showLoading: true,
+      errorMessage: undefined,
+      recap: undefined,
+      rows: undefined,
+      lastRequestData: {species: species, genes: genes}
+    });
     Utils.scrollToTop(ReactDOM.findDOMNode(this.refs.loader));
   },
 
@@ -89,6 +96,25 @@ var SearchPage = React.createClass({displayName: "SearchPage",
     );
   },
 
+  overlapOnClick: function(series, platform, module_number) {
+    //console.log('from page', this.state.lastRequestData, series, platform, module_number);
+    //var data = {
+    //  genes: this.state.lastRequestData.genes,
+    //  species: this.state.lastRequestData.species,
+    //  module: series + '_' + platform + '#' + module_number
+    //};
+    //$.get('search/get_overlap/', data)
+    //  .done(data => {
+    //    console.log('OK overlap', data)
+    //  })
+    //  .fail((qxhr, textStatus, error) => {
+    //    console.log('FAIL overlap', data)
+    //  })
+    //  .always(() => {
+    //
+    //  });
+  },
+
   getTableOrErrorOrNull: function () {
     if (!_.isUndefined(this.state.errorMessage)) {
       return React.createElement(ErrorBlock, {message: this.state.errorMessage});
@@ -104,10 +130,14 @@ var SearchPage = React.createClass({displayName: "SearchPage",
 
     var rows = [];
     $(this.state.rows).each((i, row) => {
-      rows.push(React.createElement(SearchResultRow, React.__spread({key: i},  row)));
+      rows.push(React.createElement(SearchResultRow, React.__spread({key: i, overlapOnClick: this.overlapOnClick},  row)));
     });
 
-    return React.createElement(SearchResultTable, React.__spread({},  this.state.recap, {ref: "search_result_table"}), rows);
+    return (
+      React.createElement(SearchResultTable, {recap: this.state.recap, ref: "search_result_table"}, 
+        rows
+      )
+    );
   }
 
 });

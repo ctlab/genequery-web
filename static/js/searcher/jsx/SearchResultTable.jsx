@@ -1,7 +1,7 @@
 'use strict';
 var React = require('react');
 var ReactDOM = require('react-dom');
-var SearchResultRow = require('./SearchResultRow');
+var ReactDOMServer = require('react-dom/server');
 
 require('floatthead');
 
@@ -19,7 +19,9 @@ var TABLE_HEADER_CONFIG = [
 
 var ResultTable = React.createClass({
 
-  // TODO describe PropTypes
+  propTypes: {
+    recap: React.PropTypes.object.isRequired
+  },
 
   componentWillUnmount: function() {
     $(ReactDOM.findDOMNode(this.refs.table)).floatThead('destroy');
@@ -27,6 +29,47 @@ var ResultTable = React.createClass({
 
   componentDidMount: function() {
     $(ReactDOM.findDOMNode(this.refs.table)).floatThead();
+
+    $('.module-heatmap-img').magnificPopup({
+      type: 'image',
+      alignTop: true,
+      overflowY: 'scroll',
+      image: {
+        verticalFit: false,
+        titleSrc: function(item) {
+          var title = item.el.attr('data-gse') + ', module #' + item.el.attr('data-module');
+          var link = $('<a>', {href: item.el.attr('href'), target: '_blank', 'class': "full-heatmap-link"})
+            .append('View fill-sized')
+            .prop('outerHTML');
+          return title + ". " + link + ".";
+        }
+      }
+    });
+
+    $('.overlap-genes-link').magnificPopup({
+      type: 'ajax',
+      alignTop: true,
+      ajax: {
+        settings: {
+          url: 'search/get_overlap/'
+        }
+      },
+      callbacks: {
+        parseAjax: function (response) {
+          console.log('data received', response);
+          var data = response.data;
+          //response.data = '<div class="aaa">' + $('<a>').append(response.data.genes).prop('outerHTML') + '</div>';
+          var element = (
+            <div className="white-popup-block">
+              <a>{data.genes}</a>
+            </div>
+          );
+          response.data = ReactDOMServer.renderToString(element);
+        }
+      }
+    });
+
+
   },
 
   render: function () {
@@ -45,7 +88,7 @@ var ResultTable = React.createClass({
   },
 
   getHeaderRecap: function() {
-    var recap = this.props;
+    var recap = this.props.recap;
     return (
       <tr className="search-result-recap">
         <th colSpan="4" className="no-right-border">

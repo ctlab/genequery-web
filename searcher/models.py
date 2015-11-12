@@ -38,7 +38,7 @@ class ModuleGenes(models.Model):
     def __unicode__(self):
         id_module = self.module.split('#')
         series_platform = id_module[0].split('_')
-        return u'series {} platform {} module {} (hs)'.format(
+        return u'series {} platform {} module {} ({})'.format(
             series_platform[0], series_platform[1], id_module[1], self.species)
 
 

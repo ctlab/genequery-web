@@ -81,8 +81,8 @@ class SearchProcessorView(View):
             LOG.warning("Not ajax request.")
             return self.http_method_not_allowed(request)
 
-        sleep(1)
-        return JsonResponse({'error': ":("})
+        # sleep(1)
+        # return JsonResponse({'error': ":("})
 
         form = SearchQueryForm(request.GET)
         if not form.is_valid():
@@ -106,7 +106,7 @@ class SearchProcessorView(View):
             return HttpResponseServerError(message)
 
         # sorted_p_values = sorted(p_values, key=lambda i: (i[4], i[3]))
-        sorted_p_values = p_values[:0]
+        sorted_p_values = p_values
         max_search_result_size = getattr(settings, 'MAX_SEARCH_RESULT_SIZE', len(p_values))
         modules_with_p_value = sorted_p_values[:max_search_result_size]
         series_ids_set = set([x[0] for x in modules_with_p_value])
@@ -149,6 +149,10 @@ class GetOverlapView(View):
         if not request.is_ajax():
             LOG.warning("Not ajax request.")
             return self.http_method_not_allowed(request)
+
+        sleep(1)
+        return JsonResponse({'genes': "1 2 3 4 5"})
+
         form = SearchQueryForm(request.GET)
         if not form.is_valid():
             message = '\n'.join(form.get_error_messages_as_list())

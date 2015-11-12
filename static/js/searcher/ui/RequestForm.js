@@ -1,7 +1,5 @@
 
 var React = require('react');
-var ReactDOM = require('react-dom');
-var Utils = require('../../utils');
 var TextareaAutosize = require('react-textarea-autosize');
 
 var GENES_EXAMPLE = ("Cd274 Nos2 Irg1 Gbp2 Cxcl9 Ptgs2 Saa3 Gbp5 Iigp1 Gbp4 Gbp3 Il1rn Il1b Oasl1 Gbp6 Cd86 " +
@@ -35,8 +33,9 @@ var RequestForm = React.createClass({displayName: "RequestForm",
   onSubmit: function(event) {
     event.preventDefault();
 
+    // TODO use Underscore to check if it function
     if (this.props.beforeSend) {
-      this.props.beforeSend();
+      this.props.beforeSend(this.state.species, this.state.genes);
     }
 
     $.get(getURL(), this.state)
