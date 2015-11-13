@@ -60,7 +60,7 @@ var SearchResultRow = React.createClass({displayName: "SearchResultRow",
       React.createElement("p", null, 
         this.state.series, ", module #", this.state.module_number, ".", ' ', 
         React.createElement("a", {href: this.state.series_url, target: "_blank", className: "full-heatmap-link"}, 
-          "View full picture on new tab"
+          "Open full picture on new tab"
         ), "."
       )
     );

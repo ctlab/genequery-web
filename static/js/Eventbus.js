@@ -1,12 +1,8 @@
 /**
  * Created by smolcoder on 09/11/15.
  */
+var EventEmitter = (require('events')).EventEmitter;
 
-var Eventbus;
+var Eventbus = new EventEmitter();
 
-define(['eventEmitter'], function (eventEmitter) {
-  if (Eventbus === undefined) {
-    Eventbus = new eventEmitter();
-  }
-  return Eventbus;
-});
+module.exports = Eventbus;

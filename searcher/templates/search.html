@@ -1,17 +1,17 @@
 {% extends "base.html" %}
 {% load static %}
+
+{% block custom_css %}
+  <link href="{% static "css/magnific-popup.css" %}" rel="stylesheet">
+{% endblock %}
+
 {% block custom_js %}
-    <script src="{% static 'js/searcher.js' %}"></script>
-    <script src="{% static 'js/jquery.autosize.min.js' %}"></script>
-    <script src="{% static 'js/jquery-scrollToTop.min.js' %}"></script>
-    <script src="{% static 'js/lightbox.min.js' %}"></script>
-    <script src="{% static 'js/featherlight.min.js' %}"></script>
-    <script src="{% static 'js/stickytableheaders.js' %}"></script>
+  <script src="{% static 'js/lib/jquery.magnific-popup.min.js' %}"></script>
+  <script src="{% static 'js/searcher/searcher.build.js' %}"></script>
 {% endblock %}
 {% block container %}
-    <div class="row">
-        <div class="col-md-6">{% include 'search-form.html' %}</div>
+    <div id="search-page"></div>
+    <div hidden>
+        <div id="request-url">{{ request_url }}</div>
     </div>
-    <div class="search-results"></div>
-    <div class="text-center loader"><img src="{% static 'img/ajax-loader.gif' %}"/></div>
 {% endblock %}

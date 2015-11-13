@@ -1,11 +1,13 @@
-
+var Eventbus = require('../../eventbus');
 var React = require('react');
 var TextareaAutosize = require('react-textarea-autosize');
 
-var GENES_EXAMPLE = ("Cd274 Nos2 Irg1 Gbp2 Cxcl9 Ptgs2 Saa3 Gbp5 Iigp1 Gbp4 Gbp3 Il1rn Il1b Oasl1 Gbp6 Cd86 " +
-"Rsad2 Ccl5 Tgtp2 Clic5 Zbp1 Gbp7 Socs3 Serpina3g Procr Igtp Slco3a1 Ly6a Slc7a2 C3 Cd40 Ifit1 Fam26f " +
-"Clec4e Bst1 Isg15 Irf1 Acsl1 Cd38 Ifit2 Thbs1 Ifi47 Ifi44 Irgm2 Il15ra Ass1 Slfn1 Nod Il18bp Serpinb9")
-  .replace(/\s/g, '\n');
+var GENES_EXAMPLE = (
+  "Cd274 Nos2 Irg1 Gbp2 Cxcl9 Ptgs2 Saa3 Gbp5 Iigp1 Gbp4 Gbp3 Il1rn Il1b Oasl1 Gbp6 Cd86 " +
+  "Rsad2 Ccl5 Tgtp2 Clic5 Zbp1 Gbp7 Socs3 Serpina3g Procr Igtp Slco3a1 Ly6a Slc7a2 C3 Cd40 Ifit1 Fam26f " +
+  "Clec4e Bst1 Isg15 Irf1 Acsl1 Cd38 Ifit2 Thbs1 Ifi47 Ifi44 Irgm2 Il15ra Ass1 Slfn1 Nod Il18bp Serpinb9")
+    .replace(/\s/g, '\n');
+
 var SPECIES_EXAMPLE = 'mm';
 
 /**
@@ -28,6 +30,14 @@ var RequestForm = React.createClass({displayName: "RequestForm",
 
   getInitialState: function() {
     return {species: '', genes: ''};
+  },
+
+  componentDidMount: function() {
+    Eventbus.once('example-run', this.runExample)
+  },
+
+  componentWillUnmount: function() {
+    Eventbus.removeListener('example-run', this.runExample)
   },
 
   onSubmit: function(event) {
@@ -100,7 +110,7 @@ var RequestForm = React.createClass({displayName: "RequestForm",
 
         React.createElement("div", {className: "form-group form-inline", id: "search-btn"}, 
           React.createElement("input", {type: "submit", value: "Search", className: "btn btn-default", ref: "submitBtn"}), 
-          React.createElement("button", {type: "button", className: "btn btn-link", id: "example-btn", onClick: this.runExample}, 
+          React.createElement("button", {type: "button", className: "btn btn-link", onClick: this.runExample}, 
             "Run example"
           )
         )

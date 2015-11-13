@@ -4,8 +4,6 @@
 
 var ReactDOMServer = require('react-dom/server');
 
-require('magnific-popup');
-
 var Utils = {
 
   getCookie: function(name) {
@@ -105,6 +103,18 @@ var Utils = {
         document.body.removeChild(link);
       }
     }
+  },
+
+  getUrlParameter: function(key) {
+    var page_url = window.location.search.substring(1);
+    var url_variables = page_url.split('&');
+    for (var i = 0; i < url_variables.length; i++) {
+      var param_name = url_variables[i].split('=');
+      if (param_name[0] == key) {
+        return param_name[1];
+      }
+    }
+    return null;
   }
 
 };

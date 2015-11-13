@@ -1,76 +1,114 @@
-module.exports = function(grunt) {
-    grunt.loadNpmTasks('grunt-contrib-watch');
-    grunt.loadNpmTasks('grunt-browserify');
-    grunt.loadNpmTasks('grunt-contrib-uglify');
-    grunt.loadNpmTasks('grunt-bower-requirejs');
-    grunt.loadNpmTasks('grunt-react');
+module.exports = function (grunt) {
+  "use strict";
 
-    grunt.registerTask('default', ['react', 'browserify', 'watch']);
-    grunt.registerTask('jsx', ['react']);
-    //grunt.registerTask('bowerReq', ['bowerRequirejs']);
+  require("load-grunt-tasks")(grunt);
 
-    grunt.initConfig({
-        staticJsDir: 'js/',
-        pkg: grunt.file.readJSON('package.json'),
+  grunt.initConfig({
 
-        //uglify: {
-        //    dist: {
-        //        files: {
-        //            '<%= staticJsDir %>/findem.min.js': ['<%= staticJsDir %>/findem.js']
-        //        }
-        //    }
-        //},
+    nodeModulesDir: 'node_modules',
 
-        //bowerRequirejs: {
-        //    all: {
-        //        rjsConfig: '<%= staticJsDir %>/searcher/main.js',
-        //        options: {
-        //            exclude: [
-        //                'angular',
-        //                'requirejs'
-        //            ]
-        //        }
-        //    }
-        //},
+    staticCssDir: 'css',
+    staticJsDir: 'js',
+    libJsDir: 'js/lib',
+    staticFontsDir: 'fonts',
 
-        react: {
-            build_UI: {
-                options: {
-                    ignoreMTime: true
-                },
-                files: [
-                    {
-                        expand: true,
-                        cwd: '<%= staticJsDir %>/searcher/jsx/',
-                        src: ['**/*.jsx'],
-                        dest: '<%= staticJsDir %>/searcher/ui/',
-                        ext: '.js'
-                    }
-                ]
-            }
-          //build_main: {
-          //  options: {
-          //    ignoreMTime: true
-          //  },
-          //  files: {
-          //    '<%= staticJsDir %>/searcher/main.js': '<%= staticJsDir %>/searcher/main.jsx'
-          //  }
-          //}
+    pkg: grunt.file.readJSON('package.json'),
+
+    react: {
+      build_UI: {
+        options: {
+          ignoreMTime: true
         },
-
-        browserify: {
-          searcher: {
-            src: 'js/searcher/main.js',
-            dest: 'js/searcher/main.build.js'
+        files: [
+          {
+            expand: true,
+            cwd: '<%= staticJsDir %>/searcher/jsx/',
+            src: ['**/*.jsx'],
+            dest: '<%= staticJsDir %>/searcher/ui/',
+            ext: '.js'
           }
-        },
+        ]
+      }
+    },
 
-        watch: {
-            files: [
-                '<%= staticJsDir %>/**/*',
-                '<%= staticJsDir %>/ui/**/*.js'
-            ],
-            tasks: ['default']
-        }
-    });
+    browserify: {
+      searcher: {
+        src: 'js/searcher/searcher.js',
+        dest: 'js/searcher/searcher.build.js'
+      }
+    },
+
+    copy: {
+      js: {
+        files: [
+          {
+            expand: true,
+            cwd: '<%= nodeModulesDir %>/bootstrap/dist/js/',
+            src: ['**'],
+            dest: '<%= libJsDir %>/',
+            filter: 'isFile'
+          },
+          {
+            expand: true,
+            cwd: '<%= nodeModulesDir %>/jquery/dist/',
+            src: ['**'],
+            dest: '<%= libJsDir %>/',
+            filter: 'isFile'
+          },
+          {
+            expand: true,
+            cwd: '<%= nodeModulesDir %>/magnific-popup/dist/',
+            src: ['**/*min.js'],
+            dest: '<%= libJsDir %>/',
+            filter: 'isFile'
+          },
+          {
+            expand: true,
+            cwd: '<%= nodeModulesDir %>/floatthead/dist/',
+            src: ['**/*min.js'],
+            dest: '<%= libJsDir %>/',
+            filter: 'isFile'
+          }
+        ]
+      },
+      css_and_fonts: {
+        files: [
+          {
+            expand: true,
+            cwd: '<%= nodeModulesDir %>/bootstrap/dist/css/',
+            src: ['**'],
+            dest: '<%= staticCssDir %>/',
+            filter: 'isFile'
+          },
+          {
+            expand: true,
+            cwd: '<%= nodeModulesDir %>/bootstrap/dist/fonts/',
+            src: ['**'],
+            dest: '<%= staticFontsDir %>/',
+            filter: 'isFile'
+          },
+          {
+            expand: true,
+            cwd: '<%= nodeModulesDir %>/magnific-popup/dist/',
+            src: ['*.css'],
+            dest: '<%= staticCssDir %>/',
+            filter: 'isFile'
+          }
+        ]
+      }
+    },
+
+    watch: {
+      files: [
+        '<%= staticJsDir %>/**/*',
+        '!<%= libJsDir %>/**/*',
+        '!<%= staticJsDir %>/ui/**/*.js'
+      ],
+      tasks: ['default']
+    }
+  });
+
+  grunt.registerTask('default', ['react', 'browserify', 'watch']);
+  grunt.registerTask('build', ['copy', 'react', 'browserify']);
+
 };

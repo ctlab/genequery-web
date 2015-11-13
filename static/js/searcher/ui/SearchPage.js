@@ -2,6 +2,7 @@
 /**
  * Created by smolcoder on 10/11/15.
  */
+var Eventbus = require('../../eventbus');
 var Loader = require('react-loader');
 var React = require('react');
 var ReactDOM = require('react-dom');
@@ -20,6 +21,13 @@ var SearchPage = React.createClass({displayName: "SearchPage",
 
   componentWillMount: function() {
     new Clipboard('.copy-to-clipboard');
+
+    if (Utils.getUrlParameter('example') === 'true') {
+      setTimeout(
+        () => Eventbus.emit('example-run'),
+        250
+      )
+    }
   },
 
   getInitialState: function() {

@@ -7,7 +7,6 @@ var _ = require('underscore');
 
 require('floatthead');
 
-
 // TODO how to implement this using CSS only?
 var TABLE_HEADER_CONFIG = [
   {'width': 2, 'title': '#'},
@@ -34,7 +33,6 @@ var ResultTable = React.createClass({
   },
 
   render: function () {
-    console.log(this.props.children[0]);
     return (
       <table className="table table-bordered table-hover" ref="table">
         <colgroup>{this.getColConfig()}</colgroup>
@@ -53,12 +51,11 @@ var ResultTable = React.createClass({
     var recap = this.props.recap;
     return (
       <tr className="search-result-recap">
-        <th colSpan="4" className="no-right-border">
+        <th colSpan="5" className="no-right-border">
           Entered {recap.genes_entered} genes in {recap.id_format} format,
           where {recap.unique_entez} unique Entrez IDs.
           Found {recap.total} modules in {recap.time} sec.
         </th>
-        <th colSpan="1" className="no-right-border no-left-border"><a>To top</a></th>
         <th colSpan="2" className="no-left-border">
           <button className="btn btn-primary btn-xs" onClick={this.downloadAsCSV}>Download as CSV</button>
         </th>

@@ -240,7 +240,7 @@ def calculate_fisher_p_values_via_db(species, entrez_ids, low_ram=False):
 
 
 class SearchPageView(BaseTemplateView):
-    template_name = 'search-new.html'
+    template_name = 'search.html'
     menu_active = 'searcher'
 
     def get_context_data(self, **kwargs):
