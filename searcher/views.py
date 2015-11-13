@@ -81,9 +81,6 @@ class SearchProcessorView(View):
             LOG.warning("Not ajax request.")
             return self.http_method_not_allowed(request)
 
-        # sleep(1)
-        # return JsonResponse({'error': ":("})
-
         form = SearchQueryForm(request.GET)
         if not form.is_valid():
             message = '\n'.join(form.get_error_messages_as_list())
@@ -105,8 +102,8 @@ class SearchProcessorView(View):
             LOG.exception(message)
             return HttpResponseServerError(message)
 
-        # sorted_p_values = sorted(p_values, key=lambda i: (i[4], i[3]))
-        sorted_p_values = p_values
+        sorted_p_values = sorted(p_values, key=lambda i: (i[4], i[3]))
+        # sorted_p_values = p_values
         max_search_result_size = getattr(settings, 'MAX_SEARCH_RESULT_SIZE', len(p_values))
         modules_with_p_value = sorted_p_values[:max_search_result_size]
         series_ids_set = set([x[0] for x in modules_with_p_value])
@@ -149,9 +146,6 @@ class GetOverlapView(View):
         if not request.is_ajax():
             LOG.warning("Not ajax request.")
             return self.http_method_not_allowed(request)
-
-        # sleep(1)
-        # return JsonResponse({'genes': "1 2 3 4 5"})
 
         form = SearchQueryForm(request.GET)
         if not form.is_valid():
@@ -215,18 +209,12 @@ def calculate_fisher_p_values_via_rest(species, entrez_ids):
     url = 'http://{}:{}/{}?{}'.format(
         settings.REST_HOST, settings.REST_PORT, settings.REST_URI, urllib.urlencode(params)
     )
-    header = {
-        'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.64 Safari/537.11',
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-        'Accept-Charset': 'ISO-8859-1,utf-8;q=0.7,*;q=0.3',
-        'Accept-Encoding': 'none',
-        'Accept-Language': 'en-US,en;q=0.8',
-        'Connection': 'keep-alive'}
-    request = urllib2.Request(url, headers=header)
-    # LOG.info('get {}'.format(url))
-    # lines = [x.strip().split() for x in urllib2.urlopen(request).readlines()]
-    LOG.warn("User fake response!")
-    lines = [x.strip().split() for x in get_test_rest_response().split("\n")]
+
+    lines = [x.strip().split() for x in urllib2.urlopen(url).readlines()]
+
+    # LOG.warn("User fake response!")
+    # lines = [x.strip().split() for x in get_test_rest_response().split("\n")]
+
     return [(gse, gpl, int(module_num), float(logPval), float(logEmpPval), int(overlap_size), int(module_size))
             for gse, gpl, module_num, logPval, logEmpPval, overlap_size, module_size in lines]
 
@@ -245,20 +233,6 @@ class SearchPageView(BaseTemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(SearchPageView, self).get_context_data()
-        fake_result = {
-            'series': 'GSE46356', 'platform': 'GPL6246', 'module_number': 4, 'rank': 222,
-            'series_url': '/media/modules/GSE46356_GPL6246.png',
-            'gmt_url': '/media/gmt/mm/GSE46356_GPL6246.gmt', 'adjusted_score': -123.45, 'overlap_size': 123,
-            'original_score': -123.45,
-            'module_size': 456, 'status': 'Public on Jan 18, 2012 ',
-            'title': 'Suppressor of cytokine signaling-1 influences bacterial clearance and pathology during the infection with Mycobacterium tuberculosis',
-            'summary': 'Tuberculosis results from an interaction between a chronically persistent pathogen counteracted by IFN-g-mediated immune responses. '
-                       'Modulation of IFN-g signaling could therefore constitute a major immune evasion mechanism for M. tuberculosis. SOCS1 plays a major '
-                       'role in the inhibition of IFN-g-mediated responses. We found that M. tuberculosis infection stimulates SOCS1 expression in mouse and '
-                       'human myeloid cells. Significantly higher levels of SOCS1 were induced after in vitro or in vivo infection with virulent M. ',
-            'overall_design': 'Relative gene expressions were determined by normalized intensity values. GeneSpring analysis was performed using the '
-                              'Treg transcriptome data with following comparisons: no GvHD d90 versus no GvHD d150, no GvHD d90 versus acute GvHD, no GvHD '}
-        context['fake_result'] = fake_result
         context['request_url'] = reverse('searcher:search')
         return context
 
