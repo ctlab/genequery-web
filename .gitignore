@@ -1,6 +1,4 @@
 data/*
-*.build.js
-*.final.js*
 *.log
 *.DS_Store
 *.swp
@@ -11,3 +9,6 @@ media/*
 static/node_modules/*
 static/bower_components/*
 static/js/lib/*
+*.all.js
+*.es5.js
+*.js.map

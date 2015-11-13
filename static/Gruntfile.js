@@ -34,7 +34,7 @@ module.exports = function (grunt) {
     browserify: {
       searcher: {
         src: 'js/searcher/searcher.js',
-        dest: 'js/searcher/searcher.build.js'
+        dest: 'js/searcher/searcher.all.js'
       }
     },
 
@@ -105,7 +105,7 @@ module.exports = function (grunt) {
       },
       dist: {
         files: {
-          '<%= staticJsDir %>/searcher/searcher.final.js': '<%= staticJsDir %>/searcher/searcher.build.js'
+          '<%= staticJsDir %>/searcher/searcher.all.es5.js': '<%= staticJsDir %>/searcher/searcher.all.js'
         }
       }
     },
@@ -113,16 +113,22 @@ module.exports = function (grunt) {
     uglify: {
       main: {
         files: {
-          '<%= staticJsDir %>/searcher/searcher.min.js': ['<%= staticJsDir %>/searcher/searcher.final.js']
+          '<%= staticJsDir %>/searcher/searcher.min.js': ['<%= staticJsDir %>/searcher/searcher.all.es5.js']
         }
       }
     },
 
     watch: {
       files: [
-        '<%= staticJsDir %>/**/*',
+        // Include
+        '<%= staticJsDir %>/**/*.js',
+
+        // Exclude
         '!<%= libJsDir %>/**/*',
-        '!<%= staticJsDir %>/ui/**/*.js'
+        '!<%= staticJsDir %>/**/*.min.js',
+        '!<%= staticJsDir %>/searcher/*.all.js',
+        '!<%= staticJsDir %>/searcher/*.es5.js',
+        '!<%= staticJsDir %>/searcher/ui/**/*.js'
       ],
       tasks: ['default']
     }
