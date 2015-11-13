@@ -210,10 +210,10 @@ def calculate_fisher_p_values_via_rest(species, entrez_ids):
         settings.REST_HOST, settings.REST_PORT, settings.REST_URI, urllib.urlencode(params)
     )
 
-    # lines = [x.strip().split() for x in urllib2.urlopen(url).readlines()]
+    lines = [x.strip().split() for x in urllib2.urlopen(url).readlines()]
 
-    LOG.warn("User fake response!")
-    lines = [x.strip().split() for x in get_test_rest_response().split("\n")]
+    # LOG.warn("User fake response!")
+    # lines = [x.strip().split() for x in get_test_rest_response().split("\n")]
 
     return [(gse, gpl, int(module_num), float(logPval), float(logEmpPval), int(overlap_size), int(module_size))
             for gse, gpl, module_num, logPval, logEmpPval, overlap_size, module_size in lines]
