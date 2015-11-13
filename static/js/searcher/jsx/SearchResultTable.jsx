@@ -1,7 +1,9 @@
 'use strict';
 var React = require('react');
 var ReactDOM = require('react-dom');
-var ReactDOMServer = require('react-dom/server');
+var Utils = require('../../utils');
+
+var _ = require('underscore');
 
 require('floatthead');
 
@@ -29,50 +31,10 @@ var ResultTable = React.createClass({
 
   componentDidMount: function() {
     $(ReactDOM.findDOMNode(this.refs.table)).floatThead();
-
-    $('.module-heatmap-img').magnificPopup({
-      type: 'image',
-      alignTop: true,
-      overflowY: 'scroll',
-      image: {
-        verticalFit: false,
-        titleSrc: function(item) {
-          var title = item.el.attr('data-gse') + ', module #' + item.el.attr('data-module');
-          var link = $('<a>', {href: item.el.attr('href'), target: '_blank', 'class': "full-heatmap-link"})
-            .append('View fill-sized')
-            .prop('outerHTML');
-          return title + ". " + link + ".";
-        }
-      }
-    });
-
-    $('.overlap-genes-link').magnificPopup({
-      type: 'ajax',
-      alignTop: true,
-      ajax: {
-        settings: {
-          url: 'search/get_overlap/'
-        }
-      },
-      callbacks: {
-        parseAjax: function (response) {
-          console.log('data received', response);
-          var data = response.data;
-          //response.data = '<div class="aaa">' + $('<a>').append(response.data.genes).prop('outerHTML') + '</div>';
-          var element = (
-            <div className="white-popup-block">
-              <a>{data.genes}</a>
-            </div>
-          );
-          response.data = ReactDOMServer.renderToString(element);
-        }
-      }
-    });
-
-
   },
 
   render: function () {
+    console.log(this.props.children[0]);
     return (
       <table className="table table-bordered table-hover" ref="table">
         <colgroup>{this.getColConfig()}</colgroup>
@@ -98,10 +60,33 @@ var ResultTable = React.createClass({
         </th>
         <th colSpan="1" className="no-right-border no-left-border"><a>To top</a></th>
         <th colSpan="2" className="no-left-border">
-          <input type="submit" value="Download as CSV" id="csv-download" className="btn btn-primary btn-xs" />
+          <button className="btn btn-primary btn-xs" onClick={this.downloadAsCSV}>Download as CSV</button>
         </th>
       </tr>
     );
+  },
+
+  downloadAsCSV: function() {
+    var delimeter = ',';
+    var columns = ['rank', 'adjusted_score', 'series', 'platform',
+                   'module_number', 'overlap_size', 'module_size', 'title'];
+    var content = [columns.join(delimeter)];
+    _.each(this.props.children, row => {
+      var csv_row = _.map(columns, field => {
+        if (field === 'title') {
+          return '"' + row.props[field] + '"';
+        }
+        return row.props[field];
+      });
+      content.push(csv_row.join(delimeter))
+    });
+
+    var now = new Date();
+    var dateString = now.getHours() + "-" + now.getMinutes() + "_"
+      + now.getMonth() + "-" + (now.getDay() + 1) + "-" + now.getFullYear();
+    var filename = 'genequery_search_result_' + dateString + '.csv';
+
+    Utils.downloadDataAsCSV(filename, content.join('\n'));
   },
 
   getHeaderTitles: function () {

@@ -13,8 +13,14 @@ var ErrorBlock = require('./ErrorBlock');
 var Utils = require('../../utils');
 var _ = require('underscore');
 
+var Clipboard = require('clipboard');
+
 
 var SearchPage = React.createClass({
+
+  componentWillMount: function() {
+    new Clipboard('.copy-to-clipboard');
+  },
 
   getInitialState: function() {
     return {
@@ -97,22 +103,27 @@ var SearchPage = React.createClass({
   },
 
   overlapOnClick: function(series, platform, module_number) {
-    //console.log('from page', this.state.lastRequestData, series, platform, module_number);
-    //var data = {
-    //  genes: this.state.lastRequestData.genes,
-    //  species: this.state.lastRequestData.species,
-    //  module: series + '_' + platform + '#' + module_number
-    //};
-    //$.get('search/get_overlap/', data)
-    //  .done(data => {
-    //    console.log('OK overlap', data)
-    //  })
-    //  .fail((qxhr, textStatus, error) => {
-    //    console.log('FAIL overlap', data)
-    //  })
-    //  .always(() => {
-    //
-    //  });
+    var data = {
+      module: series + '_' + platform + '#' + module_number,
+      genes: this.state.lastRequestData.genes,
+      species: this.state.lastRequestData.species
+    };
+    var module_id = series + platform + module_number;
+    Utils.showPopupAjax(
+      'search/get_overlap/',
+      data,
+      response_data => (
+        <div className="white-popup-block row">
+          <div className="overlap-genes-list col-md-4">
+            <pre id={module_id}>{response_data.genes.join('\n')}</pre>
+          </div>
+          <div className="overlap-genes-caption col-md-8">
+            <p>Overlap of genes from request and from module {module_number} of {series}.</p>
+            <a data-clipboard-target={'#' + module_id} className="copy-to-clipboard">Copy genes to clipboard.</a>
+          </div>
+        </div>
+      )
+    );
   },
 
   getTableOrErrorOrNull: function () {

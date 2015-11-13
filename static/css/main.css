@@ -21,6 +21,10 @@ label .inline .radio label {
   margin-right: 10px;
 }
 
+.overlap-genes-list {
+  display: inline-block;
+}
+
 a.deco-none {
   color: inherit;
   text-decoration: none;

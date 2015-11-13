@@ -150,8 +150,8 @@ class GetOverlapView(View):
             LOG.warning("Not ajax request.")
             return self.http_method_not_allowed(request)
 
-        sleep(1)
-        return JsonResponse({'genes': "1 2 3 4 5"})
+        # sleep(1)
+        # return JsonResponse({'genes': "1 2 3 4 5"})
 
         form = SearchQueryForm(request.GET)
         if not form.is_valid():

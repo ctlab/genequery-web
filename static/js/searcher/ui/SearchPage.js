@@ -13,8 +13,14 @@ var ErrorBlock = require('./ErrorBlock');
 var Utils = require('../../utils');
 var _ = require('underscore');
 
+var Clipboard = require('clipboard');
+
 
 var SearchPage = React.createClass({displayName: "SearchPage",
+
+  componentWillMount: function() {
+    new Clipboard('.copy-to-clipboard');
+  },
 
   getInitialState: function() {
     return {
@@ -97,22 +103,27 @@ var SearchPage = React.createClass({displayName: "SearchPage",
   },
 
   overlapOnClick: function(series, platform, module_number) {
-    //console.log('from page', this.state.lastRequestData, series, platform, module_number);
-    //var data = {
-    //  genes: this.state.lastRequestData.genes,
-    //  species: this.state.lastRequestData.species,
-    //  module: series + '_' + platform + '#' + module_number
-    //};
-    //$.get('search/get_overlap/', data)
-    //  .done(data => {
-    //    console.log('OK overlap', data)
-    //  })
-    //  .fail((qxhr, textStatus, error) => {
-    //    console.log('FAIL overlap', data)
-    //  })
-    //  .always(() => {
-    //
-    //  });
+    var data = {
+      module: series + '_' + platform + '#' + module_number,
+      genes: this.state.lastRequestData.genes,
+      species: this.state.lastRequestData.species
+    };
+    var module_id = series + platform + module_number;
+    Utils.showPopupAjax(
+      'search/get_overlap/',
+      data,
+      response_data => (
+        React.createElement("div", {className: "white-popup-block row"}, 
+          React.createElement("div", {className: "overlap-genes-list col-md-4"}, 
+            React.createElement("pre", {id: module_id}, response_data.genes.join('\n'))
+          ), 
+          React.createElement("div", {className: "overlap-genes-caption col-md-8"}, 
+            React.createElement("p", null, "Overlap of genes from request and from module ", module_number, " of ", series, "."), 
+            React.createElement("a", {"data-clipboard-target": '#' + module_id, className: "copy-to-clipboard"}, "Copy genes to clipboard.")
+          )
+        )
+      )
+    );
   },
 
   getTableOrErrorOrNull: function () {

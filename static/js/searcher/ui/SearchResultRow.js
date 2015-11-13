@@ -4,12 +4,16 @@
  */
 
 var React = require('react');
+var Utils = require('../../utils');
 
 var GSE_ADDRESS_PREF = 'http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=';
 
 var SearchResultRow = React.createClass({displayName: "SearchResultRow",
+
+  // In case of renaming of the properties watch out the CSV building!
   propTypes: {
     title: React.PropTypes.string.isRequired,
+    rank: React.PropTypes.number.isRequired,
     series: React.PropTypes.string.isRequired,
     platform: React.PropTypes.string.isRequired,
     module_number: React.PropTypes.number.isRequired,
@@ -41,10 +45,23 @@ var SearchResultRow = React.createClass({displayName: "SearchResultRow",
           React.createElement("a", {href: GSE_ADDRESS_PREF + this.state.series, target: "_blank"}, this.state.series)
         ), 
         React.createElement("td", {className: "text-center"}, 
-          React.createElement("a", {href: this.state.gmt_url}, 
+          React.createElement("a", {href: this.state.gmt_url, target: "_blank"}, 
             React.createElement("span", {className: "glyphicon glyphicon-download"})
           )
         )
+      )
+    );
+  },
+
+  heatmapOnClick: function(e) {
+    e.preventDefault();
+    Utils.showPopupImage(
+      this.state.series_url,
+      React.createElement("p", null, 
+        this.state.series, ", module #", this.state.module_number, ".", ' ', 
+        React.createElement("a", {href: this.state.series_url, target: "_blank", className: "full-heatmap-link"}, 
+          "View full picture on new tab"
+        ), "."
       )
     );
   },
@@ -55,7 +72,8 @@ var SearchResultRow = React.createClass({displayName: "SearchResultRow",
         React.createElement("a", {className: "module-heatmap-img", 
            "data-gse": this.state.series, 
            "data-module": this.state.module_number, 
-           href: this.state.series_url}, 
+           href: this.state.series_url, 
+           onClick: this.heatmapOnClick}, 
           this.state.module_number
         )
       );
@@ -70,7 +88,6 @@ var SearchResultRow = React.createClass({displayName: "SearchResultRow",
       )
     );
   }
-
 });
 
 module.exports = SearchResultRow;
