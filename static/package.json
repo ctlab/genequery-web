@@ -16,16 +16,15 @@
     "underscore": "^1.8.3"
   },
   "devDependencies": {
+    "babel-preset-es2015": "^6.1.18",
     "grunt": "^0.4.5",
+    "grunt-babel": "^6.0.0",
     "grunt-browserify": "latest",
     "grunt-contrib-copy": "^0.8.2",
     "grunt-contrib-requirejs": "^0.4.4",
     "grunt-contrib-uglify": "latest",
     "grunt-contrib-watch": "latest",
-    "grunt-es6-module-transpiler": "^0.6.0",
-    "grunt-es6-transpiler": "^1.0.2",
     "grunt-react": "^0.12.3",
-    "grunt-regenerator": "^3.0.0",
     "load-grunt-tasks": "^3.3.0"
   }
 }

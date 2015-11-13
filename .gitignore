@@ -1,4 +1,6 @@
 data/*
+*.build.js
+*.final.js*
 *.log
 *.DS_Store
 *.swp

@@ -98,6 +98,26 @@ module.exports = function (grunt) {
       }
     },
 
+    babel: {
+      options: {
+        sourceMap: true,
+        presets: ['es2015']
+      },
+      dist: {
+        files: {
+          '<%= staticJsDir %>/searcher/searcher.final.js': '<%= staticJsDir %>/searcher/searcher.build.js'
+        }
+      }
+    },
+
+    uglify: {
+      main: {
+        files: {
+          '<%= staticJsDir %>/searcher/searcher.min.js': ['<%= staticJsDir %>/searcher/searcher.final.js']
+        }
+      }
+    },
+
     watch: {
       files: [
         '<%= staticJsDir %>/**/*',
@@ -109,6 +129,6 @@ module.exports = function (grunt) {
   });
 
   grunt.registerTask('default', ['react', 'browserify', 'watch']);
-  grunt.registerTask('build', ['copy', 'react', 'browserify']);
+  grunt.registerTask('build', ['copy', 'react', 'browserify', 'babel']);
 
 };
