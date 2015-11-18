@@ -7,10 +7,11 @@ module.exports = function (grunt) {
 
     nodeModulesDir: 'node_modules',
 
-    staticCssDir: 'css',
-    staticJsDir: 'js',
-    libJsDir: 'js/lib',
-    staticFontsDir: 'fonts',
+    staticCssDir: 'static/css',
+    staticJsDir: 'static/js',
+    distJsDir: 'static/js/dist',
+    libJsDir: 'static/js/dist/lib',
+    staticFontsDir: 'static/fonts',
 
     pkg: grunt.file.readJSON('package.json'),
 
@@ -33,8 +34,8 @@ module.exports = function (grunt) {
 
     browserify: {
       searcher: {
-        src: 'js/searcher/searcher.js',
-        dest: 'js/searcher/searcher.all.js'
+        src: '<%= staticJsDir %>/searcher/searcher.js',
+        dest: '<%= distJsDir %>/searcher.js'
       }
     },
 
@@ -105,7 +106,7 @@ module.exports = function (grunt) {
       },
       dist: {
         files: {
-          '<%= staticJsDir %>/searcher/searcher.all.es5.js': '<%= staticJsDir %>/searcher/searcher.all.js'
+          '<%= distJsDir %>/searcher.es5.js': '<%= distJsDir %>/searcher.js'
         }
       }
     },
@@ -113,7 +114,7 @@ module.exports = function (grunt) {
     uglify: {
       main: {
         files: {
-          '<%= staticJsDir %>/searcher/searcher.min.js': ['<%= staticJsDir %>/searcher/searcher.all.es5.js']
+          '<%= distJsDir %>/searcher.min.js': ['<%= distJsDir %>/searcher.es5.js']
         }
       }
     },
@@ -122,12 +123,10 @@ module.exports = function (grunt) {
       files: [
         // Include
         '<%= staticJsDir %>/**/*.js',
+        '<%= staticJsDir %>/**/*.jsx',
 
         // Exclude
-        '!<%= libJsDir %>/**/*',
-        '!<%= staticJsDir %>/**/*.min.js',
-        '!<%= staticJsDir %>/searcher/*.all.js',
-        '!<%= staticJsDir %>/searcher/*.es5.js',
+        '!<%= distJsDir %>/**/*',
         '!<%= staticJsDir %>/searcher/ui/**/*.js'
       ],
       tasks: ['default']
@@ -135,6 +134,6 @@ module.exports = function (grunt) {
   });
 
   grunt.registerTask('default', ['react', 'browserify', 'watch']);
-  grunt.registerTask('build', ['copy', 'react', 'browserify', 'babel']);
+  grunt.registerTask('build', ['copy', 'react', 'browserify', 'babel', 'uglify']);
 
 };

@@ -6,9 +6,6 @@ data/*
 *.pyc
 media/*
 *local_settings.py
-static/node_modules/*
-static/bower_components/*
-static/js/lib/*
-*.all.js
-*.es5.js
-*.js.map
+node_modules/*
+static/js/dist/*
+static/js/searcher/ui/*

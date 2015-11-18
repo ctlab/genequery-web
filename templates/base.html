@@ -17,8 +17,8 @@
 {#  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>#}
 {#  <script src="{% static 'node_modules/es5-shim/es5-shim.js' %}"></script>#}
 {#  <script src="{% static 'node_modules/es6-shim/es6-shim.js' %}"></script>#}
-  <script src="{% static 'js/lib/jquery.min.js' %}"></script>
-  <script src="{% static 'js/lib/bootstrap.min.js' %}"></script>
+  <script src="{% static 'js/dist/lib/jquery.min.js' %}"></script>
+  <script src="{% static 'js/dist/lib/bootstrap.min.js' %}"></script>
   {% block custom_js %}{% endblock %}
 
   <!--[if lt IE 9]>
@@ -44,12 +44,13 @@
   </script>
 </head>
 <body>
-<div id="wrap">
-  <div class="container-fluid main-container">
-    {% include "menu.html" %}
-    {% block container %}{% endblock %}
+  <div class="base-content">
+    <div class="container-fluid main-container">
+      {% include "menu.html" %}
+      <hr>
+      {% block container %}{% endblock %}
+    </div>
   </div>
-</div>
-{% include "footer.html" %}
+  {% include "footer.html" %}
 </body>
 </html>

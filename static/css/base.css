@@ -1,24 +1,10 @@
-html, body {
+html, body, .base-content{
   height: 100%;
   color: #696969;
 }
 
-.margin-r-8 {
-  margin-right: 8px;
-}
-
 label .inline .radio label {
   padding-left: 10px;
-}
-
-.overall_design {
-  padding-left: 0;
-  margin-bottom: 0;
-}
-
-.search-result {
-  margin-top: 5px;
-  margin-right: 10px;
 }
 
 .overlap-genes-list {
@@ -33,10 +19,6 @@ a.deco-none {
 a,
 a label {
   cursor: pointer;
-}
-
-.overlap-genes-link {
-
 }
 
 .white-popup-block {
@@ -67,34 +49,17 @@ a label {
   border-right: none !important;
 }
 
-.search-results-recap {
+.search-result-recap {
   font-size: 11px;
   margin-bottom: 10px;
   margin-top: 20px;
 }
 
-.module-description {
-  max-height: 1pt;
-  font-size: 12px;
-  line-height: 1.25;
-  margin-top: -10px;
-  margin-bottom: 10px;
-}
-
-.module-description p {
-  margin-bottom: 0;
-}
-
-.ex-type {
-  font-size: 12px;
-  margin-top: -5px;
-}
-
-textarea {
+.search-form textarea {
   max-height: 400px;
 }
 
-table thead {
+.search-result table thead {
   background-color: #f5f5f5;
 }
 
@@ -113,27 +78,22 @@ a.full-heatmap-link:visited {
 .loader-wrap {
   position: relative;
   padding-bottom: 20%;
-  margin-bottom: 10%;
 }
 
-.col-result-number {
-  padding-left: 0;
-  padding-right: 0;
-}
-
-.col-result {
-  padding-right: 0;
-}
-
-#wrap {
+.base-content {
+  height: auto;
   min-height: 100%;
-  margin: 0 auto -60px;
+  padding-bottom: 60px;
 }
 
-h4.media-heading {
-  font-size: 14px;
-}
-
-#footer {
+.footer {
+  margin-top: -80px;
   height: 60px;
+}
+.footer footer {
+  padding-bottom: 20px;
+}
+
+.genequery-head-title {
+  padding-top: 8px;
 }

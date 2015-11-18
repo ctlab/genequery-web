@@ -83,7 +83,7 @@ var SearchResultRow = React.createClass({
 
   getOverlapLink: function() {
     return (
-      <a className="overlap-genes-link" onClick={this.overlapOnClick}>
+      <a onClick={this.overlapOnClick}>
         {this.state.overlap_size + '/' + this.state.module_size}
       </a>
     );

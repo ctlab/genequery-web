@@ -95,12 +95,13 @@ var SearchPage = React.createClass({
             />
           </div>
         </div>
-        <div className="search-results">
-          <div className="loader-wrap" ref="loader">
+        <div className="search-result">
+          <div className={this.state.showLoading ? "loader-wrap" : ""}
+               ref="loader">
             <Loader loaded={!this.state.showLoading}
                     lines={17} length={31} width={10} radius={38}
                     color="#777" speed={1.5}
-                    trail={79} className="spinner"
+                    trail={79} className="load-spinner"
                     zIndex={2e9} left="50%" scale={0.75}>
               {this.getTableOrErrorOrNull()}
             </Loader>
