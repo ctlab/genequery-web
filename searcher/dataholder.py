@@ -173,7 +173,6 @@ except Exception, e:
     else:
         raise Exception('Data is not initialized. Exit.')
 
-
 print_modules_len = not isinstance(modules_data_holder, ModulesDBDataHolder)
 LOG.info(
     'Data has been initialized. hs: {} modules. mm: {} modules. rt: {} modules, ID mapping: {} rows. Titles: {}.'

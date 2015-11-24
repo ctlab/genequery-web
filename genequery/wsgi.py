@@ -12,3 +12,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "genequery.settings")
 
 from django.core.wsgi import get_wsgi_application
 application = get_wsgi_application()
+
+# Pre-load all required data into RAM
+# Do not put it to app.py to prevent it from double loading on server start!
+import searcher.dataholder
