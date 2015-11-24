@@ -5,6 +5,10 @@ from django.test.runner import DiscoverRunner
 from django.conf import settings
 
 
+def get_test_rest_response(species):
+    return open('test_data/test_rest_response_{}.txt'.format(species)).read()
+
+
 class GQTestCase(TestCase):
     def assert_200(self, response):
         self.assertEqual(response.status_code, 200)

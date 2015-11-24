@@ -16,6 +16,7 @@ LOCAL_APPS = ()
 try:
     from logic_settings import *
 except:
+    print '???'
     pass
 
 try:

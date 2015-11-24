@@ -1,0 +1,512 @@
+[
+  {
+    "gpl": "GPL6246", 
+    "intersectionSize": 39, 
+    "logEmpiricalPvalue": -191.81883868327768, 
+    "moduleSize": 704, 
+    "empiricalPvalue": 1.5176139736293816e-192, 
+    "gse": "GSE46356", 
+    "fisherTable": [
+      39, 
+      665, 
+      2, 
+      5294
+    ], 
+    "logPvalue": -33.89071337129947, 
+    "pvalue": 1.2861352123818086e-34, 
+    "moduleNumber": 4
+  }, 
+  {
+    "gpl": "GPL7202", 
+    "intersectionSize": 38, 
+    "logEmpiricalPvalue": -176.83465918473468, 
+    "moduleSize": 771, 
+    "empiricalPvalue": 1.4633250773388635e-177, 
+    "gse": "GSE23508", 
+    "fisherTable": [
+      38, 
+      733, 
+      1, 
+      5228
+    ], 
+    "logPvalue": -32.677612327876844, 
+    "pvalue": 2.1008143347094588e-33, 
+    "moduleNumber": 2
+  }, 
+  {
+    "gpl": "GPL339", 
+    "intersectionSize": 19, 
+    "logEmpiricalPvalue": -157.21642847241395, 
+    "moduleSize": 55, 
+    "empiricalPvalue": 6.075353146901195e-158, 
+    "gse": "GSE4066", 
+    "fisherTable": [
+      19, 
+      36, 
+      15, 
+      5930
+    ], 
+    "logPvalue": -31.008162743351345, 
+    "pvalue": 9.813801211274027e-32, 
+    "moduleNumber": 18
+  }, 
+  {
+    "gpl": "GPL6246", 
+    "intersectionSize": 36, 
+    "logEmpiricalPvalue": -150.11973615154108, 
+    "moduleSize": 649, 
+    "empiricalPvalue": 7.590385763625347e-151, 
+    "gse": "GSE25313", 
+    "fisherTable": [
+      36, 
+      613, 
+      4, 
+      5347
+    ], 
+    "logPvalue": -30.378594363427037, 
+    "pvalue": 4.182208078365454e-31, 
+    "moduleNumber": 2
+  }, 
+  {
+    "gpl": "GPL6246", 
+    "intersectionSize": 20, 
+    "logEmpiricalPvalue": -139.58108458046294, 
+    "moduleSize": 78, 
+    "empiricalPvalue": 2.623707516842906e-140, 
+    "gse": "GSE31906", 
+    "fisherTable": [
+      20, 
+      58, 
+      15, 
+      5907
+    ], 
+    "logPvalue": -29.415323037475364, 
+    "pvalue": 3.843058208607736e-30, 
+    "moduleNumber": 5
+  }, 
+  {
+    "gpl": "GPL6246", 
+    "intersectionSize": 20, 
+    "logEmpiricalPvalue": -129.82813125400162, 
+    "moduleSize": 152, 
+    "empiricalPvalue": 1.4854866254603693e-130, 
+    "gse": "GSE26147", 
+    "fisherTable": [
+      20, 
+      132, 
+      4, 
+      5844
+    ], 
+    "logPvalue": -28.490627321016195, 
+    "pvalue": 3.2312657625023024e-29, 
+    "moduleNumber": 5
+  }, 
+  {
+    "gpl": "GPL4134", 
+    "intersectionSize": 36, 
+    "logEmpiricalPvalue": -129.42711937005566, 
+    "moduleSize": 694, 
+    "empiricalPvalue": 3.740077744743089e-130, 
+    "gse": "GSE33266", 
+    "fisherTable": [
+      36, 
+      658, 
+      5, 
+      5301
+    ], 
+    "logPvalue": -28.451869194802686, 
+    "pvalue": 3.532895610864726e-29, 
+    "moduleNumber": 3
+  }, 
+  {
+    "gpl": "GPL1261", 
+    "intersectionSize": 38, 
+    "logEmpiricalPvalue": -129.21927510574233, 
+    "moduleSize": 865, 
+    "empiricalPvalue": 6.035661766169944e-130, 
+    "gse": "GSE15610", 
+    "fisherTable": [
+      38, 
+      827, 
+      3, 
+      5132
+    ], 
+    "logPvalue": -28.431757042007554, 
+    "pvalue": 3.700351311778982e-29, 
+    "moduleNumber": 2
+  }, 
+  {
+    "gpl": "GPL8321", 
+    "intersectionSize": 29, 
+    "logEmpiricalPvalue": -122.95400638412524, 
+    "moduleSize": 446, 
+    "empiricalPvalue": 1.1117153849546674e-123, 
+    "gse": "GSE34913", 
+    "fisherTable": [
+      29, 
+      417, 
+      5, 
+      5549
+    ], 
+    "logPvalue": -27.817645600883175, 
+    "pvalue": 1.5217888548158934e-28, 
+    "moduleNumber": 5
+  }, 
+  {
+    "gpl": "GPL4134", 
+    "intersectionSize": 26, 
+    "logEmpiricalPvalue": -118.04276542842096, 
+    "moduleSize": 483, 
+    "empiricalPvalue": 9.062219382542547e-119, 
+    "gse": "GSE23639", 
+    "fisherTable": [
+      26, 
+      457, 
+      1, 
+      5516
+    ], 
+    "logPvalue": -27.325127547056486, 
+    "pvalue": 4.730123205410282e-28, 
+    "moduleNumber": 3
+  }, 
+  {
+    "gpl": "GPL339", 
+    "intersectionSize": 26, 
+    "logEmpiricalPvalue": -112.14076312172504, 
+    "moduleSize": 370, 
+    "empiricalPvalue": 7.231641331900831e-113, 
+    "gse": "GSE2421", 
+    "fisherTable": [
+      26, 
+      344, 
+      5, 
+      5625
+    ], 
+    "logPvalue": -26.719357982441416, 
+    "pvalue": 1.90827964375235e-27, 
+    "moduleNumber": 3
+  }, 
+  {
+    "gpl": "GPL1261", 
+    "intersectionSize": 31, 
+    "logEmpiricalPvalue": -108.21697677139392, 
+    "moduleSize": 408, 
+    "empiricalPvalue": 6.067687822598917e-109, 
+    "gse": "GSE34324", 
+    "fisherTable": [
+      31, 
+      377, 
+      13, 
+      5579
+    ], 
+    "logPvalue": -26.307676374052406, 
+    "pvalue": 4.924063285192472e-27, 
+    "moduleNumber": 3
+  }, 
+  {
+    "gpl": "GPL4134", 
+    "intersectionSize": 44, 
+    "logEmpiricalPvalue": -106.62386614334606, 
+    "moduleSize": 1426, 
+    "empiricalPvalue": 2.377572980537458e-107, 
+    "gse": "GSE20210", 
+    "fisherTable": [
+      44, 
+      1382, 
+      1, 
+      4573
+    ], 
+    "logPvalue": -26.138379323155377, 
+    "pvalue": 7.271444218226888e-27, 
+    "moduleNumber": 2
+  }, 
+  {
+    "gpl": "GPL1261", 
+    "intersectionSize": 27, 
+    "logEmpiricalPvalue": -103.1825979833797, 
+    "moduleSize": 416, 
+    "empiricalPvalue": 6.567529264028454e-104, 
+    "gse": "GSE13522", 
+    "fisherTable": [
+      27, 
+      389, 
+      6, 
+      5578
+    ], 
+    "logPvalue": -25.768264613236774, 
+    "pvalue": 1.7050431990150285e-26, 
+    "moduleNumber": 4
+  }, 
+  {
+    "gpl": "GPL8321", 
+    "intersectionSize": 34, 
+    "logEmpiricalPvalue": -100.75260709365745, 
+    "moduleSize": 750, 
+    "empiricalPvalue": 1.767636278563543e-101, 
+    "gse": "GSE17115", 
+    "fisherTable": [
+      34, 
+      716, 
+      5, 
+      5245
+    ], 
+    "logPvalue": -25.503143560673887, 
+    "pvalue": 3.1394707367889973e-26, 
+    "moduleNumber": 2
+  }, 
+  {
+    "gpl": "GPL7202", 
+    "intersectionSize": 22, 
+    "logEmpiricalPvalue": -95.99698327205896, 
+    "moduleSize": 189, 
+    "empiricalPvalue": 1.0069704540970606e-96, 
+    "gse": "GSE38014", 
+    "fisherTable": [
+      22, 
+      167, 
+      12, 
+      5799
+    ], 
+    "logPvalue": -24.974764442827023, 
+    "pvalue": 1.0598284101038275e-25, 
+    "moduleNumber": 13
+  }, 
+  {
+    "gpl": "GPL1261", 
+    "intersectionSize": 24, 
+    "logEmpiricalPvalue": -89.72130380634437, 
+    "moduleSize": 375, 
+    "empiricalPvalue": 1.8997488647437054e-90, 
+    "gse": "GSE49122", 
+    "fisherTable": [
+      24, 
+      351, 
+      5, 
+      5620
+    ], 
+    "logPvalue": -24.256802755889915, 
+    "pvalue": 5.5360148205936275e-25, 
+    "moduleNumber": 3
+  }, 
+  {
+    "gpl": "GPL6885", 
+    "intersectionSize": 30, 
+    "logEmpiricalPvalue": -88.94354025037956, 
+    "moduleSize": 679, 
+    "empiricalPvalue": 1.1388322301000383e-89, 
+    "gse": "GSE37612", 
+    "fisherTable": [
+      30, 
+      649, 
+      4, 
+      5317
+    ], 
+    "logPvalue": -24.16607660315247, 
+    "pvalue": 6.822183502558859e-25, 
+    "moduleNumber": 4
+  }, 
+  {
+    "gpl": "GPL8321", 
+    "intersectionSize": 33, 
+    "logEmpiricalPvalue": -85.4529853456359, 
+    "moduleSize": 798, 
+    "empiricalPvalue": 3.5238276126531775e-86, 
+    "gse": "GSE38093", 
+    "fisherTable": [
+      33, 
+      765, 
+      5, 
+      5197
+    ], 
+    "logPvalue": -23.753870358434416, 
+    "pvalue": 1.7625020936901456e-24, 
+    "moduleNumber": 2
+  }, 
+  {
+    "gpl": "GPL8321", 
+    "intersectionSize": 17, 
+    "logEmpiricalPvalue": -83.15470279715957, 
+    "moduleSize": 119, 
+    "empiricalPvalue": 7.003210861659549e-84, 
+    "gse": "GSE24594", 
+    "fisherTable": [
+      17, 
+      102, 
+      8, 
+      5873
+    ], 
+    "logPvalue": -23.47779201089921, 
+    "pvalue": 3.328189063016159e-24, 
+    "moduleNumber": 14
+  }, 
+  {
+    "gpl": "GPL6246", 
+    "intersectionSize": 28, 
+    "logEmpiricalPvalue": -82.00871386075147, 
+    "moduleSize": 476, 
+    "empiricalPvalue": 9.801355447925853e-83, 
+    "gse": "GSE42768", 
+    "fisherTable": [
+      28, 
+      448, 
+      9, 
+      5515
+    ], 
+    "logPvalue": -23.338687878144725, 
+    "pvalue": 4.584712657388138e-24, 
+    "moduleNumber": 4
+  }, 
+  {
+    "gpl": "GPL8321", 
+    "intersectionSize": 22, 
+    "logEmpiricalPvalue": -78.15241883840562, 
+    "moduleSize": 234, 
+    "empiricalPvalue": 7.040137827792851e-79, 
+    "gse": "GSE37475", 
+    "fisherTable": [
+      22, 
+      212, 
+      12, 
+      5754
+    ], 
+    "logPvalue": -22.863217082164784, 
+    "pvalue": 1.3701967019283716e-23, 
+    "moduleNumber": 7
+  }, 
+  {
+    "gpl": "GPL81", 
+    "intersectionSize": 33, 
+    "logEmpiricalPvalue": -77.11754346091297, 
+    "moduleSize": 813, 
+    "empiricalPvalue": 7.62880544016112e-78, 
+    "gse": "GSE9488", 
+    "fisherTable": [
+      33, 
+      780, 
+      6, 
+      5181
+    ], 
+    "logPvalue": -22.733607930321632, 
+    "pvalue": 1.8466818028252087e-23, 
+    "moduleNumber": 3
+  }, 
+  {
+    "gpl": "GPL8321", 
+    "intersectionSize": 16, 
+    "logEmpiricalPvalue": -76.71420818156189, 
+    "moduleSize": 73, 
+    "empiricalPvalue": 1.9310424388042514e-77, 
+    "gse": "GSE40857", 
+    "fisherTable": [
+      16, 
+      57, 
+      16, 
+      5911
+    ], 
+    "logPvalue": -22.68285517906447, 
+    "pvalue": 2.0756055387355433e-23, 
+    "moduleNumber": 16
+  }, 
+  {
+    "gpl": "GPL1261", 
+    "intersectionSize": 12, 
+    "logEmpiricalPvalue": -76.46123357325683, 
+    "moduleSize": 59, 
+    "empiricalPvalue": 3.457533739375254e-77, 
+    "gse": "GSE33201", 
+    "fisherTable": [
+      12, 
+      47, 
+      2, 
+      5939
+    ], 
+    "logPvalue": -22.650953684400218, 
+    "pvalue": 2.233810436203868e-23, 
+    "moduleNumber": 14
+  }, 
+  {
+    "gpl": "GPL1261", 
+    "intersectionSize": 12, 
+    "logEmpiricalPvalue": -76.46123357325683, 
+    "moduleSize": 59, 
+    "empiricalPvalue": 3.457533739375254e-77, 
+    "gse": "GSE33199", 
+    "fisherTable": [
+      12, 
+      47, 
+      2, 
+      5939
+    ], 
+    "logPvalue": -22.650953684400218, 
+    "pvalue": 2.233810436203868e-23, 
+    "moduleNumber": 14
+  }, 
+  {
+    "gpl": "GPL1261", 
+    "intersectionSize": 32, 
+    "logEmpiricalPvalue": -74.58612022296116, 
+    "moduleSize": 828, 
+    "empiricalPvalue": 2.593461331441909e-75, 
+    "gse": "GSE38822", 
+    "fisherTable": [
+      32, 
+      796, 
+      5, 
+      5167
+    ], 
+    "logPvalue": -22.412804355235437, 
+    "pvalue": 3.865410702289566e-23, 
+    "moduleNumber": 2
+  }, 
+  {
+    "gpl": "GPL8321", 
+    "intersectionSize": 28, 
+    "logEmpiricalPvalue": -74.4574206721726, 
+    "moduleSize": 405, 
+    "empiricalPvalue": 3.488022902197271e-75, 
+    "gse": "GSE15721", 
+    "fisherTable": [
+      28, 
+      377, 
+      15, 
+      5580
+    ], 
+    "logPvalue": -22.396348132216634, 
+    "pvalue": 4.01468862761427e-23, 
+    "moduleNumber": 5
+  }, 
+  {
+    "gpl": "GPL8321", 
+    "intersectionSize": 35, 
+    "logEmpiricalPvalue": -74.23109025615022, 
+    "moduleSize": 885, 
+    "empiricalPvalue": 5.873672717297615e-75, 
+    "gse": "GSE11809", 
+    "fisherTable": [
+      35, 
+      850, 
+      7, 
+      5108
+    ], 
+    "logPvalue": -22.367373283413652, 
+    "pvalue": 4.2916739159836147e-23, 
+    "moduleNumber": 3
+  }, 
+  {
+    "gpl": "GPL6885", 
+    "intersectionSize": 28, 
+    "logEmpiricalPvalue": -74.14356979150908, 
+    "moduleSize": 637, 
+    "empiricalPvalue": 7.185056846004877e-75, 
+    "gse": "GSE41355", 
+    "fisherTable": [
+      28, 
+      609, 
+      5, 
+      5358
+    ], 
+    "logPvalue": -22.356156897165885, 
+    "pvalue": 4.4039573340451744e-23, 
+    "moduleNumber": 2
+  }
+]
