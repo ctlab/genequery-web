@@ -6,4 +6,5 @@ class SearcherAppConfig(AppConfig):
 
     def ready(self):
         # Initialize data on server startup
-        import dataholder
+        # import dataholder
+        pass
