@@ -14,4 +14,4 @@ urlpatterns = patterns('',
                        url(r'^media/(?P<path>.*)$', 'django.views.static.serve',
                            {'document_root': settings.MEDIA_ROOT}),
                        )
-import dataholder
+import searcher.dataholder
