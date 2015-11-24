@@ -11,13 +11,12 @@ from django.utils.html import format_html
 from django.views.generic import View
 
 from common.constants import MIN_LOG_EMPIRICAL_P_VALUE, INF
-from common.dataset import Module, ModuleName
+from common.dataset import ModuleName
 from common.math.fisher_empirical import FisherCalculationResult, fisher_empirical_p_values
 from main.views import BaseTemplateView
 from searcher.forms import SearchQueryForm
-from utils import log_get, gene_list_pprint, here, is_dev_mode
-from dataholder import datasets, id_mapping, gse_to_title
-from utils.test import get_test_rest_response
+from utils import log_get, gene_list_pprint, here
+from dataholder import modules_data_holder, id_mapping, gse_to_title
 
 LOG = logging.getLogger('genequery')
 
@@ -149,7 +148,7 @@ def calculate_fisher_process_results(species, entrez_query):
         LOG.exception("Can't access REST service: {}")
 
     LOG.info('Calculate request using pre-loaded data.')
-    results = fisher_empirical_p_values(species, datasets[species].get_modules(), entrez_query)
+    results = fisher_empirical_p_values(species, modules_data_holder.get_modules(species), entrez_query)
     return sorted(results)
 
 
@@ -176,7 +175,9 @@ def calculate_fisher_p_values_via_rest(species, query_entrez):
     results = []
     for row in response:
         results.append(FisherCalculationResult(
-            module=datasets[species].get_module(ModuleName(row['gse'], row['gpl'], row['moduleNumber']).full),
+            module=modules_data_holder.get_module(
+                species,
+                ModuleName.build_full(row['gse'], row['gpl'], row['moduleNumber'])),
             intersection_size=row['intersectionSize'],
             log10_pvalue=row['logPvalue'],
             log10_emp_pvalue=row['logEmpiricalPvalue'],
@@ -208,7 +209,7 @@ class GetOverlapView(View):
         ))
 
         result = []
-        module = datasets[species].get_module(full_module_name).gene_ids_set
+        module = modules_data_holder.get_module(species, full_module_name).gene_ids_set
         for entrez, original in id_mapping.convert_to_entrez(species, genes_id_type, genes):
             if entrez in module:
                 result.append(original)

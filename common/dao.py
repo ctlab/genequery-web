@@ -1,7 +1,7 @@
 class ModulesDAO:
     def get_modules(self):
         """
-        :returns {species: str, full_name: str, entrez_ids: list of int}
+        :returns: {species: str, full_name: str, entrez_ids: list of int}
         :rtype list of dict
         """
         raise NotImplementedError()

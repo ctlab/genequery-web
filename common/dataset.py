@@ -33,6 +33,17 @@ class ModuleName:
         gse, gpl = gse_gpl.split('_')
         return ModuleName(gse, gpl, int(module_number))
 
+    @staticmethod
+    def build_full(gse, gpl, module_number):
+        """
+        Create full module name like GSE_GPL#module_number
+        :type module_number: int
+        :type gpl: str
+        :type gse: str
+        :rtype str
+        """
+        return ModuleName(gse, gpl, module_number).full
+
 
 class Module:
     def __init__(self, species, module_name, entrez_ids):
