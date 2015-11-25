@@ -88,6 +88,7 @@ class SearchProcessorView(View):
             return build_search_result_data(
                 [],
                 0,
+                species,
                 len(genes),
                 input_genes_notation_type,
                 len(entrez_to_original),
@@ -105,6 +106,7 @@ class SearchProcessorView(View):
         return build_search_result_data(
             sorted_results,
             processing_time,
+            species,
             len(genes),
             input_genes_notation_type,
             len(entrez_to_original),
@@ -117,12 +119,13 @@ search_processor_view = SearchProcessorView.as_view()
 def build_search_result_data(
         sorted_fisher_processing_results,
         processing_time,
+        species,
         original_genes_count,
         original_notation,
         unique_entrez_count):
     results = []
     for i, r in enumerate(sorted_fisher_processing_results):
-        results.append(fisher_process_result_to_json(r, i + 1))
+        results.append(fisher_process_result_to_json(species, r, i + 1))
 
     recap = {
         'time': processing_time,
@@ -134,27 +137,25 @@ def build_search_result_data(
     return JsonResponse({'rows': results, 'recap': recap})
 
 
-def fisher_process_result_to_json(result, rank):
+def fisher_process_result_to_json(species, result, rank):
     """
+    :type species: str
     :type rank: int
     :type result: FisherCalculationResult
     :rtype: dict
     """
-    module = result.module
-    gse, gpl, module_number = module.split_full_name()
-
     return {
-        'title': ModuleDescription.get_title_or_default(gse, 'No title'),
+        'title': ModuleDescription.get_title_or_default(result.gse, 'No title'),
         'rank': rank,
-        'series': gse,
-        'platform': gpl,
-        'module_number': module_number,
-        'series_url': get_module_heat_map_url(module.species, gse, gpl, module_number),
-        'gmt_url': get_gmt_url(module.species, gse, gpl),
+        'series': result.gse,
+        'platform': result.gpl,
+        'module_number': result.module_number,
+        'series_url': get_module_heat_map_url(species, result.gse, result.gpl, result.module_number),
+        'gmt_url': get_gmt_url(species, result.gse, result.gpl),
         'adjusted_score': round(result.log_emp_pvalue, 2) if result.log_emp_pvalue != -INF
                                                           else '< {}'.format(MIN_LOG_EMPIRICAL_P_VALUE),
         'overlap_size': result.intersection_size,
-        'module_size': len(module.entrez_ids),
+        'module_size': result.module_size,
     }
 
 
@@ -200,10 +201,10 @@ def calculate_fisher_p_values_via_rest(species, query_entrez):
     results = []
     for row in response:
         results.append(FisherCalculationResult(
-            module=GQModule.objects.get(
-                species=species,
-                full_name=GQModule.merge_full_name(
-                    row['gse'], row['gpl'], row['moduleNumber'])),
+            gse=row['gse'],
+            gpl=row['gpl'],
+            module_number=row['moduleNumber'],
+            module_size=row['moduleSize'],
             intersection_size=row['intersectionSize'],
             log10_pvalue=row['logPvalue'],
             log10_emp_pvalue=row['logEmpiricalPvalue'],

@@ -6,7 +6,7 @@ from searcher.models import GQModule
 
 
 class FisherCalculationResult:
-    def __init__(self, module, intersection_size,
+    def __init__(self, gse, gpl, module_number, module_size, intersection_size,
                  pvalue=None, empirical_pvalue=None,
                  log10_pvalue=None, log10_emp_pvalue=None):
         """
@@ -15,11 +15,15 @@ class FisherCalculationResult:
         :type intersection_size: int
         :type empirical_pvalue: float
         :type pvalue: float
-        :type module: GQModule
+        :type gse: str
+        :type gpl: str
+        :type module_number: int
+        :type module_size: int
         """
-        if module is None:
-            raise Exception('Module is None.')
-        self.module = module
+        self.gse = gse
+        self.gpl = gpl
+        self.module_number = module_number
+        self.module_size = module_size
         self.intersection_size = intersection_size
 
         if pvalue is None and log10_pvalue is None:
@@ -50,7 +54,8 @@ class FisherCalculationResult:
 
     def __repr__(self):
         return 'FisherResult[module={},inters={},log_pvalue={},log_emp_pvalue={}'.format(
-            self.module, self.intersection_size, self.log_emp_pvalue, self.log_emp_pvalue)
+            GQModule.merge_full_name(self.gse, self.gpl, self.module_number),
+            self.intersection_size, self.log_emp_pvalue, self.log_emp_pvalue)
 
 
 def calculate_overlaps(modules, query):
@@ -104,8 +109,10 @@ def fisher_empirical_p_values(species, modules, entrez_query, max_empirical_p_va
         if empirical_pvalue > max_empirical_p_value:
             continue
         result.append(
-            FisherCalculationResult(module, overlaps_with_each_module[gse, gpl][num],
-                                    pvalue=pvalue, empirical_pvalue=empirical_pvalue)
+            FisherCalculationResult(gse, gpl, num, len(module.entrez_ids),
+                                    overlaps_with_each_module[gse, gpl][num],
+                                    pvalue=pvalue,
+                                    empirical_pvalue=empirical_pvalue)
         )
     return result
 
