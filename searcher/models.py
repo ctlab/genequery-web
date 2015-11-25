@@ -21,10 +21,6 @@ SPECIES_CHOICES = (
 )
 
 
-# Run-time modules cache
-SPECIES_TO_MODULES_CACHE = {}
-
-
 class GQModule(models.Model):
     species = models.CharField(u'Species', max_length=SPECIES_MAX_LENGTH, blank=False, choices=SPECIES_CHOICES)
 
@@ -46,16 +42,6 @@ class GQModule(models.Model):
         gse_gpl, module_number = self.full_name.split('#')
         gse, gpl = gse_gpl.split('_')
         return gse, gpl, int(module_number)
-
-    @staticmethod
-    def get_modules(species):
-        """
-        :type species: str
-        """
-        if species not in SPECIES_TO_MODULES_CACHE:
-            print 'Push to cache', species
-            SPECIES_TO_MODULES_CACHE[species] = [m for m in GQModule.objects.filter(species=species)]
-        return SPECIES_TO_MODULES_CACHE[species]
 
     @staticmethod
     def merge_full_name(gse, gpl, module_number):

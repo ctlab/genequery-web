@@ -84,6 +84,15 @@ class SearchProcessorView(View):
         # entrez_to_original = id_mapping.convert_to_entrez(species, input_genes_notation_type, genes)
         entrez_to_original = IdMap.convert_to_entrez(species, input_genes_notation_type, genes)
 
+        if not entrez_to_original:
+            return build_search_result_data(
+                [],
+                0,
+                len(genes),
+                input_genes_notation_type,
+                len(entrez_to_original),
+            )
+
         try:
             sorted_results = calculate_fisher_process_results(species, [pair[0] for pair in entrez_to_original])
         except:
@@ -93,21 +102,36 @@ class SearchProcessorView(View):
 
         processing_time = round(time() - start_time, 3)
 
-        results = []
-        for i, r in enumerate(sorted_results):
-            results.append(fisher_process_result_to_json(r, i + 1))
-
-        recap = {
-            'time': processing_time,
-            'genes_entered': len(genes),
-            'id_format': input_genes_notation_type,
-            'unique_entrez': len(entrez_to_original),
-            'total': len(results),
-        }
-        return JsonResponse({'rows': results, 'recap': recap})
+        return build_search_result_data(
+            sorted_results,
+            processing_time,
+            len(genes),
+            input_genes_notation_type,
+            len(entrez_to_original),
+        )
 
 
 search_processor_view = SearchProcessorView.as_view()
+
+
+def build_search_result_data(
+        sorted_fisher_processing_results,
+        processing_time,
+        original_genes_count,
+        original_notation,
+        unique_entrez_count):
+    results = []
+    for i, r in enumerate(sorted_fisher_processing_results):
+        results.append(fisher_process_result_to_json(r, i + 1))
+
+    recap = {
+        'time': processing_time,
+        'genes_entered': original_genes_count,
+        'id_format': original_notation,
+        'unique_entrez': unique_entrez_count,
+        'total': len(results),
+    }
+    return JsonResponse({'rows': results, 'recap': recap})
 
 
 def fisher_process_result_to_json(result, rank):
@@ -149,7 +173,7 @@ def calculate_fisher_process_results(species, entrez_query):
         LOG.exception("Can't access REST service: {}")
 
     LOG.info('Calculate using data from DB.')
-    results = fisher_empirical_p_values(species, GQModule.get_modules(species), entrez_query)
+    results = fisher_empirical_p_values(species, GQModule.objects.filter(species=species), entrez_query)
     return sorted(results)
 
 
