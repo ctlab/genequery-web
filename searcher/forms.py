@@ -1,7 +1,8 @@
 from django import forms
 from django.core.exceptions import ValidationError
 
-from common.constants import *
+from searcher.models import ENTREZ_ID_MAX_LENGTH, REFSEQ_ID_MAX_LENGTH, SYMBOL_ID_MAX_LENGTH, SPECIES_CHOICES
+from utils.constants import *
 from utils import get_gene_id_type
 
 

@@ -10,36 +10,38 @@ from django.http import JsonResponse, HttpResponseServerError
 from django.utils.html import format_html
 from django.views.generic import View
 
-from common.constants import MIN_LOG_EMPIRICAL_P_VALUE, INF
-from common.dataset import ModuleName
-from common.math.fisher_empirical import FisherCalculationResult, fisher_empirical_p_values
+from utils.constants import MIN_LOG_EMPIRICAL_P_VALUE, INF
+from math.fisher_empirical import FisherCalculationResult, fisher_empirical_p_values
 from main.views import BaseTemplateView
 from searcher.forms import SearchQueryForm
+from searcher.models import IdMap, ModuleDescription, GQModule
 from utils import log_get, gene_list_pprint, here
-from dataholder import modules_data_holder, id_mapping, gse_to_title
 
 LOG = logging.getLogger('genequery')
 
 HTML_NEG_INF = format_html('-&infin;')
 
 
-def get_module_heat_map_url(species, module_name):
+def get_module_heat_map_url(species, gse, gpl, module_number):
     """
-    :type module_name: ModuleName
+    :type module_number: int
+    :type gpl: str
+    :type gse: str
+    :type species: str
     :rtype: str
     """
-    path_to_image = here('modules', species, '{}_{}_module_{}.svg'.format(
-        module_name.gse, module_name.gpl, module_name.module_number))
+    path_to_image = here('modules', species, '{}_{}_module_{}.svg'.format(gse, gpl, module_number))
     path = here(settings.MEDIA_ROOT, path_to_image)
     return here(settings.MEDIA_URL, path_to_image) if os.path.exists(path) else None
 
 
-def get_gmt_url(species, module_name):
+def get_gmt_url(species, gse, gpl):
     """
     :type species: str
-    :type module_name: ModuleName
+    :type gpl: str
+    :type gse: str
     """
-    path_to_file = here('gmt', species, '{}_{}.gmt'.format(module_name.gse, module_name.gpl))
+    path_to_file = here('gmt', species, '{}_{}.gmt'.format(gse, gpl))
     path = here(settings.MEDIA_ROOT, path_to_file)
     return here(settings.MEDIA_URL, path_to_file) if os.path.exists(path) else None
 
@@ -79,7 +81,8 @@ class SearchProcessorView(View):
 
         start_time = time()
 
-        entrez_to_original = id_mapping.convert_to_entrez(species, input_genes_notation_type, genes)
+        # entrez_to_original = id_mapping.convert_to_entrez(species, input_genes_notation_type, genes)
+        entrez_to_original = IdMap.convert_to_entrez(species, input_genes_notation_type, genes)
 
         try:
             sorted_results = calculate_fisher_process_results(species, [pair[0] for pair in entrez_to_original])
@@ -114,22 +117,20 @@ def fisher_process_result_to_json(result, rank):
     :rtype: dict
     """
     module = result.module
-    gse = module.name.gse
-    gpl = module.name.gpl
-    module_number = module.name.module_number
+    gse, gpl, module_number = module.split_full_name()
 
     return {
-        'title': gse_to_title.get(gse, 'No title'),
+        'title': ModuleDescription.get_title_or_default(gse, 'No title'),
         'rank': rank,
         'series': gse,
         'platform': gpl,
         'module_number': module_number,
-        'series_url': get_module_heat_map_url(module.species, module.name),
-        'gmt_url': get_gmt_url(module.species, module.name),
+        'series_url': get_module_heat_map_url(module.species, gse, gpl, module_number),
+        'gmt_url': get_gmt_url(module.species, gse, gpl),
         'adjusted_score': round(result.log_emp_pvalue, 2) if result.log_emp_pvalue != -INF
                                                           else '< {}'.format(MIN_LOG_EMPIRICAL_P_VALUE),
         'overlap_size': result.intersection_size,
-        'module_size': len(module),
+        'module_size': len(module.entrez_ids),
     }
 
 
@@ -147,8 +148,8 @@ def calculate_fisher_process_results(species, entrez_query):
     except Exception:
         LOG.exception("Can't access REST service: {}")
 
-    LOG.info('Calculate request using pre-loaded data.')
-    results = fisher_empirical_p_values(species, modules_data_holder.get_modules(species), entrez_query)
+    LOG.info('Calculate using data from DB.')
+    results = fisher_empirical_p_values(species, GQModule.get_modules(species), entrez_query)
     return sorted(results)
 
 
@@ -166,18 +167,19 @@ def calculate_fisher_p_values_via_rest(species, query_entrez):
         settings.REST_HOST, settings.REST_PORT, settings.REST_URI, urllib.urlencode(params)
     )
 
-    # if is_dev_mode():
-    #     LOG.warn('User fake response!')
-    #     # sleep(3)
-    #     response = json.loads(get_test_rest_response(species))
-    # else:
+    # LOG.warn('User fake response!')
+    # # sleep(3)
+    # response = json.loads(get_test_rest_response(species))
+
     response = json.loads(urllib2.urlopen(url).read())
+
     results = []
     for row in response:
         results.append(FisherCalculationResult(
-            module=modules_data_holder.get_module(
-                species,
-                ModuleName.build_full(row['gse'], row['gpl'], row['moduleNumber'])),
+            module=GQModule.objects.get(
+                species=species,
+                full_name=GQModule.merge_full_name(
+                    row['gse'], row['gpl'], row['moduleNumber'])),
             intersection_size=row['intersectionSize'],
             log10_pvalue=row['logPvalue'],
             log10_emp_pvalue=row['logEmpiricalPvalue'],
@@ -209,9 +211,9 @@ class GetOverlapView(View):
         ))
 
         result = []
-        module = modules_data_holder.get_module(species, full_module_name).gene_ids_set
-        for entrez, original in id_mapping.convert_to_entrez(species, genes_id_type, genes):
-            if entrez in module:
+        entrez_genes = GQModule.objects.get(species=species, full_name=full_module_name).entrez_ids
+        for entrez, original in IdMap.convert_to_entrez(species, genes_id_type, genes):
+            if entrez in entrez_genes:
                 result.append(original)
 
         return JsonResponse({'genes': result})

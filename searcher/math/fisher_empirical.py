@@ -1,8 +1,8 @@
 import math
 import fisher
 from scipy.stats import norm
-from common.constants import MM, HS, INF, MIN_LOG_EMPIRICAL_P_VALUE
-from common.dataset import Module
+from utils.constants import MM, HS, INF, MIN_LOG_EMPIRICAL_P_VALUE
+from searcher.models import GQModule
 
 
 class FisherCalculationResult:
@@ -15,7 +15,7 @@ class FisherCalculationResult:
         :type intersection_size: int
         :type empirical_pvalue: float
         :type pvalue: float
-        :type module: Module
+        :type module: GQModule
         """
         if module is None:
             raise Exception('Module is None.')
@@ -57,18 +57,17 @@ def calculate_overlaps(modules, query):
     """
     :param query: sorted list of entrez IDs
     :type query: list of int
-    :type modules: list of Module
+    :type modules: list of GQModule
     :rtype
     """
     query_set = set(query)
     overlaps = {}
     for module in modules:
-        name = module.name
-        gene_ids_set = module.gene_ids_set
-        gse, gpl, module_number = name.gse, name.gpl, name.module_number
+        gse, gpl, module_number = module.split_full_name()
+        module_genes = module.entrez_ids
         if (gse, gpl) not in overlaps:
             overlaps[gse, gpl] = {}
-        overlaps[gse, gpl][module_number] = len(query_set & gene_ids_set)
+        overlaps[gse, gpl][module_number] = len(query_set & set(module_genes))
     return overlaps
 
 
@@ -76,7 +75,7 @@ def fisher_empirical_p_values(species, modules, entrez_query, max_empirical_p_va
     """
     Calculates logarithm of fisher p-value and empirical (adjusted) p-value.
 
-    :type modules: list of Module
+    :type modules: iterable of GQModule
     :type max_empirical_p_value: float
     :param max_empirical_p_value: max allowed empirical p-value
     :param species: species
@@ -91,15 +90,14 @@ def fisher_empirical_p_values(species, modules, entrez_query, max_empirical_p_va
                                for s, p in overlaps_with_each_module}
     result = []
     for module in modules:
-        name = module.name
-        gse, gpl, num = name.gse, name.gpl, name.module_number
+        gse, gpl, num = module.split_full_name()
         if overlaps_with_each_module[gse, gpl][num] == 0:
             continue
         pvalue = right_p_value(
             overlaps_with_each_module[gse, gpl][num],
-            len(module) - overlaps_with_each_module[gse, gpl][num],
+            len(module.entrez_ids) - overlaps_with_each_module[gse, gpl][num],
             overlaps_with_whole_gse[gse, gpl] - overlaps_with_each_module[gse, gpl][num],
-            6000 - overlaps_with_whole_gse[gse, gpl] - len(module) + overlaps_with_each_module[gse, gpl][num]
+            6000 - overlaps_with_whole_gse[gse, gpl] - len(module.entrez_ids) + overlaps_with_each_module[gse, gpl][num]
         )
         log_pvalue = get_log10_or_inf(pvalue)
         empirical_pvalue = empirical_p_value(species, log_pvalue, len(entrez_query))

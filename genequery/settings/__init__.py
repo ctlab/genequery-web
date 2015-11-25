@@ -14,12 +14,6 @@ import os
 LOCAL_APPS = ()
 
 try:
-    from logic_settings import *
-except:
-    print '???'
-    pass
-
-try:
     from local_settings import *
 except:
     pass

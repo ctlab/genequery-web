@@ -1,6 +1,6 @@
 from optparse import make_option
 import tarfile
-from searcher.models import ModuleDescription, IdMap, ModuleGenes
+from searcher.models import ModuleDescription, IdMap, GQModule
 
 __author__ = 'smolcoder'
 
@@ -54,16 +54,16 @@ class Command(BaseCommand):
         return tar.extractfile(self.outer_dir_name + '/' + name)
 
     def populate_modules_with_genes(self, species, module_genes_file):
-        existing_modules = set(ModuleGenes.objects.values_list('species', 'module'))
+        existing_modules = set(GQModule.objects.values_list('species', 'module'))
         self.stdout.write("Reading data from {}...".format(module_genes_file.name))
         modules = [tuple(line[:-1].split('\t')) for line in module_genes_file.readlines()]
         entities = []
         for module, genes in modules:
             if (species, module) in existing_modules:
                 continue
-            entities.append(ModuleGenes(species=species, module=module, entrez_ids=map(int, genes.split())))
+            entities.append(GQModule(species=species, module=module, entrez_ids=map(int, genes.split())))
         self.stdout.write("{} was red where {} new entities. Saving...".format(len(modules), len(entities)))
-        ModuleGenes.objects.bulk_create(entities)
+        GQModule.objects.bulk_create(entities)
         self.stdout.write("Saved.")
 
     def populate_module_descriptions(self, geo_data_file):

@@ -1,13 +1,8 @@
 import os
-from django.conf import settings
-from common.constants import ALLOWED_SPECIES, ENTREZ_PATTERN, ENTREZ, REFSEQ, SYMBOL
+from constants import ALLOWED_SPECIES, ENTREZ_PATTERN, ENTREZ, REFSEQ, SYMBOL
 
 
 here = os.path.join
-
-
-def is_dev_mode():
-    return getattr(settings, 'DEV_MODE', False)
 
 
 def is_valid_species(species):
