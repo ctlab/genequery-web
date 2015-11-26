@@ -10,12 +10,13 @@ from django.http import JsonResponse, HttpResponseServerError
 from django.utils.html import format_html
 from django.views.generic import View
 
-from utils.constants import MIN_LOG_EMPIRICAL_P_VALUE, INF
+from genequery.utils.constants import MIN_LOG_EMPIRICAL_P_VALUE, INF
+from genequery.utils.test import get_test_rest_response
 from math.fisher_empirical import FisherCalculationResult, fisher_empirical_p_values
-from main.views import BaseTemplateView
-from searcher.forms import SearchQueryForm
-from searcher.models import IdMap, ModuleDescription, GQModule
-from utils import log_get, gene_list_pprint, here
+from genequery.main.views import BaseTemplateView
+from genequery.searcher.forms import SearchQueryForm
+from genequery.searcher.models import IdMap, ModuleDescription, GQModule
+from genequery.utils import log_get, gene_list_pprint, here
 
 LOG = logging.getLogger('genequery')
 
@@ -81,7 +82,6 @@ class SearchProcessorView(View):
 
         start_time = time()
 
-        # entrez_to_original = id_mapping.convert_to_entrez(species, input_genes_notation_type, genes)
         entrez_to_original = IdMap.convert_to_entrez(species, input_genes_notation_type, genes)
 
         if not entrez_to_original:

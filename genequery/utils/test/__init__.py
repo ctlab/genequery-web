@@ -6,7 +6,7 @@ from django.conf import settings
 
 
 def get_test_rest_response(species):
-    return open('test_data/test_rest_response_{}.txt'.format(species)).read()
+    return open('genequery/searcher/test/resource/test_rest_response_{}.txt'.format(species)).read()
 
 
 class GQTestCase(TestCase):

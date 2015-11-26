@@ -1,6 +1,6 @@
 from django.core.urlresolvers import reverse
 from django.test import Client
-from utils.test import GQTestCase
+from genequery.utils.test import GQTestCase
 
 MENU_ACTIVE = 'menu_active'
 

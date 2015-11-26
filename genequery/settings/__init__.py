@@ -8,20 +8,17 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.7/ref/settings/
 """
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-import os
+from genequery.utils import here
 
 LOCAL_APPS = ()
 
 try:
     from local_settings import *
-except:
+except ImportError:
     pass
 
 
 SECRET_KEY = 'n%d(+weua8k&w58i%&$xe_$4ax84(gw*%j9wqu)vk@&(n=1m^%'
-
-DEBUG = True
 
 # TEMPLATES
 TEMPLATE_DEBUG = True
@@ -47,13 +44,11 @@ DJANGO_APPS = (
 )
 
 PROJECT_APPS = (
-    'searcher',
-    'main',
+    'genequery.searcher',
+    'genequery.main',
 )
 
 INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS + LOCAL_APPS
-
-FIXTURE_DIRS = ('test_data',)
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -91,15 +86,15 @@ LOGGING = {
         'verbose': {
             'format': '%(levelname)s %(name)s %(asctime)s %(module)s.py, line %(lineno)d, in %(funcName)s:\t%(message)s',
             'datefmt': "%Y-%m-%d %H:%M:%S",
-            },
+        },
         'rpc_verbose': {
             'format': '%(levelname)s %(name)s %(asctime)s %(module)s:%(lineno)d\tthread-%(thread)d\tprocess-%(process)d\t%(message)s',
             'datefmt': "%Y-%m-%d %H:%M:%S",
-            },
+        },
         'simple': {
             'format': '%(levelname)s %(message)s'
         },
-        },
+    },
     'filters': {
         'require_debug_false': {
             '()': 'django.utils.log.RequireDebugFalse'
@@ -112,7 +107,7 @@ LOGGING = {
         'null': {
             'level': 'DEBUG',
             'class': 'logging.NullHandler',
-            },
+        },
         'console': {
             'level': 'DEBUG',
             'class': 'logging.StreamHandler',
@@ -125,7 +120,7 @@ LOGGING = {
             'maxBytes': 1024 * 1024 * 30,
             'backupCount': 10,
             'formatter': 'verbose',
-            },
+        },
         'rpc_stats_file': {
             'level': 'INFO',
             'class': 'logging.handlers.RotatingFileHandler',
@@ -133,16 +128,16 @@ LOGGING = {
             'maxBytes': 1024 * 1024 * 30,
             'backupCount': 10,
             'formatter': 'rpc_verbose',
-            },
         },
+    },
     'loggers': {
         'genequery': {
             'handlers': ['console', 'common_file'],
             'level': 'DEBUG',
-            },
+        },
         'rpc': {
             'handlers': ['console', 'rpc_stats_file'],
             'level': 'DEBUG',
-            },
-        }
+        },
+    }
 }

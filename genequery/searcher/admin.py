@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django import forms
 from django.forms import Textarea
-from searcher.models import IdMap, ModuleDescription, GQModule
+from genequery.searcher.models import IdMap, ModuleDescription, GQModule
 
 
 class IdMapAdmin(admin.ModelAdmin):

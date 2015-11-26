@@ -3,7 +3,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.utils.html import escape
 from djorm_pgarray.fields import IntegerArrayField
-from utils.constants import ENTREZ, SYMBOL, REFSEQ, HS, MM, RT
+from genequery.utils.constants import ENTREZ, SYMBOL, REFSEQ, HS, MM, RT
 
 
 MODULE_NAME_MAX_LENGTH = 50

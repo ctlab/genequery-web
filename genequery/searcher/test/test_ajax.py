@@ -3,9 +3,9 @@ import json
 from django.core.urlresolvers import reverse
 from django.test import Client
 
-from searcher.forms import GENE_LIST_REQUIRED, SPECIES_REQUIRED
-from searcher.views import HTML_NEG_INF
-from utils.test import GQTestCase, SharedFixtureTestCase
+from genequery.searcher.forms import GENE_LIST_REQUIRED, SPECIES_REQUIRED
+from genequery.searcher.views import HTML_NEG_INF
+from genequery.utils.test import GQTestCase, SharedFixtureTestCase
 
 
 def get_json(response):

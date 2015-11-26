@@ -1,8 +1,8 @@
 import math
 import fisher
 from scipy.stats import norm
-from utils.constants import MM, HS, INF, MIN_LOG_EMPIRICAL_P_VALUE
-from searcher.models import GQModule
+from genequery.utils.constants import MM, HS, INF, MIN_LOG_EMPIRICAL_P_VALUE
+from genequery.searcher.models import GQModule
 
 
 class FisherCalculationResult:
