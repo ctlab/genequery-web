@@ -60,10 +60,13 @@ class FisherCalculationResult:
 
 def calculate_overlaps(modules, query):
     """
+    Calculates overlaps of query genes with each module from modules.
+
     :param query: sorted list of entrez IDs
     :type query: list of int
     :type modules: list of GQModule
-    :rtype
+    :returns dictionary of the form {(gse, gpl): {module_number: overlap length, ...}, ...}
+    :rtype dict
     """
     query_set = set(query)
     overlaps = {}

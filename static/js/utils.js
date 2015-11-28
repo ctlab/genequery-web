@@ -87,6 +87,12 @@ var Utils = {
     });
   },
 
+  /**
+   * Initiates downloading of the CSV content as a file.
+   *
+   * @param filename name of the result CSV file
+   * @param content CSV string to be places in the file
+   */
   downloadDataAsCSV: function(filename, content) {
     var blob = new Blob([content], {type: 'text/csv;charset=utf-8;'});
     if (navigator.msSaveBlob) { // IE 10+
@@ -105,6 +111,12 @@ var Utils = {
     }
   },
 
+  /**
+   * Extracts parameter from url and returns it (or null if absents).
+   *
+   * @param key parameter name
+   * @returns string | null
+   */
   getUrlParameter: function(key) {
     var page_url = window.location.search.substring(1);
     var url_variables = page_url.split('&');

@@ -6,7 +6,7 @@ import urllib
 import urllib2
 from django.conf import settings
 from django.core.urlresolvers import reverse
-from django.http import JsonResponse, HttpResponseServerError
+from django.http import JsonResponse
 from django.utils.html import format_html
 from django.views.generic import View
 
@@ -21,6 +21,14 @@ from genequery.utils import log_get, gene_list_pprint, here
 LOG = logging.getLogger('genequery')
 
 HTML_NEG_INF = format_html('-&infin;')
+
+
+class JsonErrorResponse(JsonResponse):
+    def __init__(self, error_message, status_code=500, **kwargs):
+        super(JsonErrorResponse, self).__init__({
+            'error': error_message,
+            'code': status_code,
+        }, **kwargs)
 
 
 def get_module_heat_map_url(species, gse, gpl, module_number):
@@ -53,7 +61,7 @@ class SearchPageView(BaseTemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(SearchPageView, self).get_context_data()
-        context['request_url'] = reverse('searcher:search')
+        context['request_url'] = reverse('searcher:search')  # for ajax search request
         return context
 
 
@@ -64,14 +72,13 @@ class SearchProcessorView(View):
     @log_get(LOG)
     def get(self, request):
         if not request.is_ajax():
-            LOG.warning('Not ajax request.')
+            LOG.warning('Search request must be AJAX.')
             return self.http_method_not_allowed(request)
 
         form = SearchQueryForm(request.GET)
         if not form.is_valid():
-            message = '\n'.join(form.get_error_messages_as_list())
-            LOG.info('Invalid form data: {}'.format(message))
-            return JsonResponse({'error': message})
+            LOG.info('Invalid form data: {}'.format('\n'.join(form.get_error_messages_as_list())))
+            return JsonResponse({'error': ('\n'.join(form.get_error_messages_as_list()))})
 
         input_genes_notation_type = form.get_genes_id_type()
         species = form.cleaned_data['species']
@@ -83,7 +90,6 @@ class SearchProcessorView(View):
         start_time = time()
 
         entrez_to_original = IdMap.convert_to_entrez(species, input_genes_notation_type, genes)
-
         if not entrez_to_original:
             return build_search_result_data(
                 [],
@@ -97,20 +103,19 @@ class SearchProcessorView(View):
         try:
             sorted_results = calculate_fisher_process_results(species, [pair[0] for pair in entrez_to_original])
         except:
-            message = 'Error while calculating p-values'
-            LOG.exception(message)
-            return HttpResponseServerError(message)
+            LOG.exception('Error while calculating p-values')
+            return JsonErrorResponse('System error')
 
         processing_time = round(time() - start_time, 3)
 
-        return build_search_result_data(
+        return JsonResponse(build_search_result_data(
             sorted_results,
             processing_time,
             species,
             len(genes),
             input_genes_notation_type,
             len(entrez_to_original),
-        )
+        ))
 
 
 search_processor_view = SearchProcessorView.as_view()
@@ -123,6 +128,15 @@ def build_search_result_data(
         original_genes_count,
         original_notation,
         unique_entrez_count):
+    """
+    :type sorted_fisher_processing_results: list of FisherCalculationResult
+    :type processing_time: float
+    :type species: str
+    :type original_genes_count: int
+    :type original_notation: str
+    :type unique_entrez_count: int
+    :rtype: dict
+    """
     results = []
     for i, r in enumerate(sorted_fisher_processing_results):
         results.append(fisher_process_result_to_json(species, r, i + 1))
@@ -134,7 +148,7 @@ def build_search_result_data(
         'unique_entrez': unique_entrez_count,
         'total': len(results),
     }
-    return JsonResponse({'rows': results, 'recap': recap})
+    return {'rows': results, 'recap': recap}
 
 
 def fisher_process_result_to_json(species, result, rank):
@@ -171,32 +185,37 @@ def calculate_fisher_process_results(species, entrez_query):
         # Already sorted on back-end
         return calculate_fisher_p_values_via_rest(species, entrez_query)
     except Exception:
-        LOG.exception("Can't access REST service: {}")
+        LOG.exception("Can't access REST service")
 
     LOG.info('Calculate using data from DB.')
     results = fisher_empirical_p_values(species, GQModule.objects.filter(species=species), entrez_query)
     return sorted(results)
 
 
-def calculate_fisher_p_values_via_rest(species, query_entrez):
+def query_rest(species, query_entrez_ids):
     """
-    :type query_entrez: list of int
+    :type query_entrez_ids: list of int
     :type species: str
-    :rtype list of FisherCalculationResult
+    :rtype str
     """
     params = {
         'species': species,
-        'genes': ' '.join(map(str, query_entrez)),
+        'genes': ' '.join(map(str, query_entrez_ids)),
     }
     url = 'http://{}:{}/{}?{}'.format(
         settings.REST_HOST, settings.REST_PORT, settings.REST_URI, urllib.urlencode(params)
     )
+    return urllib2.urlopen(url).read()
 
-    # LOG.warn('User fake response!')
-    # # sleep(3)
+
+def calculate_fisher_p_values_via_rest(species, query_entrez_ids):
+    """
+    :type query_entrez_ids: list of int
+    :type species: str
+    :rtype list of FisherCalculationResult
+    """
     # response = json.loads(get_test_rest_response(species))
-
-    response = json.loads(urllib2.urlopen(url).read())
+    response = json.loads(query_rest(species, query_entrez_ids))
 
     results = []
     for row in response:
@@ -217,7 +236,7 @@ class GetOverlapView(View):
     @log_get(LOG)
     def get(self, request):
         if not request.is_ajax():
-            LOG.warning('Not ajax request.')
+            LOG.warning('Must be AJAX.')
             return self.http_method_not_allowed(request)
 
         form = SearchQueryForm(request.GET)
