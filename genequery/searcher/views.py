@@ -10,6 +10,7 @@ from django.http import JsonResponse
 from django.utils.html import format_html
 from django.views.generic import View
 
+from genequery.searcher.idconvertion import convert_to_entrez, convert_entrez_to_symbol
 from genequery.utils.constants import MIN_LOG_EMPIRICAL_P_VALUE, INF
 from genequery.utils.test import get_test_rest_response
 from math.fisher_empirical import FisherCalculationResult, fisher_empirical_p_values
@@ -214,8 +215,8 @@ def calculate_fisher_p_values_via_rest(species, query_entrez_ids):
     :type species: str
     :rtype list of FisherCalculationResult
     """
-    # response = json.loads(get_test_rest_response(species))
-    response = json.loads(query_rest(species, query_entrez_ids))
+    response = json.loads(get_test_rest_response(species))
+    # response = json.loads(query_rest(species, query_entrez_ids))
 
     results = []
     for row in response:
@@ -247,20 +248,17 @@ class GetOverlapView(View):
 
         genes_id_type = form.get_genes_id_type()
         species = form.cleaned_data['species']
-        genes = form.cleaned_data['genes']
+        input_genes = form.cleaned_data['genes']
         full_module_name = request.GET['module']
 
         LOG.info('GET overlap: type={}, species={}, module={}, genes={}'.format(
-            genes_id_type, species, full_module_name, genes,
+            genes_id_type, species, full_module_name, input_genes,
         ))
 
-        result = []
-        entrez_genes = GQModule.objects.get(species=species, full_name=full_module_name).entrez_ids
-        for entrez, original in IdMap.convert_to_entrez(species, genes_id_type, genes):
-            if entrez in entrez_genes:
-                result.append(original)
-
-        return JsonResponse({'genes': result})
+        module_genes_entrez = GQModule.objects.get(species=species, full_name=full_module_name).entrez_ids
+        input_genes_entrez = convert_to_entrez(species, genes_id_type, input_genes)['entrez_ids']
+        symbol_result = convert_entrez_to_symbol(species, list(set(module_genes_entrez) & set(input_genes_entrez)))
+        return JsonResponse({'genes': symbol_result['symbol_ids']})
 
 
 get_overlap = GetOverlapView.as_view()

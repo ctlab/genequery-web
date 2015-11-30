@@ -1,11 +1,7 @@
-import re
-
-ENTREZ_PATTERN = re.compile('^[0-9\s]*$')
-
-
 ENTREZ = 'entrez'
 REFSEQ = 'refseq'
 SYMBOL = 'symbol'
+ENSEMBL = 'ensembl'
 
 INF = 1e10
 EPS = 1e-325

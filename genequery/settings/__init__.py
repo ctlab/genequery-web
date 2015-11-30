@@ -32,7 +32,7 @@ TEMPLATE_LOADERS = (
 
 # Application definition
 
-TEST_RUNNER = 'utils.test.GQTestRunner'
+# TEST_RUNNER = 'utils.test.GQTestRunner'
 
 DJANGO_APPS = (
     'django.contrib.admin',

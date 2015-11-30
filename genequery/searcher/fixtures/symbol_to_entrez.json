@@ -1,0 +1,1019 @@
+[
+  {
+    "fields": {
+      "entrez_id": 1,
+      "species": "hs",
+      "symbol_id": "A1BG"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 1
+  },
+  {
+    "fields": {
+      "entrez_id": 10,
+      "species": "hs",
+      "symbol_id": "NAT2"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 2
+  },
+  {
+    "fields": {
+      "entrez_id": 100,
+      "species": "hs",
+      "symbol_id": "ADA"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 3
+  },
+  {
+    "fields": {
+      "entrez_id": 1000,
+      "species": "hs",
+      "symbol_id": "CDH2"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 4
+  },
+  {
+    "fields": {
+      "entrez_id": 10000,
+      "species": "hs",
+      "symbol_id": "AKT3"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 5
+  },
+  {
+    "fields": {
+      "entrez_id": 100008586,
+      "species": "hs",
+      "symbol_id": "GAGE12F"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 6
+  },
+  {
+    "fields": {
+      "entrez_id": 100008587,
+      "species": "hs",
+      "symbol_id": "RNA5-8S5"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 7
+  },
+  {
+    "fields": {
+      "entrez_id": 100008588,
+      "species": "hs",
+      "symbol_id": "RNA18S5"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 8
+  },
+  {
+    "fields": {
+      "entrez_id": 100008589,
+      "species": "hs",
+      "symbol_id": "RNA28S5"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 9
+  },
+  {
+    "fields": {
+      "entrez_id": 100009601,
+      "species": "hs",
+      "symbol_id": "TRY-GTA7-1"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 10
+  },
+  {
+    "fields": {
+      "entrez_id": 100009602,
+      "species": "hs",
+      "symbol_id": "TRY-GTA5-2"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 11
+  },
+  {
+    "fields": {
+      "entrez_id": 100009603,
+      "species": "hs",
+      "symbol_id": "TRA-AGC11-1"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 12
+  },
+  {
+    "fields": {
+      "entrez_id": 100009604,
+      "species": "hs",
+      "symbol_id": "TRA-AGC8-1"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 13
+  },
+  {
+    "fields": {
+      "entrez_id": 100009605,
+      "species": "hs",
+      "symbol_id": "TRF-GAA2-1"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 14
+  },
+  {
+    "fields": {
+      "entrez_id": 100009606,
+      "species": "hs",
+      "symbol_id": "TRF-GAA1-2"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 15
+  },
+  {
+    "fields": {
+      "entrez_id": 100009607,
+      "species": "hs",
+      "symbol_id": "TRH-GTG1-9"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 16
+  },
+  {
+    "fields": {
+      "entrez_id": 100009613,
+      "species": "hs",
+      "symbol_id": "ANO1-AS2"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 17
+  },
+  {
+    "fields": {
+      "entrez_id": 100009667,
+      "species": "hs",
+      "symbol_id": "POU5F1P5"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 18
+  },
+  {
+    "fields": {
+      "entrez_id": 100009668,
+      "species": "hs",
+      "symbol_id": "POU5F1P6"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 19
+  },
+  {
+    "fields": {
+      "entrez_id": 100009669,
+      "species": "hs",
+      "symbol_id": "POU5F1P7"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 20
+  },
+  {
+    "fields": {
+      "entrez_id": 100009675,
+      "species": "hs",
+      "symbol_id": "MRT4"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 21
+  },
+  {
+    "fields": {
+      "entrez_id": 100009676,
+      "species": "hs",
+      "symbol_id": "ZBTB11-AS1"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 22
+  },
+  {
+    "fields": {
+      "entrez_id": 10001,
+      "species": "hs",
+      "symbol_id": "MED6"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 23
+  },
+  {
+    "fields": {
+      "entrez_id": 10002,
+      "species": "hs",
+      "symbol_id": "NR2E3"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 24
+  },
+  {
+    "fields": {
+      "entrez_id": 10003,
+      "species": "hs",
+      "symbol_id": "NAALAD2"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 25
+  },
+  {
+    "fields": {
+      "entrez_id": 100033391,
+      "species": "hs",
+      "symbol_id": "VN2R2P"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 26
+  },
+  {
+    "fields": {
+      "entrez_id": 100033392,
+      "species": "hs",
+      "symbol_id": "VN2R3P"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 27
+  },
+  {
+    "fields": {
+      "entrez_id": 100033395,
+      "species": "hs",
+      "symbol_id": "VN2R6P"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 28
+  },
+  {
+    "fields": {
+      "entrez_id": 100033396,
+      "species": "hs",
+      "symbol_id": "VN2R7P"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 29
+  },
+  {
+    "fields": {
+      "entrez_id": 100033398,
+      "species": "hs",
+      "symbol_id": "VN2R10P"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 30
+  },
+  {
+    "fields": {
+      "entrez_id": 100033399,
+      "species": "hs",
+      "symbol_id": "VN2R11P"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 31
+  },
+  {
+    "fields": {
+      "entrez_id": 100033400,
+      "species": "hs",
+      "symbol_id": "VN2R12P"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 32
+  },
+  {
+    "fields": {
+      "entrez_id": 100033401,
+      "species": "hs",
+      "symbol_id": "VN2R13P"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 33
+  },
+  {
+    "fields": {
+      "entrez_id": 100033402,
+      "species": "hs",
+      "symbol_id": "VN2R14P"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 34
+  },
+  {
+    "fields": {
+      "entrez_id": 100033403,
+      "species": "hs",
+      "symbol_id": "VN2R15P"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 35
+  },
+  {
+    "fields": {
+      "entrez_id": 100033404,
+      "species": "hs",
+      "symbol_id": "VN2R16P"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 36
+  },
+  {
+    "fields": {
+      "entrez_id": 100033406,
+      "species": "hs",
+      "symbol_id": "VN2R18P"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 37
+  },
+  {
+    "fields": {
+      "entrez_id": 100033407,
+      "species": "hs",
+      "symbol_id": "VN2R19P"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 38
+  },
+  {
+    "fields": {
+      "entrez_id": 100033408,
+      "species": "hs",
+      "symbol_id": "VN2R20P"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 39
+  },
+  {
+    "fields": {
+      "entrez_id": 100033409,
+      "species": "hs",
+      "symbol_id": "OTX2P1"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 40
+  },
+  {
+    "fields": {
+      "entrez_id": 100033411,
+      "species": "hs",
+      "symbol_id": "DUXB"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 41
+  },
+  {
+    "fields": {
+      "entrez_id": 100033413,
+      "species": "hs",
+      "symbol_id": "SNORD116-1"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 42
+  },
+  {
+    "fields": {
+      "entrez_id": 100033414,
+      "species": "hs",
+      "symbol_id": "SNORD116-2"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 43
+  },
+  {
+    "fields": {
+      "entrez_id": 100033415,
+      "species": "hs",
+      "symbol_id": "SNORD116-3"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 44
+  },
+  {
+    "fields": {
+      "entrez_id": 100033416,
+      "species": "hs",
+      "symbol_id": "SNORD116-4"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 45
+  },
+  {
+    "fields": {
+      "entrez_id": 100033417,
+      "species": "hs",
+      "symbol_id": "SNORD116-5"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 46
+  },
+  {
+    "fields": {
+      "entrez_id": 100033418,
+      "species": "hs",
+      "symbol_id": "SNORD116-6"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 47
+  },
+  {
+    "fields": {
+      "entrez_id": 100033419,
+      "species": "hs",
+      "symbol_id": "SNORD116-7"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 48
+  },
+  {
+    "fields": {
+      "entrez_id": 100033420,
+      "species": "hs",
+      "symbol_id": "SNORD116-8"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 49
+  },
+  {
+    "fields": {
+      "entrez_id": 100033421,
+      "species": "hs",
+      "symbol_id": "SNORD116-9"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 50
+  },
+  {
+    "fields": {
+      "entrez_id": 100033422,
+      "species": "hs",
+      "symbol_id": "SNORD116-10"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 51
+  },
+  {
+    "fields": {
+      "entrez_id": 100033423,
+      "species": "hs",
+      "symbol_id": "SNORD116-11"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 52
+  },
+  {
+    "fields": {
+      "entrez_id": 100033424,
+      "species": "hs",
+      "symbol_id": "SNORD116-12"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 53
+  },
+  {
+    "fields": {
+      "entrez_id": 100033425,
+      "species": "hs",
+      "symbol_id": "SNORD116-13"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 54
+  },
+  {
+    "fields": {
+      "entrez_id": 100033426,
+      "species": "hs",
+      "symbol_id": "SNORD116-14"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 55
+  },
+  {
+    "fields": {
+      "entrez_id": 100033427,
+      "species": "hs",
+      "symbol_id": "SNORD116-15"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 56
+  },
+  {
+    "fields": {
+      "entrez_id": 100033428,
+      "species": "hs",
+      "symbol_id": "SNORD116-16"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 57
+  },
+  {
+    "fields": {
+      "entrez_id": 100033429,
+      "species": "hs",
+      "symbol_id": "SNORD116-17"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 58
+  },
+  {
+    "fields": {
+      "entrez_id": 100033430,
+      "species": "hs",
+      "symbol_id": "SNORD116-18"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 59
+  },
+  {
+    "fields": {
+      "entrez_id": 100033431,
+      "species": "hs",
+      "symbol_id": "SNORD116-20"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 60
+  },
+  {
+    "fields": {
+      "entrez_id": 100033432,
+      "species": "hs",
+      "symbol_id": "SNORD116-21"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 61
+  },
+  {
+    "fields": {
+      "entrez_id": 100033433,
+      "species": "hs",
+      "symbol_id": "SNORD116-22"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 62
+  },
+  {
+    "fields": {
+      "entrez_id": 100033434,
+      "species": "hs",
+      "symbol_id": "SNORD116-23"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 63
+  },
+  {
+    "fields": {
+      "entrez_id": 100033435,
+      "species": "hs",
+      "symbol_id": "SNORD116-24"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 64
+  },
+  {
+    "fields": {
+      "entrez_id": 100033436,
+      "species": "hs",
+      "symbol_id": "SNORD116-25"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 65
+  },
+  {
+    "fields": {
+      "entrez_id": 100033437,
+      "species": "hs",
+      "symbol_id": "SNORD115-2"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 66
+  },
+  {
+    "fields": {
+      "entrez_id": 100033438,
+      "species": "hs",
+      "symbol_id": "SNORD116-26"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 67
+  },
+  {
+    "fields": {
+      "entrez_id": 100033439,
+      "species": "hs",
+      "symbol_id": "SNORD116-27"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 68
+  },
+  {
+    "fields": {
+      "entrez_id": 100033440,
+      "species": "hs",
+      "symbol_id": "SNORD115-3"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 69
+  },
+  {
+    "fields": {
+      "entrez_id": 100033441,
+      "species": "hs",
+      "symbol_id": "SNORD115-4"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 70
+  },
+  {
+    "fields": {
+      "entrez_id": 100033442,
+      "species": "hs",
+      "symbol_id": "SNORD115-5"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 71
+  },
+  {
+    "fields": {
+      "entrez_id": 100033443,
+      "species": "hs",
+      "symbol_id": "SNORD115-6"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 72
+  },
+  {
+    "fields": {
+      "entrez_id": 100033444,
+      "species": "hs",
+      "symbol_id": "SNORD115-7"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 73
+  },
+  {
+    "fields": {
+      "entrez_id": 100033445,
+      "species": "hs",
+      "symbol_id": "SNORD115-8"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 74
+  },
+  {
+    "fields": {
+      "entrez_id": 100033446,
+      "species": "hs",
+      "symbol_id": "SNORD115-9"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 75
+  },
+  {
+    "fields": {
+      "entrez_id": 100033447,
+      "species": "hs",
+      "symbol_id": "SNORD115-10"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 76
+  },
+  {
+    "fields": {
+      "entrez_id": 100033448,
+      "species": "hs",
+      "symbol_id": "SNORD115-11"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 77
+  },
+  {
+    "fields": {
+      "entrez_id": 100033449,
+      "species": "hs",
+      "symbol_id": "SNORD115-12"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 78
+  },
+  {
+    "fields": {
+      "entrez_id": 100033450,
+      "species": "hs",
+      "symbol_id": "SNORD115-13"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 79
+  },
+  {
+    "fields": {
+      "entrez_id": 100033451,
+      "species": "hs",
+      "symbol_id": "SNORD115-14"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 80
+  },
+  {
+    "fields": {
+      "entrez_id": 100033453,
+      "species": "hs",
+      "symbol_id": "SNORD115-15"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 81
+  },
+  {
+    "fields": {
+      "entrez_id": 100033454,
+      "species": "hs",
+      "symbol_id": "SNORD115-16"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 82
+  },
+  {
+    "fields": {
+      "entrez_id": 100033455,
+      "species": "hs",
+      "symbol_id": "SNORD115-17"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 83
+  },
+  {
+    "fields": {
+      "entrez_id": 100033456,
+      "species": "hs",
+      "symbol_id": "SNORD115-18"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 84
+  },
+  {
+    "fields": {
+      "entrez_id": 100033458,
+      "species": "hs",
+      "symbol_id": "SNORD115-19"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 85
+  },
+  {
+    "fields": {
+      "entrez_id": 100033460,
+      "species": "hs",
+      "symbol_id": "SNORD115-20"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 86
+  },
+  {
+    "fields": {
+      "entrez_id": 100033603,
+      "species": "hs",
+      "symbol_id": "SNORD115-21"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 87
+  },
+  {
+    "fields": {
+      "entrez_id": 100033799,
+      "species": "hs",
+      "symbol_id": "SNORD115-22"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 88
+  },
+  {
+    "fields": {
+      "entrez_id": 100033800,
+      "species": "hs",
+      "symbol_id": "SNORD115-23"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 89
+  },
+  {
+    "fields": {
+      "entrez_id": 100033801,
+      "species": "hs",
+      "symbol_id": "SNORD115-25"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 90
+  },
+  {
+    "fields": {
+      "entrez_id": 100033802,
+      "species": "hs",
+      "symbol_id": "SNORD115-26"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 91
+  },
+  {
+    "fields": {
+      "entrez_id": 100033803,
+      "species": "hs",
+      "symbol_id": "SNORD115-29"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 92
+  },
+  {
+    "fields": {
+      "entrez_id": 100033804,
+      "species": "hs",
+      "symbol_id": "SNORD115-30"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 93
+  },
+  {
+    "fields": {
+      "entrez_id": 100033805,
+      "species": "hs",
+      "symbol_id": "SNORD115-31"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 94
+  },
+  {
+    "fields": {
+      "entrez_id": 100033806,
+      "species": "hs",
+      "symbol_id": "SNORD115-32"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 95
+  },
+  {
+    "fields": {
+      "entrez_id": 100033807,
+      "species": "hs",
+      "symbol_id": "SNORD115-33"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 96
+  },
+  {
+    "fields": {
+      "entrez_id": 100033808,
+      "species": "hs",
+      "symbol_id": "SNORD115-34"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 97
+  },
+  {
+    "fields": {
+      "entrez_id": 100033809,
+      "species": "hs",
+      "symbol_id": "SNORD115-35"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 98
+  },
+  {
+    "fields": {
+      "entrez_id": 100033810,
+      "species": "hs",
+      "symbol_id": "SNORD115-36"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 99
+  },
+  {
+    "fields": {
+      "entrez_id": 100033811,
+      "species": "hs",
+      "symbol_id": "SNORD115-37"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 100
+  },
+  {
+    "fields": {
+      "entrez_id": 100033812,
+      "species": "hs",
+      "symbol_id": "SNORD115-38"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 101
+  },
+  {
+    "fields": {
+      "entrez_id": 100033813,
+      "species": "hs",
+      "symbol_id": "SNORD115-39"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 102
+  },
+  {
+    "fields": {
+      "entrez_id": 100033814,
+      "species": "hs",
+      "symbol_id": "SNORD115-40"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 103
+  },
+  {
+    "fields": {
+      "entrez_id": 100033815,
+      "species": "hs",
+      "symbol_id": "SNORD115-41"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 104
+  },
+  {
+    "fields": {
+      "entrez_id": 100033816,
+      "species": "hs",
+      "symbol_id": "SNORD115-42"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 105
+  },
+  {
+    "fields": {
+      "entrez_id": 100033817,
+      "species": "hs",
+      "symbol_id": "SNORD115-43"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 106
+  },
+  {
+    "fields": {
+      "entrez_id": 100033818,
+      "species": "hs",
+      "symbol_id": "SNORD115-44"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 107
+  },
+  {
+    "fields": {
+      "entrez_id": 100033819,
+      "species": "hs",
+      "symbol_id": "MIR675"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 108
+  },
+  {
+    "fields": {
+      "entrez_id": 100033820,
+      "species": "hs",
+      "symbol_id": "SNORD116-28"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 109
+  },
+  {
+    "fields": {
+      "entrez_id": 100033821,
+      "species": "hs",
+      "symbol_id": "SNORD116-29"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 110
+  },
+  {
+    "fields": {
+      "entrez_id": 100033822,
+      "species": "hs",
+      "symbol_id": "SNORD115-48"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 111
+  },
+  {
+    "fields": {
+      "entrez_id": 10101010101,
+      "species": "hs",
+      "symbol_id": "SNORD115-48"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 112
+  },
+  {
+    "fields": {
+      "entrez_id": 100033819,
+      "species": "hs",
+      "symbol_id": "Another"
+    },
+    "model": "searcher.symbol2entrez",
+    "pk": 113
+  }
+]

@@ -1,9 +1,10 @@
 from django import forms
 from django.core.exceptions import ValidationError
 
-from genequery.searcher.models import ENTREZ_ID_MAX_LENGTH, REFSEQ_ID_MAX_LENGTH, SYMBOL_ID_MAX_LENGTH, SPECIES_CHOICES
+from genequery.searcher.idconvertion import get_gene_id_type
+from genequery.searcher.models import ENTREZ_ID_MAX_LENGTH, REFSEQ_ID_MAX_LENGTH, SYMBOL_ID_MAX_LENGTH, SPECIES_CHOICES, \
+    ENSEMBL_ID_MAX_LENGTH
 from genequery.utils.constants import *
-from genequery.utils import get_gene_id_type
 
 
 SPECIES_REQUIRED = 'Species are not specified.'
@@ -23,6 +24,11 @@ def refseq_id_validator(value):
 def symbol_id_validator(value):
     if len(value) > SYMBOL_ID_MAX_LENGTH:
         raise ValidationError('Symbol id {} is too long.'.format(value))
+
+
+def ensembl_id_validator(value):
+    if len(value) > ENSEMBL_ID_MAX_LENGTH:
+        raise ValidationError('Ensembl id {} is too long.'.format(value))
 
 
 class SearchQueryForm(forms.Form):
@@ -49,6 +55,8 @@ class SearchQueryForm(forms.Form):
             id_validator = refseq_id_validator
         elif first_gene_type == SYMBOL:
             id_validator = symbol_id_validator
+        elif first_gene_type == ENSEMBL:
+            id_validator = ensembl_id_validator
         else:
             raise forms.ValidationError('Gene {} has unknown id type.'.format(genes[0]))
 
@@ -68,7 +76,7 @@ class SearchQueryForm(forms.Form):
             id_validator(gene)
 
         self.genes_id_type = first_gene_type
-        return [g.upper() for g in genes]
+        return genes
 
     def get_genes_id_type(self):
         """
