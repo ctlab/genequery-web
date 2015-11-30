@@ -10,6 +10,8 @@ MODULE_NAME_MAX_LENGTH = 50
 SERIES_NAME_MAX_LENGTH = 50
 ENTREZ_ID_MAX_LENGTH = 50
 REFSEQ_ID_MAX_LENGTH = 50
+ENSEMBL_ID_MAX_LENGTH = 100
+OTHER_ID_MAX_LENGTH = 100
 SYMBOL_ID_MAX_LENGTH = 50
 SPECIES_MAX_LENGTH = 50
 
@@ -131,3 +133,63 @@ class IdMap(models.Model):
     def __unicode__(self):
         return u'{}(entrez={}, refseq={}, symbol={})'.format(
             self.species, self.entrez_id, self.refseq_id or 'None', self.symbol_id or 'None')
+
+
+class Refseq2Entrez(models.Model):
+    species = models.CharField(u'Species', max_length=SPECIES_MAX_LENGTH, blank=False, choices=SPECIES_CHOICES)
+    entrez_id = models.BigIntegerField(u'Entrez ID')
+    refseq_id = models.CharField(u'RefSeq ID', max_length=REFSEQ_ID_MAX_LENGTH, db_index=True)
+
+    class Meta:
+        verbose_name = 'refseq2entrez map'
+        verbose_name_plural = 'refseq2entrez maps'
+        db_table = 'refseq_to_entrez'
+        unique_together = (('species', 'refseq_id', 'entrez_id'),)
+
+    def __unicode__(self):
+        return u'{}(entrez={}, refseq={})'.format(self.species, self.entrez_id, self.refseq_id)
+
+
+class Ensembl2Entrez(models.Model):
+    species = models.CharField(u'Species', max_length=SPECIES_MAX_LENGTH, blank=False, choices=SPECIES_CHOICES)
+    entrez_id = models.BigIntegerField(u'Entrez ID')
+    ensembl_id = models.CharField(u'Ensembl ID', max_length=ENSEMBL_ID_MAX_LENGTH, db_index=True)
+
+    class Meta:
+        verbose_name = 'ensembl2entrez map'
+        verbose_name_plural = 'ensembl2entrez maps'
+        db_table = 'ensembl_to_entrez'
+        unique_together = (('species', 'ensembl_id', 'entrez_id'),)
+
+    def __unicode__(self):
+        return u'{}(entrez={}, ensembl={})'.format(self.species, self.entrez_id, self.ensembl_id)
+
+
+class Symbol2Entrez(models.Model):
+    species = models.CharField(u'Species', max_length=SPECIES_MAX_LENGTH, blank=False, choices=SPECIES_CHOICES)
+    entrez_id = models.BigIntegerField(u'Entrez ID', db_index=True)
+    symbol_id = models.CharField(u'Symbol ID', max_length=SYMBOL_ID_MAX_LENGTH, db_index=True)
+
+    class Meta:
+        verbose_name = 'symbol2entrez map'
+        verbose_name_plural = 'symbol2entrez maps'
+        db_table = 'symbol_to_entrez'
+        unique_together = (('species', 'symbol_id', 'entrez_id'),)
+
+    def __unicode__(self):
+        return u'{}(entrez={}, symbol={})'.format(self.species, self.entrez_id, self.symbol_id)
+
+
+class Other2Entrez(models.Model):
+    species = models.CharField(u'Species', max_length=SPECIES_MAX_LENGTH, blank=False, choices=SPECIES_CHOICES)
+    entrez_id = models.BigIntegerField(u'Entrez ID', db_index=True)
+    other_id = models.CharField(u'Other ID', max_length=SYMBOL_ID_MAX_LENGTH, db_index=True)
+
+    class Meta:
+        verbose_name = 'other2entrez map'
+        verbose_name_plural = 'other2entrez maps'
+        db_table = 'other_to_entrez'
+        unique_together = (('species', 'other_id', 'entrez_id'),)
+
+    def __unicode__(self):
+        return u'{}(entrez={}, other={})'.format(self.species, self.entrez_id, self.other_id)
