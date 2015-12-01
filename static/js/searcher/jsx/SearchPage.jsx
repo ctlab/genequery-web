@@ -50,7 +50,7 @@ var SearchPage = React.createClass({
     if (_.has(data, 'error')) {
       state.errorMessage = data.error;
     } else if (_.isArray(data.rows) && _.isObject(data.id_conversion)) {
-      state.total = data.total;
+      state.total = data.total_found;
       state.rows = data.rows;
       state.idConversion = data.id_conversion;
     } else {
@@ -149,7 +149,9 @@ var SearchPage = React.createClass({
     return (
       <div className="row row-margin">
         <div className="col-md-3">
-          <IdMappingTable idConversion={this.state.idConversion} inputGenes={this.state.lastRequestData.genes} />
+          <IdMappingTable totalFound={this.state.total}
+                          idConversion={this.state.idConversion}
+                          inputGenes={this.state.lastRequestData.genes} />
         </div>
       </div>
     );

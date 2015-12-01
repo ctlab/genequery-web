@@ -75,6 +75,10 @@ class SearchQueryForm(forms.Form):
                 )
             id_validator(gene)
 
+        # remove the first dot and the rest after it
+        if first_gene_type in [REFSEQ, ENSEMBL]:
+            genes = [gene[:gene.find('.')] if '.' in gene else gene for gene in genes]
+
         self.genes_id_type = first_gene_type
         return genes
 

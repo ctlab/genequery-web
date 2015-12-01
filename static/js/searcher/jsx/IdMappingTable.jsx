@@ -12,7 +12,8 @@ var _ = require('underscore');
 var IdMappingTable = React.createClass({
   propTypes: {
     idConversion: React.PropTypes.object.isRequired,
-    inputGenes: React.PropTypes.array.isRequired
+    inputGenes: React.PropTypes.array.isRequired,
+    totalFound: React.PropTypes.number.isRequired
   },
 
   getInitialState: function() {
@@ -58,7 +59,9 @@ var IdMappingTable = React.createClass({
             </tbody>
           </table>
         </div>
-        <button className="btn btn-primary btn-xs" onClick={this.onDownloadClick}>Download results as CSV</button>
+        {this.props.totalFound > 0
+          ? <button className="btn btn-primary btn-xs" onClick={this.onDownloadClick}>Download results as CSV</button>
+          : null}
       </div>
     );
   },
@@ -70,6 +73,11 @@ var IdMappingTable = React.createClass({
   getRows: function() {
     var rows = [];
     _.each(this.props.inputGenes, (input_gene, i) => {
+      // Remove the first dot and the rest after it
+      var notation = this.props.idConversion['original_notation'];
+      if ((notation === 'ensembl' || notation === 'refseq' ) && input_gene.includes('.')) {
+        input_gene = input_gene.substr(0, input_gene.indexOf('.'));
+      }
       var input_gene_data = this.props.idConversion['original_to_entrez'][input_gene];
       var entrez_ids = input_gene_data['entrez'].join(',');
       var inDB = input_gene_data['in_db'];

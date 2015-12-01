@@ -156,7 +156,7 @@ def build_search_result_data(
     return {
         'rows': results,
         'time': processing_time,
-        'modules_found': len(results),
+        'total_found': len(results),
         'id_conversion': id_conversion_dict,
     }
 
