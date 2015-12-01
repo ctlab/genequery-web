@@ -17,15 +17,15 @@ class TestIDConvertion(TestCase):
                  'MDEG']  # other gene
         res = convert_to_entrez('hs', 'symbol', genes)
 
-        self.assertEqual(res['failed'][0], 'Nat2')
-        self.assertIn('MDEG', res['rescued'])
-        self.assertIn('Nat2', res['failed'])
-        self.assertEqual(len(res['converted']['SNORD115-48']), 2)
+        self.assertEqual(res.failed[0], 'Nat2')
+        self.assertIn('MDEG', res.rescued)
+        self.assertIn('Nat2', res.failed)
+        self.assertEqual(len(res.converted['SNORD115-48']), 2)
 
         # All genes are contained in the result
-        self.assertItemsEqual(genes, res['converted'].keys() + res['failed'] + res['rescued'].keys())
+        self.assertItemsEqual(genes, res.converted.keys() + res.failed + res.rescued.keys())
 
-        self.assertEqual(res['entrez_ids'], [1, 40, 10, 100008588, 10101010101, 100033817, 100008586, 100033822])
+        self.assertEqual(res.get_final_entrez_ids(), [1, 40, 10, 100008588, 10101010101, 100033817, 100008586, 100033822])
 
     def test_to_symbol(self):
         genes = [1, 10, 100, 1000, 10000, 100008587, 100008586,

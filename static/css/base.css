@@ -97,3 +97,22 @@ a.full-heatmap-link:visited {
 .genequery-head-title {
   padding-top: 8px;
 }
+
+.id-mapping-table {
+  margin: 10px 0;
+}
+
+.id-mapping-table td, th {
+  font-size: 12px !important;
+  padding: 4px !important;
+}
+
+.id-mapping-table tr > th:first-child,
+.id-mapping-table tr > td:first-child {
+  text-align: right;
+}
+
+div.row-margin {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}

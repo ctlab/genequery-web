@@ -16,7 +16,7 @@ from genequery.utils.test import get_test_rest_response
 from math.fisher_empirical import FisherCalculationResult, fisher_empirical_p_values
 from genequery.main.views import BaseTemplateView
 from genequery.searcher.forms import SearchQueryForm
-from genequery.searcher.models import IdMap, ModuleDescription, GQModule
+from genequery.searcher.models import ModuleDescription, GQModule
 from genequery.utils import log_get, gene_list_pprint, here
 
 LOG = logging.getLogger('genequery')
@@ -90,19 +90,20 @@ class SearchProcessorView(View):
 
         start_time = time()
 
-        entrez_to_original = IdMap.convert_to_entrez(species, input_genes_notation_type, genes)
-        if not entrez_to_original:
-            return build_search_result_data(
+        id_convertion = convert_to_entrez(species, input_genes_notation_type, genes)
+        input_entrez_ids = id_convertion.get_final_entrez_ids()
+
+        if not input_entrez_ids:
+            return JsonResponse(build_search_result_data(
                 [],
                 0,
                 species,
-                len(genes),
                 input_genes_notation_type,
-                len(entrez_to_original),
-            )
+                id_convertion,
+            ))
 
         try:
-            sorted_results = calculate_fisher_process_results(species, [pair[0] for pair in entrez_to_original])
+            sorted_results = calculate_fisher_process_results(species, input_entrez_ids)
         except:
             LOG.exception('Error while calculating p-values')
             return JsonErrorResponse('System error')
@@ -113,9 +114,8 @@ class SearchProcessorView(View):
             sorted_results,
             processing_time,
             species,
-            len(genes),
             input_genes_notation_type,
-            len(entrez_to_original),
+            id_convertion,
         ))
 
 
@@ -126,30 +126,39 @@ def build_search_result_data(
         sorted_fisher_processing_results,
         processing_time,
         species,
-        original_genes_count,
         original_notation,
-        unique_entrez_count):
+        id_conversion):
     """
+    :type id_conversion: ConversionToEntrezResult
     :type sorted_fisher_processing_results: list of FisherCalculationResult
     :type processing_time: float
     :type species: str
-    :type original_genes_count: int
     :type original_notation: str
-    :type unique_entrez_count: int
     :rtype: dict
     """
     results = []
     for i, r in enumerate(sorted_fisher_processing_results):
         results.append(fisher_process_result_to_json(species, r, i + 1))
 
-    recap = {
-        'time': processing_time,
-        'genes_entered': original_genes_count,
-        'id_format': original_notation,
-        'unique_entrez': unique_entrez_count,
-        'total': len(results),
+    original_to_entrez = {}
+    for k, v in id_conversion.converted.items():
+        original_to_entrez[k] = {'entrez': v, 'in_db': True}
+    for k, v in id_conversion.rescued.items():
+        original_to_entrez[k] = {'entrez': v, 'in_db': True}
+    for g in id_conversion.failed:
+        original_to_entrez[g] = {'entrez': [], 'in_db': False}
+    id_conversion_dict = {
+        'original_notation': original_notation,
+        'original_to_entrez': original_to_entrez,
+        'unique_entrez_count': len(id_conversion.get_final_entrez_ids()),
     }
-    return {'rows': results, 'recap': recap}
+
+    return {
+        'rows': results,
+        'time': processing_time,
+        'modules_found': len(results),
+        'id_conversion': id_conversion_dict,
+    }
 
 
 def fisher_process_result_to_json(species, result, rank):
@@ -215,8 +224,8 @@ def calculate_fisher_p_values_via_rest(species, query_entrez_ids):
     :type species: str
     :rtype list of FisherCalculationResult
     """
-    response = json.loads(get_test_rest_response(species))
-    # response = json.loads(query_rest(species, query_entrez_ids))
+    # response = json.loads(get_test_rest_response(species))
+    response = json.loads(query_rest(species, query_entrez_ids))
 
     results = []
     for row in response:
@@ -256,7 +265,7 @@ class GetOverlapView(View):
         ))
 
         module_genes_entrez = GQModule.objects.get(species=species, full_name=full_module_name).entrez_ids
-        input_genes_entrez = convert_to_entrez(species, genes_id_type, input_genes)['entrez_ids']
+        input_genes_entrez = convert_to_entrez(species, genes_id_type, input_genes).get_final_entrez_ids()
         symbol_result = convert_entrez_to_symbol(species, list(set(module_genes_entrez) & set(input_genes_entrez)))
         return JsonResponse({'genes': symbol_result['symbol_ids']})
 

@@ -2,12 +2,14 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 var Utils = require('../../utils');
+var Eventbus = require('../../eventbus');
 
 var _ = require('underscore');
 
 require('floatthead');
 
 // TODO how to implement this using CSS only?
+// TODO inline this
 var TABLE_HEADER_CONFIG = [
   {'width': 2, 'title': '#'},
   {'width': 70, 'title': 'Experiment title'},
@@ -20,16 +22,21 @@ var TABLE_HEADER_CONFIG = [
 
 var ResultTable = React.createClass({
 
-  propTypes: {
-    recap: React.PropTypes.object.isRequired
-  },
-
   componentWillUnmount: function() {
     $(ReactDOM.findDOMNode(this.refs.table)).floatThead('destroy');
+    Eventbus.removeListener('id-mapping-toggle', this.reflowTable);
+    Eventbus.removeListener('download-as-csv', this.downloadAsCSV);
   },
 
   componentDidMount: function() {
     $(ReactDOM.findDOMNode(this.refs.table)).floatThead();
+    Eventbus.addListener('id-mapping-toggle', this.reflowTable);
+    Eventbus.addListener('download-as-csv', this.downloadAsCSV);
+
+  },
+
+  reflowTable: function() {
+    $(ReactDOM.findDOMNode(this.refs.table)).trigger('reflow');
   },
 
   render: function () {
@@ -37,29 +44,12 @@ var ResultTable = React.createClass({
       <table className="table table-bordered table-hover" ref="table">
         <colgroup>{this.getColConfig()}</colgroup>
         <thead className="tableFloatingHeaderOriginal">
-          {this.getHeaderRecap()}
           {this.getHeaderTitles()}
         </thead>
         <tbody>
           {this.props.children}
         </tbody>
       </table>
-    );
-  },
-
-  getHeaderRecap: function() {
-    var recap = this.props.recap;
-    return (
-      <tr className="search-result-recap">
-        <th colSpan="5" className="no-right-border">
-          Entered {recap.genes_entered} genes in {recap.id_format} format,
-          where {recap.unique_entez} unique Entrez IDs.
-          Found {recap.total} modules in {recap.time} sec.
-        </th>
-        <th colSpan="2" className="no-left-border">
-          <button className="btn btn-primary btn-xs" onClick={this.downloadAsCSV}>Download as CSV</button>
-        </th>
-      </tr>
     );
   },
 

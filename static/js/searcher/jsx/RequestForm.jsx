@@ -45,7 +45,7 @@ var RequestForm = React.createClass({
 
     // TODO use Underscore to check if it function
     if (this.props.beforeSend) {
-      this.props.beforeSend(this.state.species, this.state.genes);
+      this.props.beforeSend(this.state.species, this.state.genes.trim().split(/[\s]+/));
     }
 
     $.get(getURL(), this.state)

@@ -1,9 +1,15 @@
+import logging
+
+from django.conf import settings
+
 from genequery.searcher.models import Symbol2Entrez, Ensembl2Entrez, Refseq2Entrez, Other2Entrez
+from genequery.utils import here
 from genequery.utils.constants import ENTREZ, REFSEQ, SYMBOL, ENSEMBL
 import re
 
 ENTREZ_PATTERN = re.compile('^[0-9\s]*$')
 
+LOG = logging.getLogger('genequery')
 
 def get_gene_id_type(gene):
     """
@@ -36,6 +42,29 @@ def is_ensembl(gene):
     return gene.startswith('ENS')
 
 
+class ConversionToEntrezResult:
+    def __init__(self, converted, rescued, failed):
+        """
+        :type failed: list
+        :type rescued: dict
+        :type converted: dict
+        """
+        self.converted = converted
+        self.rescued = rescued
+        self.failed = failed
+
+    def get_final_entrez_ids(self):
+        """
+        :rtype: list of int
+        """
+        final_entrez_ids = []
+        for genes in self.converted.values():
+            final_entrez_ids += genes
+        for genes in self.rescued.values():
+            final_entrez_ids += genes
+        return list(set(final_entrez_ids))
+
+
 def convert_to_entrez(species, original_type, genes):
     """
     Converts to entrez (case sensitive).
@@ -43,16 +72,10 @@ def convert_to_entrez(species, original_type, genes):
     :type species: str
     :type original_type: str
     :type genes: list of str
-    :rtype: dict
+    :rtype: ConversionToEntrezResult
     """
     if original_type == ENTREZ:
-        return {
-            'entrez_ids': map(int, genes),
-            'presents_in_db': {int(e): True for e in genes},
-            'converted': {g: int(g) for g in genes},
-            'rescued': {},
-            'failed': [],
-        }
+        return ConversionToEntrezResult({g: int(g) for g in genes}, {}, [])
 
     if original_type == SYMBOL:
         model = Symbol2Entrez
@@ -91,20 +114,7 @@ def convert_to_entrez(species, original_type, genes):
             rescued[other] = []
         rescued[other].append(entrez)
 
-    final_entrez_ids = []
-    for genes in converted.values():
-        final_entrez_ids += genes
-    for genes in rescued.values():
-        final_entrez_ids += genes
-    final_entrez_ids = list(set(final_entrez_ids))
-
-    return {
-        'entrez_ids': final_entrez_ids,
-        'presents_in_db': {e: True for e in final_entrez_ids},
-        'converted': converted,
-        'rescued': rescued,
-        'failed': list(not_converted - set(rescued.keys()))
-    }
+    return ConversionToEntrezResult(converted, rescued, list(not_converted - set(rescued.keys())))
 
 
 def convert_entrez_to_symbol(species, entrez_ids):
@@ -113,7 +123,10 @@ def convert_entrez_to_symbol(species, entrez_ids):
     :type entrez_ids: list of int
     :rtype: dict
     """
-    converted_pairs = Symbol2Entrez.objects.filter(entrez_id__in=entrez_ids).values_list('entrez_id', 'symbol_id')
+    converted_pairs = Symbol2Entrez.objects\
+        .filter(entrez_id__in=entrez_ids)\
+        .filter(species=species)\
+        .values_list('entrez_id', 'symbol_id')
 
     converted = {}
     for e, s in converted_pairs:
@@ -126,3 +139,25 @@ def convert_entrez_to_symbol(species, entrez_ids):
         'symbol_ids': list(set([p[1] for p in converted_pairs])),
         'failed': list(set(entrez_ids) - set([p[0] for p in converted_pairs]))
     }
+
+
+ALL_ENTREZ_LISTS_CACHE = {}
+
+
+def entrez_in_db(species, entrez_ids):
+    """
+    Returns list of Entrez IDs which aren't contained in DB,
+    or empty list if all entrez file isn't available.
+
+    :type entrez_ids: list of int
+    :type species: str
+    :rtype: (list of int) or None
+    """
+    if species not in ALL_ENTREZ_LISTS_CACHE:
+        try:
+            path = here(settings.ALL_ENTREZ_LISTS_PATH, '{}_all_entrez.list'.format(species))
+            ALL_ENTREZ_LISTS_CACHE[species] = {[int(e.strip()) for e in open(path).readlines()]}
+        except Exception:
+            LOG.exception("Can't load all entrez list file for species {}".format(species))
+            return []
+    return list(set(entrez_ids) - ALL_ENTREZ_LISTS_CACHE[species])

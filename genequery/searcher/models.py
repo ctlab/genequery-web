@@ -93,37 +93,6 @@ class IdMap(models.Model):
     refseq_id = models.CharField(u'RefSeq ID', max_length=REFSEQ_ID_MAX_LENGTH, null=True, blank=True)
     symbol_id = models.CharField(u'Symbol ID', max_length=SYMBOL_ID_MAX_LENGTH, null=True, blank=True)
 
-    @staticmethod
-    def convert_to_entrez(species, notation_type, uppercase_genes):
-        """
-        Convert genes to entrez notation.
-        Returns list of pairs where every pair is tuple of two values:
-            entrez ID and original ID for every gene from input genes.
-
-        :type uppercase_genes: list of (int or str)
-        :type notation_type: str
-        :type species: str
-        :rtype: list of (int, int or str)
-        :returns list of pairs: (entrez ID, original gene ID)
-        """
-        if notation_type == ENTREZ:
-            #  No mapping is required
-            return list(set([(int(g), g) for g in uppercase_genes]))
-
-        uppercase_genes = set(uppercase_genes)
-
-        if notation_type == SYMBOL:
-            kwargs = {'symbol_id__in': uppercase_genes}
-        elif notation_type == REFSEQ:
-            kwargs = {'refseq_id__in': uppercase_genes}
-        else:
-            raise Exception('Unknown notation type: {}'.format(notation_type))
-
-        return list(set(IdMap.objects
-                        .filter(species=species)
-                        .filter(**kwargs)
-                        .values_list('entrez_id', notation_type + '_id')))
-
     class Meta:
         verbose_name = 'id map'
         verbose_name_plural = 'id maps'
