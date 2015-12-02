@@ -103,6 +103,8 @@ class IdMap(models.Model):
         return u'{}(entrez={}, refseq={}, symbol={})'.format(
             self.species, self.entrez_id, self.refseq_id or 'None', self.symbol_id or 'None')
 
+# TODO make *_id non blank
+
 
 class Refseq2Entrez(models.Model):
     species = models.CharField(u'Species', max_length=SPECIES_MAX_LENGTH, blank=False, choices=SPECIES_CHOICES)

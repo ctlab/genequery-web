@@ -69,7 +69,7 @@ var SearchPage = React.createClass({
     console.log('FAIL', jqxhr, textStatus, error);
   },
 
-  beforeSend: function(species, genes) {
+  beforeSend: function(db_species, query_species, genes) {
     this.setState({
       // Todo can we just replaceState({showLoading: true}, lastRequestData:...)?
       showLoading: true,
@@ -77,7 +77,7 @@ var SearchPage = React.createClass({
       idConversion: undefined,
       rows: undefined,
       total: undefined,
-      lastRequestData: {species: species, genes: genes}
+      lastRequestData: {dbSpecies: db_species, querySpecies: query_species, genes: genes}
     });
     Utils.scrollToTop(ReactDOM.findDOMNode(this.refs.loader));
   },
@@ -121,7 +121,8 @@ var SearchPage = React.createClass({
     var data = {
       module: series + '_' + platform + '#' + module_number,
       genes: this.state.lastRequestData.genes.join(' '),
-      species: this.state.lastRequestData.species
+      db_species: this.state.lastRequestData.dbSpecies,
+      query_species: this.state.lastRequestData.querySpecies
     };
     var module_id = series + platform + module_number;
     Utils.showPopupAjax(

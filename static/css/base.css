@@ -3,7 +3,7 @@ html, body, .base-content{
   color: #696969;
 }
 
-label .inline .radio label {
+.radio label {
   padding-left: 10px;
 }
 
@@ -115,4 +115,8 @@ a.full-heatmap-link:visited {
 div.row-margin {
   margin-top: 10px;
   margin-bottom: 10px;
+}
+
+.radio-inline-with-title label:first-child {
+  margin-right: 10px;
 }

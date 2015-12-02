@@ -997,5 +997,14 @@
     },
     "model": "searcher.other2entrez",
     "pk": 111
+  },
+  {
+    "fields": {
+      "entrez_id": 40,
+      "species": "hs",
+      "other_id": "NM_130786"
+    },
+    "model": "searcher.other2entrez",
+    "pk": 112
   }
 ]

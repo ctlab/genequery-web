@@ -42,10 +42,14 @@ var RequestForm = React.createClass({
 
   onSubmit: function(event) {
     event.preventDefault();
-
+    // TODO form validation
     // TODO use Underscore to check if it function
     if (this.props.beforeSend) {
-      this.props.beforeSend(this.state.species, this.state.genes.trim().split(/[\s]+/));
+      this.props.beforeSend(
+        this.state.db_species,
+        this.state.query_species,
+        this.state.genes.trim().split(/[\s]+/)
+      );
     }
 
     $.get(getURL(), this.state)
@@ -66,8 +70,12 @@ var RequestForm = React.createClass({
       });
   },
 
-  handleSpeciesChange: function(event) {
-    this.setState({species: event.currentTarget.value});
+  handleDBSpeciesChange: function(event) {
+    this.setState({db_species: event.currentTarget.value});
+  },
+
+  handleQuerySpeciesChange: function(event) {
+    this.setState({query_species: event.currentTarget.value});
   },
 
   handleGenesChange: function(event) {
@@ -75,7 +83,7 @@ var RequestForm = React.createClass({
   },
 
   runExample: function(e) {
-    this.setState({species: SPECIES_EXAMPLE, genes: GENES_EXAMPLE});
+    this.setState({db_species: SPECIES_EXAMPLE, query_species: SPECIES_EXAMPLE, genes: GENES_EXAMPLE});
     this.forceUpdate();
     setTimeout(() => this.refs.submitBtn.click(), 200);
   },
@@ -84,25 +92,44 @@ var RequestForm = React.createClass({
   render: function () {
     return (
       <form role="form" className="search-form" method="GET" onSubmit={this.onSubmit}>
-        <div className="form-group form-inline">
+        <div className="form-group form-inline radio-inline-with-title">
+          <label>Data base species:</label>
           <div className="radio">
             <label>
-              <input type="radio" name="species" value="hs" checked={this.state.species === 'hs'}
-                onChange={this.handleSpeciesChange} />
+              <input type="radio" name="db_species" value="hs" checked={this.state.db_species === 'hs'}
+                onChange={this.handleDBSpeciesChange} />
               Homo Sapiens
             </label>
           </div>
           <div className="radio">
             <label>
-              <input type="radio" name="species" value="mm" checked={this.state.species === 'mm'}
-                onChange={this.handleSpeciesChange} />
+              <input type="radio" name="db_species" value="mm" checked={this.state.db_species === 'mm'}
+                onChange={this.handleDBSpeciesChange} />
+              Mus Musculus
+            </label>
+          </div>
+        </div>
+
+        <div className="form-group form-inline radio-inline-with-title">
+          <label>Query genes species:</label>
+          <div className="radio">
+            <label>
+              <input type="radio" name="query_species" value="hs" checked={this.state.query_species === 'hs'}
+                     onChange={this.handleQuerySpeciesChange} />
+              Homo Sapiens
+            </label>
+          </div>
+          <div className="radio">
+            <label>
+              <input type="radio" name="query_species" value="mm" checked={this.state.query_species === 'mm'}
+                     onChange={this.handleQuerySpeciesChange} />
               Mus Musculus
             </label>
           </div>
         </div>
 
         <div className="form-group">
-          <label htmlFor="form-genes">Gene list</label> {" "}
+          <label htmlFor="genes">Gene list</label> {" "}
           <small>(separated by newline/whitespace/tab)</small>
           <TextareaAutosize id="genes" name="genes" className="form-control" maxRows={40} minRows={2}
             onChange={this.handleGenesChange} value={this.state.genes} />

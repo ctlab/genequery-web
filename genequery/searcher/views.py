@@ -12,7 +12,6 @@ from django.views.generic import View
 
 from genequery.searcher.idconvertion import convert_to_entrez, convert_entrez_to_symbol
 from genequery.utils.constants import MIN_LOG_EMPIRICAL_P_VALUE, INF
-from genequery.utils.test import get_test_rest_response
 from math.fisher_empirical import FisherCalculationResult, fisher_empirical_p_values
 from genequery.main.views import BaseTemplateView
 from genequery.searcher.forms import SearchQueryForm
@@ -82,28 +81,28 @@ class SearchProcessorView(View):
             return JsonResponse({'error': ('\n'.join(form.get_error_messages_as_list()))})
 
         input_genes_notation_type = form.get_genes_id_type()
-        species = form.cleaned_data['species']
+        db_species = form.cleaned_data['db_species']
 
         genes = form.cleaned_data['genes']  # list of str
         LOG.info('GET request: genes {}, species {}, query type: {}.'.format(
-            gene_list_pprint(genes), species, input_genes_notation_type))
+            gene_list_pprint(genes), db_species, input_genes_notation_type))
 
         start_time = time()
 
-        id_convertion = convert_to_entrez(species, input_genes_notation_type, genes)
+        id_convertion = convert_to_entrez(db_species, input_genes_notation_type, genes)
         input_entrez_ids = id_convertion.get_final_entrez_ids()
 
         if not input_entrez_ids:
             return JsonResponse(build_search_result_data(
                 [],
                 0,
-                species,
+                db_species,
                 input_genes_notation_type,
                 id_convertion,
             ))
 
         try:
-            sorted_results = calculate_fisher_process_results(species, input_entrez_ids)
+            sorted_results = calculate_fisher_process_results(db_species, input_entrez_ids)
         except:
             LOG.exception('Error while calculating p-values')
             return JsonErrorResponse('System error')
@@ -113,7 +112,7 @@ class SearchProcessorView(View):
         return JsonResponse(build_search_result_data(
             sorted_results,
             processing_time,
-            species,
+            db_species,
             input_genes_notation_type,
             id_convertion,
         ))
@@ -224,7 +223,9 @@ def calculate_fisher_p_values_via_rest(species, query_entrez_ids):
     :type species: str
     :rtype list of FisherCalculationResult
     """
+    # from genequery.utils.test import get_test_rest_response
     # response = json.loads(get_test_rest_response(species))
+
     response = json.loads(query_rest(species, query_entrez_ids))
 
     results = []
@@ -256,7 +257,7 @@ class GetOverlapView(View):
             return JsonResponse({'error': message})
 
         genes_id_type = form.get_genes_id_type()
-        species = form.cleaned_data['species']
+        species = form.cleaned_data['db_species']
         input_genes = form.cleaned_data['genes']
         full_module_name = request.GET['module']
 

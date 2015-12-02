@@ -7,7 +7,8 @@ from genequery.searcher.models import ENTREZ_ID_MAX_LENGTH, REFSEQ_ID_MAX_LENGTH
 from genequery.utils.constants import *
 
 
-SPECIES_REQUIRED = 'Species are not specified.'
+DB_SPECIES_REQUIRED = 'Data base species are not specified.'
+QUERY_SPECIES_REQUIRED = 'Query genes species are not specified.'
 GENE_LIST_REQUIRED = 'Gene list is empty.'
 
 
@@ -32,7 +33,8 @@ def ensembl_id_validator(value):
 
 
 class SearchQueryForm(forms.Form):
-    species = forms.ChoiceField(SPECIES_CHOICES, required=True, error_messages={'required': SPECIES_REQUIRED})
+    db_species = forms.ChoiceField(SPECIES_CHOICES, required=True, error_messages={'required': DB_SPECIES_REQUIRED})
+    query_species = forms.ChoiceField(SPECIES_CHOICES, required=True, error_messages={'required': QUERY_SPECIES_REQUIRED})
     genes = forms.CharField(required=True, error_messages={'required': GENE_LIST_REQUIRED})
 
     genes_id_type = None
