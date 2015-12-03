@@ -993,7 +993,7 @@
     "fields": {
       "entrez_id": 40,
       "species": "hs",
-      "other_id": "MDEG"
+      "other_id": "RESCUED"
     },
     "model": "searcher.other2entrez",
     "pk": 111
@@ -1006,5 +1006,14 @@
     },
     "model": "searcher.other2entrez",
     "pk": 112
+  },
+  {
+    "fields": {
+      "entrez_id": 41,
+      "species": "mm",
+      "other_id": "Rescued"
+    },
+    "model": "searcher.other2entrez",
+    "pk": 113
   }
 ]

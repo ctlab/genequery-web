@@ -10,7 +10,8 @@ from django.http import JsonResponse
 from django.utils.html import format_html
 from django.views.generic import View
 
-from genequery.searcher.idconvertion import convert_to_entrez, convert_entrez_to_symbol
+from genequery.searcher.idconvertion import convert_to_entrez, convert_entrez_to_symbol, ToEntrezConversion, \
+    ToEntrezOrthologyConversion, convert_to_entrez_orthology
 from genequery.utils.constants import MIN_LOG_EMPIRICAL_P_VALUE, INF
 from math.fisher_empirical import FisherCalculationResult, fisher_empirical_p_values
 from genequery.main.views import BaseTemplateView
@@ -80,16 +81,20 @@ class SearchProcessorView(View):
             LOG.info('Invalid form data: {}'.format('\n'.join(form.get_error_messages_as_list())))
             return JsonResponse({'error': ('\n'.join(form.get_error_messages_as_list()))})
 
-        input_genes_notation_type = form.get_genes_id_type()
+        original_notation = form.get_genes_id_type()
+        query_species = form.cleaned_data['query_species']
         db_species = form.cleaned_data['db_species']
 
         genes = form.cleaned_data['genes']  # list of str
-        LOG.info('GET request: genes {}, species {}, query type: {}.'.format(
-            gene_list_pprint(genes), db_species, input_genes_notation_type))
+        LOG.info('GET request: genes {}, query_species {}, db_species: {}, query type: {}.'.format(
+            gene_list_pprint(genes), query_species, db_species, original_notation))
 
         start_time = time()
 
-        id_convertion = convert_to_entrez(db_species, input_genes_notation_type, genes)
+        if query_species == db_species:
+            id_convertion = convert_to_entrez(db_species, original_notation, genes)
+        else:
+            id_convertion = convert_to_entrez_orthology(query_species, db_species, original_notation, genes)
         input_entrez_ids = id_convertion.get_final_entrez_ids()
 
         if not input_entrez_ids:
@@ -97,7 +102,7 @@ class SearchProcessorView(View):
                 [],
                 0,
                 db_species,
-                input_genes_notation_type,
+                original_notation,
                 id_convertion,
             ))
 
@@ -113,7 +118,7 @@ class SearchProcessorView(View):
             sorted_results,
             processing_time,
             db_species,
-            input_genes_notation_type,
+            original_notation,
             id_convertion,
         ))
 
@@ -121,42 +126,52 @@ class SearchProcessorView(View):
 search_processor_view = SearchProcessorView.as_view()
 
 
+def id_conversion_to_response(original_notation, id_conversion):
+    """
+    :type original_notation: str
+    :type id_conversion: ToEntrezConversion | ToEntrezOrthologyConversion
+    :rtype: dict
+    """
+    result = {
+        'orthology': False,
+        'to_entrez_conversion': {},
+        'to_symbol_conversion': {},
+        'original_notation': original_notation,
+        'unique_entrez_count': len(id_conversion.get_final_entrez_ids()),
+    }
+    if isinstance(id_conversion, ToEntrezOrthologyConversion):
+        result['orthology'] = True
+        result['to_symbol_conversion'] = id_conversion.converted_to_symbol
+        result['to_entrez_conversion'] = id_conversion.converted_to_entrez
+    else:
+        result['to_entrez_conversion'] = id_conversion.get_annotated()
+
+    return result
+
+
 def build_search_result_data(
         sorted_fisher_processing_results,
         processing_time,
-        species,
+        db_species,
         original_notation,
         id_conversion):
     """
-    :type id_conversion: ConversionToEntrezResult
+    :type id_conversion: ToEntrezConversion | ToEntrezOrthologyConversion
     :type sorted_fisher_processing_results: list of FisherCalculationResult
     :type processing_time: float
-    :type species: str
+    :type db_species: str
     :type original_notation: str
     :rtype: dict
     """
     results = []
     for i, r in enumerate(sorted_fisher_processing_results):
-        results.append(fisher_process_result_to_json(species, r, i + 1))
-
-    original_to_entrez = {}
-    for k, v in id_conversion.converted.items():
-        original_to_entrez[k] = {'entrez': v, 'in_db': True}
-    for k, v in id_conversion.rescued.items():
-        original_to_entrez[k] = {'entrez': v, 'in_db': True}
-    for g in id_conversion.failed:
-        original_to_entrez[g] = {'entrez': [], 'in_db': False}
-    id_conversion_dict = {
-        'original_notation': original_notation,
-        'original_to_entrez': original_to_entrez,
-        'unique_entrez_count': len(id_conversion.get_final_entrez_ids()),
-    }
+        results.append(fisher_process_result_to_json(db_species, r, i + 1))
 
     return {
         'rows': results,
         'time': processing_time,
         'total_found': len(results),
-        'id_conversion': id_conversion_dict,
+        'id_conversion': id_conversion_to_response(original_notation, id_conversion),
     }
 
 

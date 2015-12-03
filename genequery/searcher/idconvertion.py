@@ -39,7 +39,7 @@ def is_ensembl(gene):
     return gene.startswith('ENS')
 
 
-class ToEntrezConvertationResult:
+class ToEntrezConversion:
     def __init__(self, converted, rescued, failed):
         """
         :type failed: list[str]
@@ -61,8 +61,24 @@ class ToEntrezConvertationResult:
             final_entrez_ids += genes
         return list(set(final_entrez_ids))
 
+    def get_entrez_ids(self, gene):
+        """
+        Get entrez ids from either converted or rescued conversion.
 
-class EntrezToSymbolConvertationResult:
+        :type gene: str | int
+        :rtype: list[int] | None
+        """
+        if gene in self.converted:
+            return self.converted[gene]
+        if gene in self.rescued:
+            return self.rescued[gene]
+        return None
+
+    def get_annotated(self):
+        return dict(self.converted.items() + self.rescued.items())
+
+
+class EntrezToSymbolConversion:
     def __init__(self, converted, failed):
         """
         :type converted: dict[int, list[str]]
@@ -81,7 +97,7 @@ class EntrezToSymbolConvertationResult:
         return list(set(result))
 
 
-class ToSymbolConvertationResult:
+class ToSymbolConversion:
     def __init__(self, converted, failed):
         """
         :type converted: dict[int, list[str]] | dict[str, list[str]]
@@ -100,7 +116,7 @@ class ToSymbolConvertationResult:
         return list(set(result))
 
 
-class OrthologyResult:
+class ToEntrezOrthologyConversion:
     def __init__(self, converted_to_symbol, converted_to_entrez, failed):
         """
         :type converted_to_entrez: dict[str, list[int]] | dict[int, list[int]]
@@ -114,31 +130,41 @@ class OrthologyResult:
         self.failed = failed
         self.converted_to_entrez = converted_to_entrez
 
+    def get_final_entrez_ids(self):
+        """
+        :rtype: list[int]
+        """
+        result = []
+        for v in self.converted_to_entrez.values():
+            result += v
+        return list(set(result))
 
-def orthology_convert_to_entrez(query_species, db_species, original_notation, genes):
+
+def convert_to_entrez_orthology(query_species, db_species, original_notation, genes):
     """
     :type db_species: str
     :type query_species: str
     :type original_notation: str
-    :type genes: list[str]
+    :type genes: list[str] | list[int]
     """
     to_query_symbol = convert_to_symbol(query_species, original_notation, genes)
     adjusted_symbol_ids = adjust_symbol_genes(db_species, to_query_symbol.get_final_symbol_ids())
-    to_db_entrez_convertation = convert_to_entrez(db_species, SYMBOL, adjusted_symbol_ids.values())
+    to_db_entrez_conversion = convert_to_entrez(db_species, SYMBOL, adjusted_symbol_ids.values())
 
     failed = {g: True for g in genes}
     to_db_entrez = {}
     for g, symbol_ids in to_query_symbol.converted.items():
         for s in symbol_ids:
             adjusted_s = adjusted_symbol_ids[s]
-            if adjusted_s in to_db_entrez_convertation.converted:
+            entrez_ids = to_db_entrez_conversion.get_entrez_ids(adjusted_s)
+            if entrez_ids is not None:
                 failed[g] = False
                 if g not in to_db_entrez:
                     to_db_entrez[g] = []
-                to_db_entrez[g] += to_db_entrez_convertation.converted[adjusted_s]
-    return OrthologyResult(converted_to_symbol=to_query_symbol.converted,
-                           converted_to_entrez=to_db_entrez,
-                           failed=[k for k, v in failed.items() if v])
+                to_db_entrez[g] += entrez_ids
+    return ToEntrezOrthologyConversion(converted_to_symbol=to_query_symbol.converted,
+                                       converted_to_entrez=to_db_entrez,
+                                       failed=[k for k, v in failed.items() if v])
 
 
 def convert_to_entrez(species, original_notation, genes):
@@ -148,10 +174,10 @@ def convert_to_entrez(species, original_notation, genes):
     :type species: str
     :type original_notation: str
     :type genes: list[str]
-    :rtype: ToEntrezConvertationResult
+    :rtype: ToEntrezConversion
     """
     if original_notation == ENTREZ:
-        return ToEntrezConvertationResult({g: [int(g)] for g in genes}, {}, [])
+        return ToEntrezConversion({g: [int(g)] for g in genes}, {}, [])
 
     if original_notation == SYMBOL:
         model = Symbol2Entrez
@@ -174,6 +200,7 @@ def convert_to_entrez(species, original_notation, genes):
 
     rescued = {}
     if original_notation == SYMBOL:
+        # rescue
         kwargs = {'other_id__in': not_converted}
         rescued_original_entrez_pairs = list(set(Other2Entrez.objects
                                                  .filter(species=species)
@@ -190,7 +217,7 @@ def convert_to_entrez(species, original_notation, genes):
             converted[original] = []
         converted[original].append(entrez)
 
-    return ToEntrezConvertationResult(converted, rescued, list(not_converted - set(rescued.keys())))
+    return ToEntrezConversion(converted, rescued, list(not_converted - set(rescued.keys())))
 
 
 # TODO get rid of this method
@@ -198,7 +225,7 @@ def convert_entrez_to_symbol(species, entrez_ids):
     """
     :type species: str
     :type entrez_ids: list[int]
-    :rtype: EntrezToSymbolConvertationResult
+    :rtype: EntrezToSymbolConversion
     """
     # TODO skip query if entrez_ids is empty
     converted_pairs = Symbol2Entrez.objects \
@@ -211,8 +238,8 @@ def convert_entrez_to_symbol(species, entrez_ids):
         if e not in converted:
             converted[e] = []
         converted[e].append(s)
-    return EntrezToSymbolConvertationResult(converted,
-                                            list(set(entrez_ids) - set([p[0] for p in converted_pairs])))
+    return EntrezToSymbolConversion(converted,
+                                    list(set(entrez_ids) - set([p[0] for p in converted_pairs])))
 
 
 def convert_to_symbol(species, genes_type, genes):
@@ -220,17 +247,17 @@ def convert_to_symbol(species, genes_type, genes):
     :type species: str
     :type genes_type: str
     :type genes: list[str] | list[int]
-    :rtype: ToSymbolConvertationResult
+    :rtype: ToSymbolConversion
     """
     if genes_type == SYMBOL:
-        return ToSymbolConvertationResult(
+        return ToSymbolConversion(
             converted={g: [g] for g in genes},
             failed=[],
         )
 
     if genes_type == ENTREZ:
         to_symbol = convert_entrez_to_symbol(species, genes)
-        return ToSymbolConvertationResult(to_symbol.converted, to_symbol.failed)
+        return ToSymbolConversion(to_symbol.converted, to_symbol.failed)
 
     to_entrez = convert_to_entrez(species, genes_type, genes)
     to_symbol = convert_entrez_to_symbol(species, to_entrez.get_final_entrez_ids())
@@ -252,7 +279,7 @@ def convert_to_symbol(species, genes_type, genes):
     for k in converted:
         converted[k] = list(set(converted[k]))
 
-    return ToSymbolConvertationResult(converted, failed)
+    return ToSymbolConversion(converted, failed)
 
 
 def adjust_symbol_genes(for_species, symbol_ids):

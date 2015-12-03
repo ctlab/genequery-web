@@ -127,6 +127,21 @@ var Utils = {
       }
     }
     return null;
+  },
+
+  /**
+   * Remove version from gene string:
+   * ENSG000123.4 --> ENSG000123
+   * XM_1234.5 --> XM_1234
+   *
+   * @param gene string representation of the gene.
+   * @returns string
+   */
+  removeGeneVersion: function(gene) {
+    if (gene.indexOf('.') >= 0) {
+      return gene.substr(0, gene.indexOf('.'));
+    }
+    return gene;
   }
 
 };
