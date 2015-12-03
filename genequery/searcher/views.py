@@ -271,19 +271,27 @@ class GetOverlapView(View):
             LOG.info('Invalid form data: {}'.format(message))
             return JsonResponse({'error': message})
 
-        genes_id_type = form.get_genes_id_type()
-        species = form.cleaned_data['db_species']
+        original_notation = form.get_genes_id_type()
+        query_species = form.cleaned_data['query_species']
+        db_species = form.cleaned_data['db_species']
         input_genes = form.cleaned_data['genes']
         full_module_name = request.GET['module']
 
-        LOG.info('GET overlap: type={}, species={}, module={}, genes={}'.format(
-            genes_id_type, species, full_module_name, input_genes,
+        LOG.info('GET overlap: type={}, query_species={}, db_species={}, module={}, genes={}'.format(
+            original_notation, query_species, db_species, full_module_name, input_genes,
         ))
 
-        module_genes_entrez = GQModule.objects.get(species=species, full_name=full_module_name).entrez_ids
-        input_genes_entrez = convert_to_entrez(species, genes_id_type, input_genes).get_final_entrez_ids()
-        symbol_result = convert_entrez_to_symbol(species, list(set(module_genes_entrez) & set(input_genes_entrez)))
-        return JsonResponse({'genes': symbol_result.get_final_symbol_ids()})
+        module_genes_entrez = GQModule.objects.get(species=db_species, full_name=full_module_name).entrez_ids
+
+        if query_species == db_species:
+            id_conversion = convert_to_entrez(db_species, original_notation, input_genes)
+        else:
+            id_conversion = convert_to_entrez_orthology(query_species, db_species, original_notation, input_genes)
+        symbol_result = convert_entrez_to_symbol(
+            db_species, list(set(module_genes_entrez) & set(id_conversion.get_final_entrez_ids())))
+
+        return JsonResponse({'genes': symbol_result.get_final_symbol_ids(),
+                             'failed': symbol_result.failed})
 
 
 get_overlap = GetOverlapView.as_view()

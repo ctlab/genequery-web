@@ -61,7 +61,7 @@ class ToEntrezConversion:
             final_entrez_ids += genes
         return list(set(final_entrez_ids))
 
-    def get_entrez_ids(self, gene):
+    def get_entrez_by_gene(self, gene):
         """
         Get entrez ids from either converted or rescued conversion.
 
@@ -156,7 +156,7 @@ def convert_to_entrez_orthology(query_species, db_species, original_notation, ge
     for g, symbol_ids in to_query_symbol.converted.items():
         for s in symbol_ids:
             adjusted_s = adjusted_symbol_ids[s]
-            entrez_ids = to_db_entrez_conversion.get_entrez_ids(adjusted_s)
+            entrez_ids = to_db_entrez_conversion.get_entrez_by_gene(adjusted_s)
             if entrez_ids is not None:
                 failed[g] = False
                 if g not in to_db_entrez:

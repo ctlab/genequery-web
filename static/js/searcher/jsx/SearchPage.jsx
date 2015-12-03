@@ -11,6 +11,7 @@ var SearchResultTable = require('./SearchResultTable');
 var SearchResultRow = require('./SearchResultRow');
 var ErrorBlock = require('./ErrorBlock');
 var IdMappingTable = require('./IdMappingTable');
+var OverlapLayout = require('./OverlapLayout');
 
 var Utils = require('../../utils');
 var _ = require('underscore');
@@ -124,21 +125,13 @@ var SearchPage = React.createClass({
       db_species: this.state.lastRequestData.dbSpecies,
       query_species: this.state.lastRequestData.querySpecies
     };
-    var module_id = series + platform + module_number;
     Utils.showPopupAjax(
       'search/get_overlap/',
       data,
-      response_data => (
-        <div className="white-popup-block row">
-          <div className="overlap-genes-list col-md-4">
-            <pre id={module_id}>{response_data.genes.join('\n')}</pre>
-          </div>
-          <div className="overlap-genes-caption col-md-8">
-            <p>Overlap of genes from request and from module {module_number} of {series}.</p>
-            <a data-clipboard-target={'#' + module_id} className="copy-to-clipboard">Copy genes to clipboard.</a>
-          </div>
-        </div>
-      )
+      response_data => <OverlapLayout series={series}
+                                      platform={platform}
+                                      moduleNumber={module_number}
+                                      responseData={response_data} />
     );
   },
 
@@ -170,7 +163,7 @@ var SearchPage = React.createClass({
     if (_.isArray(this.state.rows) && _.isEmpty(this.state.rows)) {
       return <span>No modules were found.</span>;
     }
-
+º
     var rows = [];
     $(this.state.rows).each((i, row) => {
       rows.push(<SearchResultRow key={i} overlapOnClick={this.overlapOnClick} {...row} />);
