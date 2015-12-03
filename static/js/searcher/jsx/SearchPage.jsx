@@ -163,7 +163,7 @@ var SearchPage = React.createClass({
     if (_.isArray(this.state.rows) && _.isEmpty(this.state.rows)) {
       return <span>No modules were found.</span>;
     }
-º
+
     var rows = [];
     $(this.state.rows).each((i, row) => {
       rows.push(<SearchResultRow key={i} overlapOnClick={this.overlapOnClick} {...row} />);
