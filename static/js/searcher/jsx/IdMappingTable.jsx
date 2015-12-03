@@ -119,7 +119,6 @@ var IdMappingTable = React.createClass({
 
     return  _.chain(this.props.inputGenes)
       .map(gene => {
-        console.log(gene);
         if (removeVersion) {
           return Utils.removeGeneVersion(gene);
         }

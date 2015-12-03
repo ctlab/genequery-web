@@ -283,7 +283,7 @@ class GetOverlapView(View):
         module_genes_entrez = GQModule.objects.get(species=species, full_name=full_module_name).entrez_ids
         input_genes_entrez = convert_to_entrez(species, genes_id_type, input_genes).get_final_entrez_ids()
         symbol_result = convert_entrez_to_symbol(species, list(set(module_genes_entrez) & set(input_genes_entrez)))
-        return JsonResponse({'genes': symbol_result['symbol_ids']})
+        return JsonResponse({'genes': symbol_result.get_final_symbol_ids()})
 
 
 get_overlap = GetOverlapView.as_view()
