@@ -1,6 +1,10 @@
 var Eventbus = require('../../eventbus');
 var React = require('react');
+var Utils = require('../../utils');
 var TextareaAutosize = require('react-textarea-autosize');
+
+var $ = require('jquery');
+
 
 var GENES_EXAMPLE = (
   "Cd274 Nos2 Irg1 Gbp2 Cxcl9 Ptgs2 Saa3 Gbp5 Iigp1 Gbp4 Gbp3 Il1rn Il1b Oasl1 Gbp6 Cd86 " +
@@ -51,8 +55,10 @@ var RequestForm = React.createClass({
         this.state.genes.trim().split(/[\s]+/)
       );
     }
+    var post_data = {'csrfmiddlewaretoken': Utils.getCSRFToken()};
+    Object.assign(post_data, this.state);
 
-    $.get(getURL(), this.state)
+    $.post(getURL(), post_data)
       .done(data => {
         if (this.props.onSuccess){
           this.props.onSuccess(data)

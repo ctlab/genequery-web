@@ -70,12 +70,13 @@ search_page_view = SearchPageView.as_view()
 
 class SearchProcessorView(View):
     @log_get(LOG)
-    def get(self, request):
+    def post(self, request):
+        print request
         if not request.is_ajax():
             LOG.warning('Search request must be AJAX.')
             return JsonErrorResponse('Method not allowed', status_code=405)
 
-        form = SearchQueryForm(request.GET)
+        form = SearchQueryForm(request.POST)
         if not form.is_valid():
             LOG.info('Invalid form data: {}'.format('\n'.join(form.get_error_messages_as_list())))
             return JsonResponse({'error': ('\n'.join(form.get_error_messages_as_list()))})
