@@ -31,7 +31,7 @@ var IdMappingTable = React.createClass({
   },
 
   render: function () {
-    var orthologyInfo = this.isOrthology() ? "Orthology was applied." : null;
+    var orthologyInfo = this.props.idConversion['orthology'] ? "Orthology was applied." : null;
 
     return (
       <div>
@@ -63,7 +63,7 @@ var IdMappingTable = React.createClass({
   },
 
   getColgroup: function() {
-    if (this.isOrthology()) {
+    if (this.showProxyColumn()) {
       return (
         <colgroup>
           <col style={{width: "7%"}}/>
@@ -83,12 +83,12 @@ var IdMappingTable = React.createClass({
   },
 
   getTheadContent: function() {
-    if (this.isOrthology()) {
+    if (this.showProxyColumn()) {
       return (
         <tr>
           <th>#</th>
           <th>Input gene</th>
-          <th>Input symbol</th>
+          <th>Input Entrez</th>
           <th>Entrez (DB)</th>
         </tr>
       );
@@ -102,8 +102,8 @@ var IdMappingTable = React.createClass({
     );
   },
 
-  isOrthology: function() {
-    return this.props.idConversion['orthology'];
+  showProxyColumn: function() {
+    return this.props.idConversion['showProxyColumn'];
   },
 
   onDownloadClick: function() {
@@ -111,36 +111,37 @@ var IdMappingTable = React.createClass({
   },
 
   getRows: function() {
-    var not_annotated = '(not annotated)';
+    console.log(this.props.idConversion);
+    var not_annotated_msg = '(not annotated)';
     var notation = this.props.idConversion['original_notation'];
-    var removeVersion = notation === 'ensembl' || notation === 'refseq';
+    var removeVersionFromInputGene = notation === 'ensembl' || notation === 'refseq';
     var to_entrez = this.props.idConversion['to_entrez_conversion'];
-    var to_symbol = this.isOrthology() ? this.props.idConversion['to_symbol_conversion'] : null;
+    var to_proxy_entrez = this.showProxyColumn() ? this.props.idConversion['to_proxy_entrez_conversion'] : null;
 
     return  _.chain(this.props.inputGenes)
       .map(gene => {
-        if (removeVersion) {
+        if (removeVersionFromInputGene) {
           return Utils.removeGeneVersion(gene);
         }
         return gene;
       })
       .map((gene, i) => {
         var entrez_ids = '';
-        var symbol_ids = '';
+        var proxy_entrez_ids = '';
 
         if (gene in to_entrez) {
           entrez_ids = to_entrez[gene].join(',');
         }
-        if (to_symbol !== null && gene in to_symbol) {
-          symbol_ids = to_symbol[gene].join(',');
+        if (to_proxy_entrez !== null && gene in to_proxy_entrez) {
+          proxy_entrez_ids = to_proxy_entrez[gene].join(',');
         }
 
         return (
           <tr key={i} className={entrez_ids === '' ? "danger" : ""}>
             <td>{i + 1}</td>
             <td>{gene}</td>
-            {to_symbol !== null ? <td>{symbol_ids || not_annotated}</td> : null}
-            <td>{entrez_ids || not_annotated}</td>
+            {to_proxy_entrez !== null ? <td>{proxy_entrez_ids || not_annotated_msg}</td> : null}
+            <td>{entrez_ids || not_annotated_msg}</td>
           </tr>
         );
       })

@@ -1,0 +1,137 @@
+[
+  {
+    "fields": {
+      "ensembl_id": "ENSG00000121410",
+      "entrez_id": 1,
+      "species": "mm"
+    },
+    "model": "searcher.ensembl2entrez",
+    "pk": 1
+  },
+  {
+    "fields": {
+      "ensembl_id": "ENSG00000175899",
+      "entrez_id": 2,
+      "species": "mm"
+    },
+    "model": "searcher.ensembl2entrez",
+    "pk": 2
+  },
+  {
+    "fields": {
+      "ensembl_id": "ENSG00000256069",
+      "entrez_id": 3,
+      "species": "mm"
+    },
+    "model": "searcher.ensembl2entrez",
+    "pk": 3
+  },
+  {
+    "fields": {
+      "ensembl_id": "ENSG00000171428",
+      "entrez_id": 9,
+      "species": "mm"
+    },
+    "model": "searcher.ensembl2entrez",
+    "pk": 4
+  },
+  {
+    "fields": {
+      "ensembl_id": "ENSG00000156006",
+      "entrez_id": 10,
+      "species": "mm"
+    },
+    "model": "searcher.ensembl2entrez",
+    "pk": 5
+  },
+  {
+    "fields": {
+      "ensembl_id": "ENSG00000196136",
+      "entrez_id": 12,
+      "species": "hs"
+    },
+    "model": "searcher.ensembl2entrez",
+    "pk": 6
+  },
+  {
+    "fields": {
+      "ensembl_id": "ENSG00000273259",
+      "entrez_id": 12,
+      "species": "hs"
+    },
+    "model": "searcher.ensembl2entrez",
+    "pk": 7
+  },
+  {
+    "fields": {
+      "ensembl_id": "ENSG00000114771",
+      "entrez_id": 90,
+      "species": "hs"
+    },
+    "model": "searcher.ensembl2entrez",
+    "pk": 8
+  },
+  {
+    "fields": {
+      "ensembl_id": "ENSG00000127837",
+      "entrez_id": 14,
+      "species": "hs"
+    },
+    "model": "searcher.ensembl2entrez",
+    "pk": 9
+  },
+  {
+    "fields": {
+      "ensembl_id": "ENSG00000129673",
+      "entrez_id": 15,
+      "species": "hs"
+    },
+    "model": "searcher.ensembl2entrez",
+    "pk": 10
+  },
+  {
+    "fields": {
+      "ensembl_id": "ENSG00000090861",
+      "entrez_id": 16,
+      "species": "hs"
+    },
+    "model": "searcher.ensembl2entrez",
+    "pk": 11
+  },
+  {
+    "fields": {
+      "ensembl_id": "ENSG00000183044",
+      "entrez_id": 18,
+      "species": "hs"
+    },
+    "model": "searcher.ensembl2entrez",
+    "pk": 12
+  },
+  {
+    "fields": {
+      "ensembl_id": "ENSG00000165029",
+      "entrez_id": 34,
+      "species": "hs"
+    },
+    "model": "searcher.ensembl2entrez",
+    "pk": 13
+  },
+  {
+    "fields": {
+      "ensembl_id": "ENSG00000165029",
+      "entrez_id": 37,
+      "species": "hs"
+    },
+    "model": "searcher.ensembl2entrez",
+    "pk": 14
+  },
+  {
+    "fields": {
+      "ensembl_id": "ENSG123456",
+      "entrez_id": 101010,
+      "species": "hs"
+    },
+    "model": "searcher.ensembl2entrez",
+    "pk": 15
+  }
+]

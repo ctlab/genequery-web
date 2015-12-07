@@ -1,0 +1,1003 @@
+[
+  {
+    "fields": {
+      "refseq_id": "NP_000007",
+      "group_id": 3,
+      "species": "hs",
+      "symbol_id": "ACADM",
+      "entrez_id": 34
+    },
+    "model": "searcher.homologene",
+    "pk": 1
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_031408",
+      "group_id": 3,
+      "species": "mm",
+      "symbol_id": "Acadm",
+      "entrez_id": 11364
+    },
+    "model": "searcher.homologene",
+    "pk": 2
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_058682",
+      "group_id": 3,
+      "species": "rt",
+      "symbol_id": "Acadm",
+      "entrez_id": 24158
+    },
+    "model": "searcher.homologene",
+    "pk": 3
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_000009",
+      "group_id": 5,
+      "species": "hs",
+      "symbol_id": "ACADVL",
+      "entrez_id": 37
+    },
+    "model": "searcher.homologene",
+    "pk": 4
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_059062",
+      "group_id": 5,
+      "species": "mm",
+      "symbol_id": "Acadvl",
+      "entrez_id": 11370
+    },
+    "model": "searcher.homologene",
+    "pk": 5
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_037023",
+      "group_id": 5,
+      "species": "rt",
+      "symbol_id": "Acadvl",
+      "entrez_id": 25363
+    },
+    "model": "searcher.homologene",
+    "pk": 6
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_000010",
+      "group_id": 6,
+      "species": "hs",
+      "symbol_id": "ACAT1",
+      "entrez_id": 38
+    },
+    "model": "searcher.homologene",
+    "pk": 7
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_659033",
+      "group_id": 6,
+      "species": "mm",
+      "symbol_id": "Acat1",
+      "entrez_id": 110446
+    },
+    "model": "searcher.homologene",
+    "pk": 8
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_058771",
+      "group_id": 6,
+      "species": "rt",
+      "symbol_id": "Acat1",
+      "entrez_id": 25014
+    },
+    "model": "searcher.homologene",
+    "pk": 9
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_001096",
+      "group_id": 7,
+      "species": "hs",
+      "symbol_id": "ACVR1",
+      "entrez_id": 90
+    },
+    "model": "searcher.homologene",
+    "pk": 10
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_001103674",
+      "group_id": 7,
+      "species": "mm",
+      "symbol_id": "Acvr1",
+      "entrez_id": 11477
+    },
+    "model": "searcher.homologene",
+    "pk": 11
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_077812",
+      "group_id": 7,
+      "species": "rt",
+      "symbol_id": "Acvr1",
+      "entrez_id": 79558
+    },
+    "model": "searcher.homologene",
+    "pk": 12
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_000014",
+      "group_id": 9,
+      "species": "hs",
+      "symbol_id": "SGCA",
+      "entrez_id": 6442
+    },
+    "model": "searcher.homologene",
+    "pk": 13
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_033187",
+      "group_id": 9,
+      "species": "mm",
+      "symbol_id": "Sgca",
+      "entrez_id": 20391
+    },
+    "model": "searcher.homologene",
+    "pk": 14
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_001100509",
+      "group_id": 9,
+      "species": "rt",
+      "symbol_id": "Sgca",
+      "entrez_id": 303468
+    },
+    "model": "searcher.homologene",
+    "pk": 15
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_000017",
+      "group_id": 12,
+      "species": "hs",
+      "symbol_id": "ADSL",
+      "entrez_id": 158
+    },
+    "model": "searcher.homologene",
+    "pk": 16
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_033764",
+      "group_id": 12,
+      "species": "mm",
+      "symbol_id": "Adsl",
+      "entrez_id": 11564
+    },
+    "model": "searcher.homologene",
+    "pk": 17
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_001123975",
+      "group_id": 12,
+      "species": "rt",
+      "symbol_id": "Adsl",
+      "entrez_id": 315150
+    },
+    "model": "searcher.homologene",
+    "pk": 18
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_000018",
+      "group_id": 13,
+      "species": "hs",
+      "symbol_id": "AGA",
+      "entrez_id": 175
+    },
+    "model": "searcher.homologene",
+    "pk": 19
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_001005847",
+      "group_id": 13,
+      "species": "mm",
+      "symbol_id": "Aga",
+      "entrez_id": 11593
+    },
+    "model": "searcher.homologene",
+    "pk": 20
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_001026811",
+      "group_id": 13,
+      "species": "rt",
+      "symbol_id": "Aga",
+      "entrez_id": 290923
+    },
+    "model": "searcher.homologene",
+    "pk": 21
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_000020",
+      "group_id": 14,
+      "species": "hs",
+      "symbol_id": "AGT",
+      "entrez_id": 183
+    },
+    "model": "searcher.homologene",
+    "pk": 22
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_031454",
+      "group_id": 14,
+      "species": "mm",
+      "symbol_id": "Agt",
+      "entrez_id": 11606
+    },
+    "model": "searcher.homologene",
+    "pk": 23
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_602308",
+      "group_id": 14,
+      "species": "rt",
+      "symbol_id": "Agt",
+      "entrez_id": 24179
+    },
+    "model": "searcher.homologene",
+    "pk": 24
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_000022",
+      "group_id": 16,
+      "species": "hs",
+      "symbol_id": "ALAD",
+      "entrez_id": 210
+    },
+    "model": "searcher.homologene",
+    "pk": 25
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_032551",
+      "group_id": 16,
+      "species": "mm",
+      "symbol_id": "Alad",
+      "entrez_id": 17025
+    },
+    "model": "searcher.homologene",
+    "pk": 26
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_037031",
+      "group_id": 16,
+      "species": "rt",
+      "symbol_id": "Alad",
+      "entrez_id": 25374
+    },
+    "model": "searcher.homologene",
+    "pk": 27
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_000023",
+      "group_id": 17,
+      "species": "hs",
+      "symbol_id": "ALAS2",
+      "entrez_id": 212
+    },
+    "model": "searcher.homologene",
+    "pk": 28
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_033783",
+      "group_id": 17,
+      "species": "mm",
+      "symbol_id": "Alas2",
+      "entrez_id": 11656
+    },
+    "model": "searcher.homologene",
+    "pk": 29
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_037329",
+      "group_id": 17,
+      "species": "rt",
+      "symbol_id": "Alas2",
+      "entrez_id": 25748
+    },
+    "model": "searcher.homologene",
+    "pk": 30
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_000027",
+      "group_id": 20,
+      "species": "hs",
+      "symbol_id": "AMPD1",
+      "entrez_id": 270
+    },
+    "model": "searcher.homologene",
+    "pk": 31
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_001028475",
+      "group_id": 20,
+      "species": "mm",
+      "symbol_id": "Ampd1",
+      "entrez_id": 229665
+    },
+    "model": "searcher.homologene",
+    "pk": 32
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_620231",
+      "group_id": 20,
+      "species": "rt",
+      "symbol_id": "Ampd1",
+      "entrez_id": 25028
+    },
+    "model": "searcher.homologene",
+    "pk": 33
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_000033",
+      "group_id": 26,
+      "species": "hs",
+      "symbol_id": "APOH",
+      "entrez_id": 350
+    },
+    "model": "searcher.homologene",
+    "pk": 34
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_038503",
+      "group_id": 26,
+      "species": "mm",
+      "symbol_id": "Apoh",
+      "entrez_id": 11818
+    },
+    "model": "searcher.homologene",
+    "pk": 35
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_001009626",
+      "group_id": 26,
+      "species": "rt",
+      "symbol_id": "Apoh",
+      "entrez_id": 287774
+    },
+    "model": "searcher.homologene",
+    "pk": 36
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_000034",
+      "group_id": 27,
+      "species": "hs",
+      "symbol_id": "FAS",
+      "entrez_id": 355
+    },
+    "model": "searcher.homologene",
+    "pk": 37
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_032013",
+      "group_id": 27,
+      "species": "mm",
+      "symbol_id": "Fas",
+      "entrez_id": 14102
+    },
+    "model": "searcher.homologene",
+    "pk": 38
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_631933",
+      "group_id": 27,
+      "species": "rt",
+      "symbol_id": "Fas",
+      "entrez_id": 246097
+    },
+    "model": "searcher.homologene",
+    "pk": 39
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_000035",
+      "group_id": 28,
+      "species": "hs",
+      "symbol_id": "AR",
+      "entrez_id": 367
+    },
+    "model": "searcher.homologene",
+    "pk": 40
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_038504",
+      "group_id": 28,
+      "species": "mm",
+      "symbol_id": "Ar",
+      "entrez_id": 11835
+    },
+    "model": "searcher.homologene",
+    "pk": 41
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_036634",
+      "group_id": 28,
+      "species": "rt",
+      "symbol_id": "Ar",
+      "entrez_id": 24208
+    },
+    "model": "searcher.homologene",
+    "pk": 42
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_001231367",
+      "group_id": 29,
+      "species": "hs",
+      "symbol_id": "ARG1",
+      "entrez_id": 383
+    },
+    "model": "searcher.homologene",
+    "pk": 43
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_031508",
+      "group_id": 29,
+      "species": "mm",
+      "symbol_id": "Arg1",
+      "entrez_id": 11846
+    },
+    "model": "searcher.homologene",
+    "pk": 44
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_058830",
+      "group_id": 29,
+      "species": "rt",
+      "symbol_id": "Arg1",
+      "entrez_id": 29221
+    },
+    "model": "searcher.homologene",
+    "pk": 45
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_000039",
+      "group_id": 32,
+      "species": "hs",
+      "symbol_id": "ASL",
+      "entrez_id": 435
+    },
+    "model": "searcher.homologene",
+    "pk": 46
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_598529",
+      "group_id": 32,
+      "species": "mm",
+      "symbol_id": "Asl",
+      "entrez_id": 109900
+    },
+    "model": "searcher.homologene",
+    "pk": 47
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_067588",
+      "group_id": 32,
+      "species": "rt",
+      "symbol_id": "Asl",
+      "entrez_id": 59085
+    },
+    "model": "searcher.homologene",
+    "pk": 48
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_001121557",
+      "group_id": 33,
+      "species": "hs",
+      "symbol_id": "ASPA",
+      "entrez_id": 443
+    },
+    "model": "searcher.homologene",
+    "pk": 49
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_075602",
+      "group_id": 33,
+      "species": "mm",
+      "symbol_id": "Aspa",
+      "entrez_id": 11484
+    },
+    "model": "searcher.homologene",
+    "pk": 50
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_077375",
+      "group_id": 33,
+      "species": "rt",
+      "symbol_id": "Aspa",
+      "entrez_id": 79251
+    },
+    "model": "searcher.homologene",
+    "pk": 51
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_000043",
+      "group_id": 35,
+      "species": "hs",
+      "symbol_id": "ATP7A",
+      "entrez_id": 538
+    },
+    "model": "searcher.homologene",
+    "pk": 52
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_001103227",
+      "group_id": 35,
+      "species": "mm",
+      "symbol_id": "Atp7a",
+      "entrez_id": 11977
+    },
+    "model": "searcher.homologene",
+    "pk": 53
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_434690",
+      "group_id": 35,
+      "species": "rt",
+      "symbol_id": "Atp7a",
+      "entrez_id": 24941
+    },
+    "model": "searcher.homologene",
+    "pk": 54
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_898871",
+      "group_id": 39,
+      "species": "hs",
+      "symbol_id": "BCKDHB",
+      "entrez_id": 594
+    },
+    "model": "searcher.homologene",
+    "pk": 55
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_954665",
+      "group_id": 39,
+      "species": "mm",
+      "symbol_id": "Bckdhb",
+      "entrez_id": 12040
+    },
+    "model": "searcher.homologene",
+    "pk": 56
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_062140",
+      "group_id": 39,
+      "species": "rt",
+      "symbol_id": "Bckdhb",
+      "entrez_id": 29711
+    },
+    "model": "searcher.homologene",
+    "pk": 57
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_000050",
+      "group_id": 41,
+      "species": "hs",
+      "symbol_id": "BRCA2",
+      "entrez_id": 675
+    },
+    "model": "searcher.homologene",
+    "pk": 58
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_033895",
+      "group_id": 41,
+      "species": "mm",
+      "symbol_id": "Brca2",
+      "entrez_id": 12190
+    },
+    "model": "searcher.homologene",
+    "pk": 59
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_113730",
+      "group_id": 41,
+      "species": "rt",
+      "symbol_id": "Brca2",
+      "entrez_id": 360254
+    },
+    "model": "searcher.homologene",
+    "pk": 60
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_000053",
+      "group_id": 44,
+      "species": "hs",
+      "symbol_id": "SERPING1",
+      "entrez_id": 710
+    },
+    "model": "searcher.homologene",
+    "pk": 61
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_033906",
+      "group_id": 44,
+      "species": "mm",
+      "symbol_id": "Serping1",
+      "entrez_id": 12258
+    },
+    "model": "searcher.homologene",
+    "pk": 62
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_954524",
+      "group_id": 44,
+      "species": "rt",
+      "symbol_id": "Serping1",
+      "entrez_id": 295703
+    },
+    "model": "searcher.homologene",
+    "pk": 63
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_000054",
+      "group_id": 45,
+      "species": "hs",
+      "symbol_id": "C2",
+      "entrez_id": 717
+    },
+    "model": "searcher.homologene",
+    "pk": 64
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_038512",
+      "group_id": 45,
+      "species": "mm",
+      "symbol_id": "C2",
+      "entrez_id": 12263
+    },
+    "model": "searcher.homologene",
+    "pk": 65
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_757376",
+      "group_id": 45,
+      "species": "rt",
+      "symbol_id": "C2",
+      "entrez_id": 24231
+    },
+    "model": "searcher.homologene",
+    "pk": 66
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_000056",
+      "group_id": 47,
+      "species": "hs",
+      "symbol_id": "C6",
+      "entrez_id": 729
+    },
+    "model": "searcher.homologene",
+    "pk": 67
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_057913",
+      "group_id": 47,
+      "species": "mm",
+      "symbol_id": "C6",
+      "entrez_id": 12274
+    },
+    "model": "searcher.homologene",
+    "pk": 68
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_788263",
+      "group_id": 47,
+      "species": "rt",
+      "symbol_id": "C6",
+      "entrez_id": 24237
+    },
+    "model": "searcher.homologene",
+    "pk": 69
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_000057",
+      "group_id": 48,
+      "species": "hs",
+      "symbol_id": "C8B",
+      "entrez_id": 732
+    },
+    "model": "searcher.homologene",
+    "pk": 70
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_598643",
+      "group_id": 48,
+      "species": "mm",
+      "symbol_id": "C8b",
+      "entrez_id": 110382
+    },
+    "model": "searcher.homologene",
+    "pk": 71
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_001178688",
+      "group_id": 48,
+      "species": "rt",
+      "symbol_id": "C8b",
+      "entrez_id": 313421
+    },
+    "model": "searcher.homologene",
+    "pk": 72
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_000061",
+      "group_id": 52,
+      "species": "hs",
+      "symbol_id": "CAPN3",
+      "entrez_id": 825
+    },
+    "model": "searcher.homologene",
+    "pk": 73
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_031627",
+      "group_id": 52,
+      "species": "mm",
+      "symbol_id": "Capn3",
+      "entrez_id": 12335
+    },
+    "model": "searcher.homologene",
+    "pk": 74
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_058813",
+      "group_id": 52,
+      "species": "rt",
+      "symbol_id": "Capn3",
+      "entrez_id": 29155
+    },
+    "model": "searcher.homologene",
+    "pk": 75
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_000064",
+      "group_id": 55,
+      "species": "hs",
+      "symbol_id": "CD3G",
+      "entrez_id": 917
+    },
+    "model": "searcher.homologene",
+    "pk": 76
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_033980",
+      "group_id": 55,
+      "species": "mm",
+      "symbol_id": "Cd3g",
+      "entrez_id": 12502
+    },
+    "model": "searcher.homologene",
+    "pk": 77
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_001071114",
+      "group_id": 55,
+      "species": "rt",
+      "symbol_id": "Cd3g",
+      "entrez_id": 300678
+    },
+    "model": "searcher.homologene",
+    "pk": 78
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_000065",
+      "group_id": 56,
+      "species": "hs",
+      "symbol_id": "CD40LG",
+      "entrez_id": 959
+    },
+    "model": "searcher.homologene",
+    "pk": 79
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_035746",
+      "group_id": 56,
+      "species": "mm",
+      "symbol_id": "Cd40lg",
+      "entrez_id": 21947
+    },
+    "model": "searcher.homologene",
+    "pk": 80
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_445805",
+      "group_id": 56,
+      "species": "rt",
+      "symbol_id": "Cd40lg",
+      "entrez_id": 84349
+    },
+    "model": "searcher.homologene",
+    "pk": 81
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_001034612",
+      "group_id": 59,
+      "species": "hs",
+      "symbol_id": "CHRNA1",
+      "entrez_id": 1134
+    },
+    "model": "searcher.homologene",
+    "pk": 82
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_031415",
+      "group_id": 59,
+      "species": "mm",
+      "symbol_id": "Chrna1",
+      "entrez_id": 11435
+    },
+    "model": "searcher.homologene",
+    "pk": 83
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_077811",
+      "group_id": 59,
+      "species": "rt",
+      "symbol_id": "Chrna1",
+      "entrez_id": 79557
+    },
+    "model": "searcher.homologene",
+    "pk": 84
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_000071",
+      "group_id": 60,
+      "species": "hs",
+      "symbol_id": "CHRNE",
+      "entrez_id": 1145
+    },
+    "model": "searcher.homologene",
+    "pk": 85
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_033733",
+      "group_id": 60,
+      "species": "mm",
+      "symbol_id": "Chrne",
+      "entrez_id": 11448
+    },
+    "model": "searcher.homologene",
+    "pk": 86
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_058890",
+      "group_id": 60,
+      "species": "rt",
+      "symbol_id": "Chrne",
+      "entrez_id": 29422
+    },
+    "model": "searcher.homologene",
+    "pk": 87
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_000072",
+      "group_id": 61,
+      "species": "hs",
+      "symbol_id": "LYST",
+      "entrez_id": 1130
+    },
+    "model": "searcher.homologene",
+    "pk": 88
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_034878",
+      "group_id": 61,
+      "species": "mm",
+      "symbol_id": "Lyst",
+      "entrez_id": 17101
+    },
+    "model": "searcher.homologene",
+    "pk": 89
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_445970",
+      "group_id": 61,
+      "species": "rt",
+      "symbol_id": "Lyst",
+      "entrez_id": 85419
+    },
+    "model": "searcher.homologene",
+    "pk": 90
+  },
+  {
+    "fields": {
+      "refseq_id": "NP_000073",
+      "group_id": 62,
+      "species": "hs",
+      "symbol_id": "ERCC8",
+      "entrez_id": 1161
+    },
+    "model": "searcher.homologene",
+    "pk": 90
+  }
+]

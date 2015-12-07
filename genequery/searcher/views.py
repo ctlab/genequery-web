@@ -10,9 +10,8 @@ from django.http import JsonResponse
 from django.utils.html import format_html
 from django.views.generic import View
 
-from genequery.searcher.idconvertion import convert_to_entrez, convert_entrez_to_symbol, ToEntrezConversion, \
-    ToEntrezOrthologyConversion, convert_to_entrez_orthology
-from genequery.utils.constants import MIN_LOG_EMPIRICAL_P_VALUE, INF
+from genequery.searcher.idconvertion import ToEntrezConversion, ToSymbolConversion, ToEntrezOrthologyConversion
+from genequery.utils.constants import MIN_LOG_EMPIRICAL_P_VALUE, INF, ENSEMBL
 from math.fisher_empirical import FisherCalculationResult, fisher_empirical_p_values
 from genequery.main.views import BaseTemplateView
 from genequery.searcher.forms import SearchQueryForm
@@ -74,7 +73,7 @@ class SearchProcessorView(View):
     def get(self, request):
         if not request.is_ajax():
             LOG.warning('Search request must be AJAX.')
-            return self.http_method_not_allowed(request)
+            return JsonErrorResponse('Method not allowed', status_code=405)
 
         form = SearchQueryForm(request.GET)
         if not form.is_valid():
@@ -91,10 +90,11 @@ class SearchProcessorView(View):
 
         start_time = time()
 
+        genes = list(set(genes))
         if query_species == db_species:
-            id_convertion = convert_to_entrez(db_species, original_notation, genes)
+            id_convertion = ToEntrezConversion.convert(db_species, original_notation, genes)
         else:
-            id_convertion = convert_to_entrez_orthology(query_species, db_species, original_notation, genes)
+            id_convertion = ToEntrezOrthologyConversion.convert(query_species, db_species, original_notation, genes)
         input_entrez_ids = id_convertion.get_final_entrez_ids()
 
         if not input_entrez_ids:
@@ -134,17 +134,19 @@ def id_conversion_to_response(original_notation, id_conversion):
     """
     result = {
         'orthology': False,
+        'showProxyColumn': False,
         'to_entrez_conversion': {},
-        'to_symbol_conversion': {},
+        'to_proxy_entrez_conversion': None,
         'original_notation': original_notation,
         'unique_entrez_count': len(id_conversion.get_final_entrez_ids()),
     }
     if isinstance(id_conversion, ToEntrezOrthologyConversion):
         result['orthology'] = True
-        result['to_symbol_conversion'] = id_conversion.converted_to_symbol
-        result['to_entrez_conversion'] = id_conversion.converted_to_entrez
+        result['showProxyColumn'] = original_notation == ENSEMBL
+        result['to_entrez_conversion'] = id_conversion.to_final_entrez
+        result['to_proxy_entrez_conversion'] = id_conversion.to_proxy_entrez
     else:
-        result['to_entrez_conversion'] = id_conversion.get_annotated()
+        result['to_entrez_conversion'] = id_conversion.to_entrez
 
     return result
 
@@ -263,7 +265,7 @@ class GetOverlapView(View):
     def get(self, request):
         if not request.is_ajax():
             LOG.warning('Must be AJAX.')
-            return self.http_method_not_allowed(request)
+            return JsonErrorResponse('Method not allowed', status_code=405)
 
         form = SearchQueryForm(request.GET)
         if not form.is_valid():
@@ -284,14 +286,17 @@ class GetOverlapView(View):
         module_genes_entrez = GQModule.objects.get(species=db_species, full_name=full_module_name).entrez_ids
 
         if query_species == db_species:
-            id_conversion = convert_to_entrez(db_species, original_notation, input_genes)
+            id_conversion = ToEntrezConversion.convert(db_species, original_notation, input_genes)
         else:
-            id_conversion = convert_to_entrez_orthology(query_species, db_species, original_notation, input_genes)
-        symbol_result = convert_entrez_to_symbol(
-            db_species, list(set(module_genes_entrez) & set(id_conversion.get_final_entrez_ids())))
+            id_conversion = ToEntrezOrthologyConversion.convert(
+                query_species, db_species, original_notation, input_genes)
+
+        intersection = list(set(module_genes_entrez) & set(id_conversion.get_final_entrez_ids()))
+
+        symbol_result = ToSymbolConversion.convert(db_species, 'entrez', intersection)
 
         return JsonResponse({'genes': symbol_result.get_final_symbol_ids(),
-                             'failed': symbol_result.failed})
+                             'failed': []})  # TODO remove this param
 
 
 get_overlap = GetOverlapView.as_view()
