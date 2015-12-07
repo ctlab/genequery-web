@@ -164,3 +164,21 @@ class Other2Entrez(models.Model):
 
     def __unicode__(self):
         return u'{}(entrez={}, other={})'.format(self.species, self.entrez_id, self.other_id)
+
+
+class Homologene(models.Model):
+    group_id = models.PositiveIntegerField(u'Group ID', db_index=True)
+    species = models.CharField(u'Species', max_length=SPECIES_MAX_LENGTH, blank=False, choices=SPECIES_CHOICES)
+    entrez_id = models.BigIntegerField(u'Entrez ID', db_index=True)
+    symbol_id = models.CharField(u'Symbol ID', max_length=SYMBOL_ID_MAX_LENGTH, db_index=True)
+    refseq_id = models.CharField(u'RefSeq ID', max_length=REFSEQ_ID_MAX_LENGTH, db_index=True)
+
+    class Meta:
+        verbose_name = 'homologene'
+        verbose_name_plural = 'homologenes'
+        db_table = 'homologene'
+        unique_together = (('group_id', 'species', 'entrez_id', 'symbol_id', 'refseq_id'),)
+
+    def __unicode__(self):
+        return u'group {},{}(entrez={},symbol={},refseq={})'.format(
+            self.group_id, self.species, self.entrez_id, self.symbol_id, self.refseq_id)
