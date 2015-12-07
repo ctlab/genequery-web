@@ -6,8 +6,6 @@ var Eventbus = require('../../eventbus');
 
 var _ = require('underscore');
 
-require('floatthead');
-
 // TODO how to implement this using CSS only?
 // TODO inline this
 var TABLE_HEADER_CONFIG = [
@@ -22,21 +20,36 @@ var TABLE_HEADER_CONFIG = [
 
 var ResultTable = React.createClass({
 
+  propTypes: {
+    fake: React.PropTypes.bool
+  },
+
+  getDefaultProps: function() {
+    return {
+      fake: false
+    };
+  },
+
   componentWillUnmount: function() {
-    $(ReactDOM.findDOMNode(this.refs.table)).floatThead('destroy');
-    Eventbus.removeListener('id-mapping-toggle', this.reflowTable);
+    if (!this.props.fake) {
+      $(window).off('scroll', this.onTableHeaderVisibilityChanged);
+    }
     Eventbus.removeListener('download-as-csv', this.downloadAsCSV);
   },
 
   componentDidMount: function() {
-    $(ReactDOM.findDOMNode(this.refs.table)).floatThead();
-    Eventbus.addListener('id-mapping-toggle', this.reflowTable);
+    if (!this.props.fake) {
+      $(window).scroll(this.onTableHeaderVisibilityChanged);
+    }
     Eventbus.addListener('download-as-csv', this.downloadAsCSV);
-
   },
 
-  reflowTable: function() {
-    $(ReactDOM.findDOMNode(this.refs.table)).trigger('reflow');
+  shouldToggleStickyHeader: function() {
+    return $(ReactDOM.findDOMNode(this.refs.table)).offset().top - $(window).scrollTop() < -400;
+  },
+
+  onTableHeaderVisibilityChanged: function() {
+    $('.search-result').toggleClass('toggle-sticky-header', this.shouldToggleStickyHeader());
   },
 
   render: function () {

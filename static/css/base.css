@@ -41,6 +41,18 @@ a label {
   max-width: 95%;
 }
 
+.sticky-result-table-header {
+  max-width: 95%;
+  top: -27px;
+  z-index: 999;
+  position: fixed;
+  transition:0.4s top cubic-bezier(.3,.73,.3,.74);
+}
+
+div.toggle-sticky-header div.sticky-result-table-header {
+  top:0;
+}
+
 .no-left-border {
   border-left: none !important;
 }

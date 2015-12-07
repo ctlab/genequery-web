@@ -27,7 +27,6 @@ var IdMappingTable = React.createClass({
     var $table = $('.id-mapping-table-wrapper');
     $table.toggle();
     this.setState({text: $table.is(':visible') ? "hide details" : "show details"});
-    Eventbus.emit('id-mapping-toggle');
   },
 
   render: function () {

@@ -174,11 +174,18 @@ var SearchPage = React.createClass({
     });
 
     return (
-      <div className="row">
-        <div className="col-md-12">
-          <SearchResultTable ref="search_result_table">
-            {rows}
-          </SearchResultTable>
+      <div>
+        <div className="row sticky-result-table-header">
+          <div className="col-md-12">
+            <SearchResultTable fake={true}/>
+          </div>
+        </div>
+        <div className="row">
+          <div className="col-md-12">
+            <SearchResultTable ref="search_result_table">
+              {rows}
+            </SearchResultTable>
+          </div>
         </div>
       </div>
     );
