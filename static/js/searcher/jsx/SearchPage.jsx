@@ -12,6 +12,7 @@ var SearchResultRow = require('./SearchResultRow');
 var ErrorBlock = require('./ErrorBlock');
 var IdMappingTable = require('./IdMappingTable');
 var OverlapLayout = require('./OverlapLayout');
+var PopupLayout = require('./PopupLayout');
 
 var Utils = require('../../utils');
 var _ = require('underscore');
@@ -128,10 +129,13 @@ var SearchPage = React.createClass({
     Utils.showPopupAjax(
       'search/get_overlap/',
       data,
-      response_data => <OverlapLayout series={series}
-                                      platform={platform}
-                                      moduleNumber={module_number}
-                                      responseData={response_data} />
+      response_data => (
+        <OverlapLayout series={series}
+                       platform={platform}
+                       moduleNumber={module_number}
+                       responseData={response_data} />
+      ),
+      error => <PopupLayout>Error while parsing data.</PopupLayout>
     );
   },
 

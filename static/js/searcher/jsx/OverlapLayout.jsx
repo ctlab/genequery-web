@@ -4,6 +4,7 @@
  */
 
 var React = require('react');
+var PopupLayout = require('./PopupLayout');
 
 
 var OverlapLayout = React.createClass({
@@ -34,16 +35,18 @@ var OverlapLayout = React.createClass({
     }
 
     return (
-      <div className="white-popup-block row">
-        <div className="overlap-genes-list col-md-4">
-          <pre id={module_id}>{this.props.responseData.genes.join('\n')}</pre>
+      <PopupLayout>
+        <div className="row">
+          <div className="overlap-genes-list col-md-4">
+            <pre id={module_id}>{this.props.responseData.genes.join('\n')}</pre>
+          </div>
+          <div className="overlap-genes-caption col-md-8">
+            <p>Overlap of genes from request and from module {this.props.moduleNumber} of {this.props.series}.</p>
+            <a data-clipboard-target={'#' + module_id} className="copy-to-clipboard">Copy genes to clipboard.</a>
+            {failed}
+          </div>
         </div>
-        <div className="overlap-genes-caption col-md-8">
-          <p>Overlap of genes from request and from module {this.props.moduleNumber} of {this.props.series}.</p>
-          <a data-clipboard-target={'#' + module_id} className="copy-to-clipboard">Copy genes to clipboard.</a>
-          {failed}
-        </div>
-      </div>
+      </PopupLayout>
     );
   }
 });

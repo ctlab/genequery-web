@@ -44,8 +44,9 @@ var Utils = {
    * @param url url to send ajax request to
    * @param data ajax request data
    * @param getElementByData function: Object -> ReactElement, transform response to element
+   * @param getErrorElement function: Object -> ReactElement, show error
    */
-  showPopupAjax: function(url, data, getElementByData) {
+  showPopupAjax: function(url, data, getElementByData, getErrorElement) {
     $.magnificPopup.open({
       items: {
         type: 'ajax'
@@ -59,7 +60,14 @@ var Utils = {
       },
       callbacks: {
         parseAjax: function (response) {
-          var element = getElementByData(response.data);
+          var element;
+          try {
+            console.log('Got data for popup', response.data);
+            element = getElementByData(response.data);
+          } catch (e) {
+            console.error(e);
+            element = getErrorElement(e);
+          }
           response.data = Utils.reactElementToString(element);
         }
       }

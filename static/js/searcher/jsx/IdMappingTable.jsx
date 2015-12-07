@@ -111,7 +111,6 @@ var IdMappingTable = React.createClass({
   },
 
   getRows: function() {
-    console.log(this.props.idConversion);
     var not_annotated_msg = '(not annotated)';
     var notation = this.props.idConversion['original_notation'];
     var removeVersionFromInputGene = notation === 'ensembl' || notation === 'refseq';

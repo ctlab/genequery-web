@@ -33,9 +33,13 @@ module.exports = function (grunt) {
     },
 
     browserify: {
-      searcher: {
+      prod: {
         src: '<%= staticJsDir %>/searcher/searcher.js',
         dest: '<%= distJsDir %>/searcher.js'
+      },
+      dev: {
+        src: '<%= staticJsDir %>/searcher/searcher.js',
+        dest: '<%= distJsDir %>/searcher.min.js'
       }
     },
 
@@ -129,11 +133,11 @@ module.exports = function (grunt) {
         '!<%= distJsDir %>/**/*',
         '!<%= staticJsDir %>/searcher/ui/**/*.js'
       ],
-      tasks: ['default']
+      tasks: ['dev']
     }
   });
 
-  grunt.registerTask('default', ['react', 'browserify', 'watch']);
-  grunt.registerTask('build', ['copy', 'react', 'browserify', 'babel', 'uglify']);
+  grunt.registerTask('dev', ['react', 'browserify:dev', 'watch']);
+  grunt.registerTask('build', ['copy', 'react', 'browserify:prod', 'babel', 'uglify']);
 
 };
