@@ -21,15 +21,15 @@ var ResultTable = React.createClass({
   componentWillUnmount: function() {
     if (!this.props.fake) {
       $(window).off('scroll', this.onTableHeaderVisibilityChanged);
+      Eventbus.removeListener('download-as-csv', this.downloadAsCSV);
     }
-    Eventbus.removeListener('download-as-csv', this.downloadAsCSV);
   },
 
   componentDidMount: function() {
     if (!this.props.fake) {
       $(window).scroll(this.onTableHeaderVisibilityChanged);
+      Eventbus.addListener('download-as-csv', this.downloadAsCSV);
     }
-    Eventbus.addListener('download-as-csv', this.downloadAsCSV);
   },
 
   shouldToggleStickyHeader: function() {
