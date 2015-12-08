@@ -111,7 +111,7 @@ var Utils = {
         var url = URL.createObjectURL(blob);
         link.setAttribute("href", url);
         link.setAttribute("download", filename);
-        link.style = "visibility:hidden";
+        link.setAttribute('style', 'visibility:hidden;');
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
