@@ -71,7 +71,6 @@ search_page_view = SearchPageView.as_view()
 class SearchProcessorView(View):
     @log_get(LOG)
     def post(self, request):
-        print request
         if not request.is_ajax():
             LOG.warning('Search request must be AJAX.')
             return JsonErrorResponse('Method not allowed', status_code=405)

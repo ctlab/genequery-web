@@ -135,7 +135,6 @@ div.row-margin {
 
 .result-table-col-num {
   width: 2%;
-  text-align: right;
 }
 
 .result-table-col-title {
@@ -160,4 +159,9 @@ div.row-margin {
 
 .result-table-col-gmt {
   width: 5%;
+}
+
+.fake-result-table th:first-child,
+.result-table th:first-child {
+  text-align: right;
 }
