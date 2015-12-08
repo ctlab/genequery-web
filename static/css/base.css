@@ -132,3 +132,32 @@ div.row-margin {
 .radio-inline-with-title label:first-child {
   margin-right: 10px;
 }
+
+.result-table-col-num {
+  width: 2%;
+  text-align: right;
+}
+
+.result-table-col-title {
+  width: 73%;
+}
+
+.result-table-col-module {
+  width: 2%;
+}
+
+.result-table-col-p-value {
+  width: 6%;
+}
+
+.result-table-col-overlap {
+  width: 7%;
+}
+
+.result-table-col-gse {
+  width: 5%;
+}
+
+.result-table-col-gmt {
+  width: 5%;
+}

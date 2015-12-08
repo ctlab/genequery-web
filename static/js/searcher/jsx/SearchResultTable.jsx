@@ -6,18 +6,6 @@ var Eventbus = require('../../eventbus');
 
 var _ = require('underscore');
 
-// TODO how to implement this using CSS only?
-// TODO inline this
-var TABLE_HEADER_CONFIG = [
-  {'width': 2, 'title': '#'},
-  {'width': 70, 'title': 'Experiment title'},
-  {'width': 2, 'title': 'Module'},
-  {'width': 6, 'title': 'p-value'},
-  {'width': 7, 'title': 'Overlap'},
-  {'width': 5, 'title': 'GSE'},
-  {'width': 5, 'title': 'GMT'}
-];
-
 var ResultTable = React.createClass({
 
   propTypes: {
@@ -45,20 +33,28 @@ var ResultTable = React.createClass({
   },
 
   shouldToggleStickyHeader: function() {
-    return $(ReactDOM.findDOMNode(this.refs.table)).offset().top - $(window).scrollTop() < -400;
+    return $(ReactDOM.findDOMNode(this.refs.table)).offset().top - $(window).scrollTop() < -300;
   },
 
   onTableHeaderVisibilityChanged: function() {
-    $('.search-result').toggleClass('toggle-sticky-header', this.shouldToggleStickyHeader());
+    var showFakeHeader = this.shouldToggleStickyHeader();
+    $('.search-result').toggleClass('toggle-sticky-header', showFakeHeader);
+    // TODO bad solution
+    if (showFakeHeader) {
+      var $real_header = $('.result-table th');
+      var $fake_header = $('.fake-result-table th');
+      for (var i = 0; i < $real_header.length; ++i) {
+        $($fake_header[i]).css({'min-width': $real_header[i].offsetWidth + "px"});
+      }
+    }
   },
 
   render: function () {
     return (
-      <table className="table table-bordered table-hover" ref="table">
-        <colgroup>{this.getColConfig()}</colgroup>
-        <thead className="tableFloatingHeaderOriginal">
-          {this.getHeaderTitles()}
-        </thead>
+      <table className={"table table-bordered table-hover " + (this.props.fake ? "fake-result-table" : "result-table")}
+             ref="table">
+        {this.getColGroup()}
+        {this.getHeader()}
         <tbody>
           {this.props.children}
         </tbody>
@@ -89,19 +85,34 @@ var ResultTable = React.createClass({
     Utils.downloadDataAsCSV(filename, content.join('\n'));
   },
 
-  getHeaderTitles: function () {
+  getHeader: function () {
     return (
-      <tr>
-        {TABLE_HEADER_CONFIG.map((config, i) => <th key={i}>{config.title}</th>)}
-      </tr>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Experiment title</th>
+          <th>Module</th>
+          <th>p-value</th>
+          <th>Overlap</th>
+          <th>GSE</th>
+          <th>GMT</th>
+        </tr>
+      </thead>
     );
   },
 
-  getColConfig: function () {
-    return TABLE_HEADER_CONFIG.map((config, i) => {
-      var style = {width: config.width + '%'};
-      return <col key={i} style={style} />;
-    });
+  getColGroup: function () {
+    return (
+      <colgroup>
+        <col className="result-table-col-num" />
+        <col className="result-table-col-title" />
+        <col className="result-table-col-module" />
+        <col className="result-table-col-p-value" />
+        <col className="result-table-col-overlap" />
+        <col className="result-table-col-gse" />
+        <col className="result-table-col-gmt" />
+      </colgroup>
+    );
   }
 
 });

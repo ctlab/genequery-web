@@ -62,7 +62,7 @@ var SearchPage = React.createClass({
     this.replaceState(state);
 
     if (_.isArray(data.rows) && !_.isEmpty(data.rows)) {
-      Utils.scrollToTop(ReactDOM.findDOMNode(this.refs.search_result_table));
+      Utils.scrollToTop(ReactDOM.findDOMNode(this.refs.searchResultTable));
     }
   },
 
@@ -182,7 +182,7 @@ var SearchPage = React.createClass({
         </div>
         <div className="row">
           <div className="col-md-12">
-            <SearchResultTable ref="search_result_table">
+            <SearchResultTable ref="searchResultTable">
               {rows}
             </SearchResultTable>
           </div>
