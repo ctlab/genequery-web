@@ -4,6 +4,7 @@ var Utils = require('../../utils');
 var TextareaAutosize = require('react-textarea-autosize');
 
 var $ = require('jquery');
+var _ = require('underscore');
 
 
 var GENES_EXAMPLE = (
@@ -56,7 +57,7 @@ var RequestForm = React.createClass({
       );
     }
     var post_data = {'csrfmiddlewaretoken': Utils.getCSRFToken()};
-    Object.assign(post_data, this.state);
+    _.extend(post_data, this.state);
 
     $.post(getURL(), post_data)
       .done(data => {
