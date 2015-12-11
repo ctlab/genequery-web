@@ -7,6 +7,7 @@ import urllib2
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.http import JsonResponse
+from django.shortcuts import render
 from django.utils.html import format_html
 from django.views.generic import View
 
@@ -64,6 +65,9 @@ class SearchPageView(BaseTemplateView):
         context['request_url'] = reverse('searcher:search')  # for ajax search request
         return context
 
+    def get(self, request, **kwargs):
+        request.META["CSRF_COOKIE_USED"] = True
+        return render(request, self.template_name, self.get_context_data())
 
 search_page_view = SearchPageView.as_view()
 
