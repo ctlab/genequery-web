@@ -1,4 +1,5 @@
 *.swp
+zmisc/*
 *.DS_Store
 .idea/*
 *.pyc
