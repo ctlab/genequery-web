@@ -146,7 +146,7 @@ var SearchPage = React.createClass({
 
     return (
       <div className="row row-margin">
-        <div className="col-md-3">
+        <div className="col-md-4">
           <IdMappingTable totalFound={this.state.total}
                           idConversion={this.state.idConversion}
                           inputGenes={this.state.lastRequestData.genes} />

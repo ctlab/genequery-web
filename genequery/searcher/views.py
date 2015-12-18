@@ -12,7 +12,7 @@ from django.utils.html import format_html
 from django.views.generic import View
 
 from genequery.searcher.idconvertion import ToEntrezConversion, ToSymbolConversion, ToEntrezOrthologyConversion
-from genequery.utils.constants import MIN_LOG_EMPIRICAL_P_VALUE, INF, ENSEMBL
+from genequery.utils.constants import ENSEMBL, ENTREZ
 from math.fisher_empirical import FisherCalculationResult, fisher_empirical_p_values
 from genequery.main.views import BaseTemplateView
 from genequery.searcher.forms import SearchQueryForm
@@ -88,13 +88,13 @@ class SearchProcessorView(View):
         query_species = form.cleaned_data['query_species']
         db_species = form.cleaned_data['db_species']
 
-        genes = form.cleaned_data['genes']  # list of str
+        original_to_clean_genes = form.get_original_to_clean_genes_dict()
         LOG.info('GET request: genes {}, query_species {}, db_species: {}, query type: {}.'.format(
-            gene_list_pprint(genes), query_species, db_species, original_notation))
+            gene_list_pprint(original_to_clean_genes.keys()), query_species, db_species, original_notation))
 
         start_time = time()
 
-        genes = list(set(genes))
+        genes = list(set(original_to_clean_genes.values()))
         if query_species == db_species:
             id_convertion = ToEntrezConversion.convert(db_species, original_notation, genes)
         else:
@@ -108,6 +108,7 @@ class SearchProcessorView(View):
                 db_species,
                 original_notation,
                 id_convertion,
+                original_to_clean_genes,
             ))
 
         try:
@@ -124,16 +125,36 @@ class SearchProcessorView(View):
             db_species,
             original_notation,
             id_convertion,
+            original_to_clean_genes,
         ))
 
 
 search_processor_view = SearchProcessorView.as_view()
 
 
-def id_conversion_to_response(original_notation, id_conversion):
+def _replace_dict_keys(dictionary, key_map, original_notation):
+    """
+    :type dictionary: dict[int, str] | dict[str, str]
+    :type key_map: dict[str, str]
+    :type original_notation: str
+    :rtype dict[str, int] | dict[str, str]
+    """
+    if dictionary is None:
+        return None
+
+    res = {}
+    for original_key, key in key_map.items():
+        if original_notation == ENTREZ:
+            key = int(key)
+        res[original_key] = dictionary[key]
+    return res
+
+
+def id_conversion_to_response(original_notation, id_conversion, original_to_clean_genes):
     """
     :type original_notation: str
     :type id_conversion: ToEntrezConversion | ToEntrezOrthologyConversion
+    :type original_to_clean_genes: dict[str, str]
     :rtype: dict
     """
     result = {
@@ -147,10 +168,16 @@ def id_conversion_to_response(original_notation, id_conversion):
     if isinstance(id_conversion, ToEntrezOrthologyConversion):
         result['orthology'] = True
         result['showProxyColumn'] = original_notation == ENSEMBL
-        result['to_entrez_conversion'] = id_conversion.to_final_entrez
-        result['to_proxy_entrez_conversion'] = id_conversion.to_proxy_entrez
+        result['to_entrez_conversion'] = _replace_dict_keys(id_conversion.to_final_entrez,
+                                                            original_to_clean_genes,
+                                                            original_notation)
+        result['to_proxy_entrez_conversion'] = _replace_dict_keys(id_conversion.to_proxy_entrez,
+                                                                  original_to_clean_genes,
+                                                                  original_notation)
     else:
-        result['to_entrez_conversion'] = id_conversion.to_entrez
+        result['to_entrez_conversion'] = _replace_dict_keys(id_conversion.to_entrez,
+                                                            original_to_clean_genes,
+                                                            original_notation)
 
     return result
 
@@ -160,13 +187,15 @@ def build_search_result_data(
         processing_time,
         db_species,
         original_notation,
-        id_conversion):
+        id_conversion,
+        original_to_clean_genes):
     """
     :type id_conversion: ToEntrezConversion | ToEntrezOrthologyConversion
     :type sorted_fisher_processing_results: list of FisherCalculationResult
     :type processing_time: float
     :type db_species: str
     :type original_notation: str
+    :type original_to_clean_genes: dict[str, str]
     :rtype: dict
     """
     results = []
@@ -177,7 +206,7 @@ def build_search_result_data(
         'rows': results,
         'time': processing_time,
         'total_found': len(results),
-        'id_conversion': id_conversion_to_response(original_notation, id_conversion),
+        'id_conversion': id_conversion_to_response(original_notation, id_conversion, original_to_clean_genes),
     }
 
 

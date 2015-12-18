@@ -111,18 +111,10 @@ var IdMappingTable = React.createClass({
 
   getRows: function() {
     var not_annotated_msg = '(not annotated)';
-    var notation = this.props.idConversion['original_notation'];
-    var removeVersionFromInputGene = notation === 'ensembl' || notation === 'refseq';
     var to_entrez = this.props.idConversion['to_entrez_conversion'];
     var to_proxy_entrez = this.showProxyColumn() ? this.props.idConversion['to_proxy_entrez_conversion'] : null;
 
     return  _.chain(this.props.inputGenes)
-      .map(gene => {
-        if (removeVersionFromInputGene) {
-          return Utils.removeGeneVersion(gene);
-        }
-        return gene;
-      })
       .map((gene, i) => {
         var entrez_ids = '';
         var proxy_entrez_ids = '';
