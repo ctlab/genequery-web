@@ -29,11 +29,7 @@ a label {
   margin: 40px auto;
 }
 
-.search-form > .form-inline > div {
-  margin-right: 10px;
-}
-
-.search-form > .form-inline > .radio span {
+.search-form > .form-inline .radio span {
   padding-left: 5px;
 }
 

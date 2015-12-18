@@ -100,38 +100,50 @@ var RequestForm = React.createClass({
     return (
       <form role="form" className="search-form" method="GET" onSubmit={this.onSubmit}>
         <div className="form-group form-inline radio-inline-with-title">
-          <label>Data base species:</label>
-          <div className="radio">
-            <label>
-              <input type="radio" name="db_species" value="hs" checked={this.state.db_species === 'hs'}
-                onChange={this.handleDBSpeciesChange} />
-              Homo Sapiens
-            </label>
-          </div>
-          <div className="radio">
-            <label>
-              <input type="radio" name="db_species" value="mm" checked={this.state.db_species === 'mm'}
-                onChange={this.handleDBSpeciesChange} />
-              Mus Musculus
-            </label>
+          <div className="row">
+            <div className="col-md-4">
+              <label>Data base species:</label>
+            </div>
+            <div className="col-md-6">
+              <div className="radio">
+                <label>
+                  <input type="radio" name="db_species" value="hs" checked={this.state.db_species === 'hs'}
+                         onChange={this.handleDBSpeciesChange} />
+                  Homo Sapiens
+                </label>
+              </div>
+              <div className="radio">
+                <label>
+                  <input type="radio" name="db_species" value="mm" checked={this.state.db_species === 'mm'}
+                         onChange={this.handleDBSpeciesChange} />
+                  Mus Musculus
+                </label>
+              </div>
+            </div>
           </div>
         </div>
 
         <div className="form-group form-inline radio-inline-with-title">
-          <label>Query genes species:</label>
-          <div className="radio">
-            <label>
-              <input type="radio" name="query_species" value="hs" checked={this.state.query_species === 'hs'}
-                     onChange={this.handleQuerySpeciesChange} />
-              Homo Sapiens
-            </label>
-          </div>
-          <div className="radio">
-            <label>
-              <input type="radio" name="query_species" value="mm" checked={this.state.query_species === 'mm'}
-                     onChange={this.handleQuerySpeciesChange} />
-              Mus Musculus
-            </label>
+          <div className="row">
+            <div className="col-md-4">
+              <label>Query genes species:</label>
+            </div>
+            <div className="col-md-6">
+              <div className="radio">
+                <label>
+                  <input type="radio" name="query_species" value="hs" checked={this.state.query_species === 'hs'}
+                         onChange={this.handleQuerySpeciesChange} />
+                  Homo Sapiens
+                </label>
+              </div>
+              <div className="radio">
+                <label>
+                  <input type="radio" name="query_species" value="mm" checked={this.state.query_species === 'mm'}
+                         onChange={this.handleQuerySpeciesChange} />
+                  Mus Musculus
+                </label>
+              </div>
+            </div>
           </div>
         </div>
 
