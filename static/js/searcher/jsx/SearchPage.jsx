@@ -25,9 +25,10 @@ var SearchPage = React.createClass({
   componentWillMount: function() {
     new Clipboard('.copy-to-clipboard');
 
-    if (Utils.getUrlParameter('example') === 'true') {
+    var example = Utils.getUrlParameter('example');
+    if (example === 'symbol' || example === 'entrez' || example === 'refseq' || example === 'ensembl') {
       setTimeout(
-        () => Eventbus.emit('example-run'),
+        () => Eventbus.emit('example-run', {'notation': example}),
         250
       )
     }

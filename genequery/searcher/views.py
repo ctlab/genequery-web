@@ -12,7 +12,7 @@ from django.utils.html import format_html
 from django.views.generic import View
 
 from genequery.searcher.idconvertion import ToEntrezConversion, ToSymbolConversion, ToEntrezOrthologyConversion
-from genequery.utils.constants import ENSEMBL, ENTREZ
+from genequery.utils.constants import ENSEMBL
 from math.fisher_empirical import FisherCalculationResult, fisher_empirical_p_values
 from genequery.main.views import BaseTemplateView
 from genequery.searcher.forms import SearchQueryForm
@@ -134,7 +134,7 @@ search_processor_view = SearchProcessorView.as_view()
 
 def _replace_dict_keys(dictionary, key_map, original_notation):
     """
-    :type dictionary: dict[int, str] | dict[str, str]
+    :type dictionary: dict[int, list] | dict[str, list]
     :type key_map: dict[str, str]
     :type original_notation: str
     :rtype dict[str, int] | dict[str, str]
@@ -144,8 +144,6 @@ def _replace_dict_keys(dictionary, key_map, original_notation):
 
     res = {}
     for original_key, key in key_map.items():
-        if original_notation == ENTREZ:
-            key = int(key)
         res[original_key] = dictionary[key]
     return res
 
