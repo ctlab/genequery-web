@@ -79,6 +79,22 @@ def calculate_overlaps(modules, query):
     return overlaps
 
 
+def calculate_gse_sizes(modules):
+    """
+    Calculate size of GSEs whose modules are presented in `modules` argument.
+
+    :type modules: iterable of GQModule
+    :rtype: dict[(str,str), int]
+    """
+    sizes = {}
+    for module in modules:
+        gse, gpl, module_number = module.split_full_name()
+        if (gse, gpl) not in sizes:
+            sizes[(gse, gpl)] = 0
+        sizes[(gse, gpl)] += len(module.entrez_ids)
+    return sizes
+
+
 def fisher_empirical_p_values(species, modules, entrez_query, max_empirical_p_value=0.01):
     """
     Calculates logarithm of fisher p-value and empirical (adjusted) p-value.
@@ -94,6 +110,7 @@ def fisher_empirical_p_values(species, modules, entrez_query, max_empirical_p_va
     :rtype: list of FisherCalculationResult
     """
     overlaps_with_each_module = calculate_overlaps(modules, entrez_query)
+    sizes = calculate_gse_sizes(modules)
     overlaps_with_whole_gse = {(s, p): sum(overlaps_with_each_module[s, p].values())
                                for s, p in overlaps_with_each_module}
     result = []
@@ -101,12 +118,11 @@ def fisher_empirical_p_values(species, modules, entrez_query, max_empirical_p_va
         gse, gpl, num = module.split_full_name()
         if overlaps_with_each_module[gse, gpl][num] == 0:
             continue
-        pvalue = right_p_value(
-            overlaps_with_each_module[gse, gpl][num],
-            len(module.entrez_ids) - overlaps_with_each_module[gse, gpl][num],
-            overlaps_with_whole_gse[gse, gpl] - overlaps_with_each_module[gse, gpl][num],
-            6000 - overlaps_with_whole_gse[gse, gpl] - len(module.entrez_ids) + overlaps_with_each_module[gse, gpl][num]
-        )
+        a = overlaps_with_each_module[gse, gpl][num]
+        b = len(module.entrez_ids) - a
+        c = overlaps_with_whole_gse[gse, gpl] - a
+        d = sizes[gse, gpl] - overlaps_with_whole_gse[gse, gpl] - b
+        pvalue = right_p_value(a, b, c, d)
         log_pvalue = get_log10_or_inf(pvalue)
         empirical_pvalue = empirical_p_value(species, log_pvalue, len(entrez_query))
         if empirical_pvalue > max_empirical_p_value:
