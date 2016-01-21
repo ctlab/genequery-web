@@ -1,8 +1,35 @@
 import math
 import fisher
+from django.conf import settings
 from scipy.stats import norm
-from genequery.utils.constants import MM, HS, INF, MIN_LOG_EMPIRICAL_P_VALUE
+from genequery.utils.constants import MM, HS, RT, INF, MIN_LOG_EMPIRICAL_P_VALUE, GENEQUERY_2015_DB_NAME, \
+    GENEQUERY_2013_DB_NAME
 from genequery.searcher.models import GQModule
+
+
+BOOTSTRAP_MEAN = {
+    GENEQUERY_2013_DB_NAME: {
+        HS: lambda x: -0.08455403386 * math.log(x) - 4.269244644,
+        MM: lambda x: -0.0869592962 * math.log(x) - 4.090598767,
+    },
+    GENEQUERY_2015_DB_NAME: {
+        HS: lambda x: -0.08347915069 * math.log(x) - 4.443941868,
+        MM: lambda x: -0.08848028394 * math.log(x) - 4.269100238,
+        RT: lambda x: -0.08350190746 * math.log(x) - 3.568849077,
+    }
+}
+
+BOOTSTRAP_STD = {
+    GENEQUERY_2013_DB_NAME: {
+        HS: lambda x: 1.128394343e-6 * x + 0.5539313336,
+        MM: lambda x: 2.505819324e-6 * x + 0.5472805136,
+    },
+    GENEQUERY_2015_DB_NAME: {
+        HS: lambda x: -4.909174514e-6 * x + 0.5612293253,
+        MM: lambda x: 9.370360256e-6 * x + 0.5418300854,
+        RT: lambda x: -1.667001492e-5 * x + 0.5512707705,
+    }
+}
 
 
 class FisherCalculationResult:
@@ -137,19 +164,13 @@ def fisher_empirical_p_values(species, modules, entrez_query, max_empirical_p_va
 
 
 def _get_mu(species, module_size):
-    if species == MM:
-        return -3.06942 - 0.01322 * module_size
-    if species == HS:
-        return -2.2151 - 0.0187 * module_size
-    return None
+    # noinspection PyCallingNonCallable
+    return BOOTSTRAP_MEAN[settings.DATABASE_NAME][species](module_size)
 
 
 def _get_sigma(species, module_size):
-    if species == MM:
-        return 0.982519 + 0.000769 * module_size
-    if species == HS:
-        return 1.027662 + 0.000939 * module_size
-    return None
+    # noinspection PyCallingNonCallable
+    return BOOTSTRAP_STD[settings.DATABASE_NAME][species](module_size)
 
 
 def get_log10_or_inf(x):
@@ -164,10 +185,11 @@ def right_p_value(a, b, c, d):
 def empirical_p_value(species, log_p_value, module_size):
     if log_p_value == -INF:
         return 0
+    # noinspection PyUnresolvedReferences
     return float(normal_distribution(species, module_size).cdf(log_p_value))
 
 
-NORM_CACHE = {MM: {}, HS: {}}
+NORM_CACHE = {MM: {}, HS: {}, RT: {}}
 
 
 def normal_distribution(species, module_size):

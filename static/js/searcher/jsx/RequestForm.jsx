@@ -135,7 +135,7 @@ var RequestForm = React.createClass({
             <div className="col-md-4">
               <label>Data base species:</label>
             </div>
-            <div className="col-md-6">
+            <div className="col-md-8">
               <div className="radio">
                 <label>
                   <input type="radio" name="db_species" value="hs" checked={this.state.db_species === 'hs'}
@@ -150,6 +150,13 @@ var RequestForm = React.createClass({
                   Mus Musculus
                 </label>
               </div>
+              <div className="radio">
+                <label>
+                  <input type="radio" name="db_species" value="rt" checked={this.state.db_species === 'rt'}
+                         onChange={this.handleDBSpeciesChange} />
+                  Rattus Norvegicus
+                </label>
+              </div>
             </div>
           </div>
         </div>
@@ -159,7 +166,7 @@ var RequestForm = React.createClass({
             <div className="col-md-4">
               <label>Query genes species:</label>
             </div>
-            <div className="col-md-6">
+            <div className="col-md-8">
               <div className="radio">
                 <label>
                   <input type="radio" name="query_species" value="hs" checked={this.state.query_species === 'hs'}
@@ -172,6 +179,13 @@ var RequestForm = React.createClass({
                   <input type="radio" name="query_species" value="mm" checked={this.state.query_species === 'mm'}
                          onChange={this.handleQuerySpeciesChange} />
                   Mus Musculus
+                </label>
+              </div>
+              <div className="radio">
+                <label>
+                  <input type="radio" name="query_species" value="rt" checked={this.state.query_species === 'rt'}
+                         onChange={this.handleQuerySpeciesChange} />
+                  Rattus Norvegicus
                 </label>
               </div>
             </div>

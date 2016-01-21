@@ -12,3 +12,6 @@ MM = 'mm'
 RT = 'rt'
 
 ALLOWED_SPECIES = (HS, MM)
+
+GENEQUERY_2013_DB_NAME = 'genequery'
+GENEQUERY_2015_DB_NAME = 'genequery_2015'

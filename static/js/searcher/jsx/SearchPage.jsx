@@ -93,7 +93,7 @@ var SearchPage = React.createClass({
     return (
       <div>
         <div className="row">
-          <div className="col-md-6">
+          <div className="col-md-7">
             <RequestForm
               onSuccess={this.onSearchSuccess}
               onFail={this.onSearchFail}
