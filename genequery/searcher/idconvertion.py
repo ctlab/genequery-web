@@ -141,8 +141,8 @@ class ToSymbolConversion:
         """
         if not entrez_ids:
             return ToSymbolConversion({})
-        converted_pairs = Symbol2Entrez.objects.filter(entrez_id__in=entrez_ids).filter(species=species)\
-            .values_list('entrez_id', 'symbol_id')
+        converted_pairs = Symbol2Entrez.objects.filter(
+            entrez_id__in=entrez_ids, species=species).values_list('entrez_id', 'symbol_id')
 
         to_symbol = {}
         for e, s in converted_pairs:
