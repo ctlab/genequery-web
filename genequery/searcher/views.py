@@ -53,7 +53,7 @@ def get_gmt_url(species, gse, gpl):
     :type gpl: str
     :type gse: str
     """
-    path_to_file = here('gmt', species, '{}_{}.gmt'.format(gse, gpl))
+    path_to_file = here('gmt', '{}_{}.gmt'.format(gse, gpl))
     if getattr(settings, 'MEDIA_ARE_LOCAL', False):
         path = here(settings.MEDIA_ROOT, path_to_file)
         return here(settings.MEDIA_URL, path_to_file) if os.path.exists(path) else None
