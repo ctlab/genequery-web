@@ -44,11 +44,7 @@ var SearchResultRow = React.createClass({
         <td>
           <a href={GSE_ADDRESS_PREF + this.state.series} target="_blank">{this.state.series}</a>
         </td>
-        <td className="text-center">
-          <a href={this.state.gmt_url} target="_blank">
-            <span className="glyphicon glyphicon-download" />
-          </a>
-        </td>
+        <td className="text-center">{this.getGmtDowloadActiveOrIdleIcon()}</td>
       </tr>
     );
   },
@@ -79,6 +75,17 @@ var SearchResultRow = React.createClass({
       );
     }
     return this.state.module_number;
+  },
+
+  getGmtDowloadActiveOrIdleIcon: function() {
+    if (this.state.gmt_url !== null) {
+      return (
+        <a href={this.state.gmt_url} target="_blank">
+          <span className="glyphicon glyphicon-download" />
+        </a>
+      );
+    }
+    return 'N/A';
   },
 
   getOverlapLink: function() {

@@ -40,9 +40,11 @@ def get_module_heat_map_url(species, gse, gpl, module_number):
     :type species: str
     :rtype: str
     """
-    path_to_image = here('modules', species, '{}_{}_module_{}.svg'.format(gse, gpl, module_number))
-    path = here(settings.MEDIA_ROOT, path_to_image)
-    return here(settings.MEDIA_URL, path_to_image) if os.path.exists(path) else None
+    path_to_image = here('heatmaps', species, '{}_{}_module_{}.svg'.format(gse, gpl, module_number))
+    if getattr(settings, 'MEDIA_ARE_LOCAL', False):
+        path = here(settings.MEDIA_ROOT, path_to_image)
+        return here(settings.MEDIA_URL, path_to_image) if os.path.exists(path) else None
+    return here(settings.MEDIA_URL, path_to_image)
 
 
 def get_gmt_url(species, gse, gpl):
@@ -52,8 +54,10 @@ def get_gmt_url(species, gse, gpl):
     :type gse: str
     """
     path_to_file = here('gmt', species, '{}_{}.gmt'.format(gse, gpl))
-    path = here(settings.MEDIA_ROOT, path_to_file)
-    return here(settings.MEDIA_URL, path_to_file) if os.path.exists(path) else None
+    if getattr(settings, 'MEDIA_ARE_LOCAL', False):
+        path = here(settings.MEDIA_ROOT, path_to_file)
+        return here(settings.MEDIA_URL, path_to_file) if os.path.exists(path) else None
+    return here(settings.MEDIA_URL, path_to_file)
 
 
 class SearchPageView(BaseTemplateView):
