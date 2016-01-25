@@ -100,6 +100,8 @@ class SearchQueryForm(forms.Form):
                     gene = gene.capitalize()
                 else:
                     gene = gene.upper()
+            if notation_type == ENTREZ:
+                gene = int(gene)
             res[gene_original] = gene
 
         return res
