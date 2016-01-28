@@ -310,7 +310,7 @@ class GetOverlapView(View):
         original_notation = form.get_genes_id_type()
         query_species = form.cleaned_data['query_species']
         db_species = form.cleaned_data['db_species']
-        input_genes = form.cleaned_data['genes']
+        input_genes = list(set(form.get_original_to_clean_genes_dict().values()))
         full_module_name = request.GET['module']
 
         LOG.info('GET overlap: type={}, query_species={}, db_species={}, module={}, genes={}'.format(
