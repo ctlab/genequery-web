@@ -1,6 +1,6 @@
 import logging
 from genequery.searcher.models import Symbol2Entrez, Ensembl2Entrez, Refseq2Entrez, Other2Entrez, Homologene
-from genequery.utils import only_digits
+from genequery.utils import only_digits_with_dot
 from genequery.utils.constants import ENTREZ, REFSEQ, SYMBOL, ENSEMBL
 import re
 
@@ -48,7 +48,7 @@ def _is_prefix_and_digits(s, pref):
     :type pref: str
     :rtype: bool
     """
-    return s.startswith(pref) and only_digits(s.split(pref, 1)[-1])
+    return s.startswith(pref) and only_digits_with_dot(s.split(pref, 1)[-1])
 
 
 class ToEntrezConversion:

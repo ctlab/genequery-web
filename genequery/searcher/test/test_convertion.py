@@ -102,6 +102,7 @@ class TestIDConvertion(TestCase):
         self.assertEqual(ENSEMBL, get_gene_id_type('ENSG00000120907'))
         self.assertEqual(ENSEMBL, get_gene_id_type('ENSMUSG00000036899'))
         self.assertEqual(ENSEMBL, get_gene_id_type('ENSRNOG00000008187'))
+        self.assertEqual(ENSEMBL, get_gene_id_type('ENSRNOG00000008187.3'))
 
         self.assertEqual(ENTREZ, get_gene_id_type('12345'))
         self.assertEqual(SYMBOL, get_gene_id_type('s12345'))
@@ -110,6 +111,8 @@ class TestIDConvertion(TestCase):
         self.assertEqual(REFSEQ, get_gene_id_type('NR_1234'))
         self.assertEqual(REFSEQ, get_gene_id_type('XM_1234'))
         self.assertEqual(REFSEQ, get_gene_id_type('XR_1234'))
+        self.assertEqual(REFSEQ, get_gene_id_type('XR_1234.1'))
 
         self.assertEqual(SYMBOL, get_gene_id_type('XR1234'))
         self.assertEqual(SYMBOL, get_gene_id_type('XR_s1234'))
+        self.assertEqual(SYMBOL, get_gene_id_type('XR_.1234'))

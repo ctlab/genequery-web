@@ -20,15 +20,17 @@ def gene_list_pprint(genes):
     return '[{}]'.format(' '.join(map(str, genes)))
 
 
-def only_digits(s):
+def only_digits_with_dot(s):
     """
-    Checks if string s consists of digits only.
+    Checks if string s consists of digits only (with one not leading dot probably).
 
-    :type s: basestring
+    :type s: str
     :rtype: bool
     """
+    if not s or s[0] == '.':
+        return False
     try:
-        int(s)
+        float(s)
         return True
     except ValueError:
         return False
