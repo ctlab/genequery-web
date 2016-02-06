@@ -87,25 +87,6 @@ class ModuleDescription(models.Model):
         return u'[{}] {}'.format(self.series, self.title)
 
 
-class IdMap(models.Model):
-    species = models.CharField(u'Species', max_length=SPECIES_MAX_LENGTH, blank=False, choices=SPECIES_CHOICES)
-    entrez_id = models.BigIntegerField(u'Entrez ID', blank=False)
-    refseq_id = models.CharField(u'RefSeq ID', max_length=REFSEQ_ID_MAX_LENGTH, null=True, blank=True)
-    symbol_id = models.CharField(u'Symbol ID', max_length=SYMBOL_ID_MAX_LENGTH, null=True, blank=True)
-
-    class Meta:
-        verbose_name = 'id map'
-        verbose_name_plural = 'id maps'
-        db_table = 'id_map'
-        unique_together = (('species', 'refseq_id', 'symbol_id'),)
-
-    def __unicode__(self):
-        return u'{}(entrez={}, refseq={}, symbol={})'.format(
-            self.species, self.entrez_id, self.refseq_id or 'None', self.symbol_id or 'None')
-
-# TODO make *_id non blank
-
-
 class Refseq2Entrez(models.Model):
     species = models.CharField(u'Species', max_length=SPECIES_MAX_LENGTH, blank=False, choices=SPECIES_CHOICES)
     entrez_id = models.BigIntegerField(u'Entrez ID')
