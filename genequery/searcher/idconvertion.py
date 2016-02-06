@@ -1,11 +1,16 @@
 import logging
 from genequery.searcher.models import Symbol2Entrez, Ensembl2Entrez, Refseq2Entrez, Other2Entrez, Homologene
+from genequery.utils import only_digits
 from genequery.utils.constants import ENTREZ, REFSEQ, SYMBOL, ENSEMBL
 import re
 
 ENTREZ_PATTERN = re.compile('^[0-9\s]*$')
 
 LOG = logging.getLogger('genequery')
+
+
+ALLOWED_ENSEMBL_PREFIXES = ['ENSG', 'ENSRNOG', 'ENSMUSG']
+ALLOWED_REFSEQ_PREFIXES = ['NM_', 'NR_', 'XM_', 'XR_']
 
 
 def get_gene_id_type(gene):
@@ -26,8 +31,7 @@ def is_refseq(gene):
     :type gene: str
     :rtype: bool
     """
-    prefixes = ['NM', 'NR', 'XM', 'XR']
-    return any([gene.startswith('{}_'.format(prefix)) for prefix in prefixes])
+    return any(_is_prefix_and_digits(gene, pref) for pref in ALLOWED_REFSEQ_PREFIXES)
 
 
 def is_ensembl(gene):
@@ -35,8 +39,16 @@ def is_ensembl(gene):
     :type gene: str
     :rtype: bool
     """
-    # TODO specify more precise prefixes for species
-    return gene.startswith('ENS')
+    return any(_is_prefix_and_digits(gene, pref) for pref in ALLOWED_ENSEMBL_PREFIXES)
+
+
+def _is_prefix_and_digits(s, pref):
+    """
+    :type s: str
+    :type pref: str
+    :rtype: bool
+    """
+    return s.startswith(pref) and only_digits(s.split(pref, 1)[-1])
 
 
 class ToEntrezConversion:

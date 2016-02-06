@@ -19,7 +19,7 @@ var ErrorBlock = React.createClass({
     return (
       <div className="row">
         <div className="col-md-6">
-          <div className="alert alert-danger search-form" role="alert">
+          <div className="alert alert-danger error-alert-block" role="alert">
             <span className="sr-only">Error:</span> {this.state.message}
           </div>
         </div>

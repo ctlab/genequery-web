@@ -14,22 +14,26 @@ GENE_LIST_REQUIRED = 'Gene list is empty.'
 
 def entrez_id_validator(value):
     if len(value) > ENTREZ_ID_MAX_LENGTH:
-        raise ValidationError('Entrez id {} is too long.'.format(value))
+        raise ValidationError('Entrez id {} is too long. Less than {} characters is expected.'.format(
+            value, ENTREZ_ID_MAX_LENGTH))
 
 
 def refseq_id_validator(value):
     if len(value) > REFSEQ_ID_MAX_LENGTH:
-        raise ValidationError('RefSeq id {} is too long.'.format(value))
+        raise ValidationError('RefSeq id {} is too long. Less than {} characters is expected'.format(
+            value, REFSEQ_ID_MAX_LENGTH))
 
 
 def symbol_id_validator(value):
     if len(value) > SYMBOL_ID_MAX_LENGTH:
-        raise ValidationError('Symbol id {} is too long.'.format(value))
+        raise ValidationError('Symbol id {} is too long. Less than {} characters is expected'.format(
+            value, SYMBOL_ID_MAX_LENGTH))
 
 
 def ensembl_id_validator(value):
     if len(value) > ENSEMBL_ID_MAX_LENGTH:
-        raise ValidationError('Ensembl id {} is too long.'.format(value))
+        raise ValidationError('Ensembl id {} is too long. Less than {} characters is expected.'.format(
+            value, ENSEMBL_ID_MAX_LENGTH))
 
 
 class SearchQueryForm(forms.Form):
@@ -71,7 +75,7 @@ class SearchQueryForm(forms.Form):
             current_gene_type = get_gene_id_type(gene)
             if current_gene_type != first_gene_type:
                 raise forms.ValidationError(
-                    'Gene id types should be the same (both {}({}) and {}({}) are presents in query).'.format(
+                    'Gene id types should be the same. Both {} ({}) and {} ({}) are presents in query.'.format(
                         first_gene_type, first_gene, current_gene_type, gene
                     )
                 )

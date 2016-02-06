@@ -5,10 +5,6 @@ from constants import ALLOWED_SPECIES
 here = os.path.join
 
 
-def is_valid_species(species):
-    return species in ALLOWED_SPECIES
-
-
 def log_get(_log):
     def _logger(a_view):
         def _wrapped_view(request, *args, **kwargs):
@@ -24,5 +20,15 @@ def gene_list_pprint(genes):
     return '[{}]'.format(' '.join(map(str, genes)))
 
 
-class GeneQueryException(Exception):
-    pass
+def only_digits(s):
+    """
+    Checks if string s consists of digits only.
+
+    :type s: basestring
+    :rtype: bool
+    """
+    try:
+        int(s)
+        return True
+    except ValueError:
+        return False

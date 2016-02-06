@@ -1,5 +1,6 @@
 from django.test import TestCase
-from genequery.searcher.idconvertion import ToEntrezConversion, ToSymbolConversion, ToEntrezOrthologyConversion
+from genequery.searcher.idconvertion import ToEntrezConversion, ToSymbolConversion, ToEntrezOrthologyConversion, get_gene_id_type
+from genequery.utils.constants import ENSEMBL, SYMBOL, ENTREZ, REFSEQ
 
 
 class TestIDConvertion(TestCase):
@@ -93,3 +94,22 @@ class TestIDConvertion(TestCase):
         self.assertEqual([37, 34], res.to_proxy_entrez['ENSG00000165029'])
 
         self.assertEqual([11477], res.to_final_entrez['ENSG00000114771'])
+
+    def test_gene_type_detection(self):
+        self.assertEqual(SYMBOL, get_gene_id_type('ENSA'))
+        self.assertEqual(SYMBOL, get_gene_id_type('ENSAP3'))
+
+        self.assertEqual(ENSEMBL, get_gene_id_type('ENSG00000120907'))
+        self.assertEqual(ENSEMBL, get_gene_id_type('ENSMUSG00000036899'))
+        self.assertEqual(ENSEMBL, get_gene_id_type('ENSRNOG00000008187'))
+
+        self.assertEqual(ENTREZ, get_gene_id_type('12345'))
+        self.assertEqual(SYMBOL, get_gene_id_type('s12345'))
+
+        self.assertEqual(REFSEQ, get_gene_id_type('NM_1234'))
+        self.assertEqual(REFSEQ, get_gene_id_type('NR_1234'))
+        self.assertEqual(REFSEQ, get_gene_id_type('XM_1234'))
+        self.assertEqual(REFSEQ, get_gene_id_type('XR_1234'))
+
+        self.assertEqual(SYMBOL, get_gene_id_type('XR1234'))
+        self.assertEqual(SYMBOL, get_gene_id_type('XR_s1234'))
