@@ -63,7 +63,7 @@ var SearchPage = React.createClass({
     this.replaceState(state);
 
     if (_.isArray(data.rows) && !_.isEmpty(data.rows)) {
-      Utils.scrollToTop(ReactDOM.findDOMNode(this.refs.searchResultTable));
+      Utils.scrollToTop(ReactDOM.findDOMNode(this.refs.idMappingTable));
     }
   },
 
@@ -150,7 +150,8 @@ var SearchPage = React.createClass({
         <div className="col-md-4">
           <IdMappingTable totalFound={this.state.total}
                           idConversion={this.state.idConversion}
-                          inputGenes={this.state.lastRequestData.genes} />
+                          inputGenes={this.state.lastRequestData.genes}
+                          ref="idMappingTable" />
         </div>
       </div>
     );

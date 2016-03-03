@@ -227,7 +227,8 @@ def fisher_process_result_to_json(species, result, rank):
         'module_number': result.module_number,
         'series_url': get_module_heat_map_url(species, result.gse, result.gpl, result.module_number),
         'gmt_url': get_gmt_url(species, result.gse, result.gpl),
-        'adjusted_score': round(result.log_emp_pvalue, 2),
+        'log_p_value': max(result.log_pvalue, -325),
+        'adjusted_score': max(result.log_emp_pvalue, -325),
         'overlap_size': result.intersection_size,
         'module_size': result.module_size,
     }

@@ -19,14 +19,14 @@ var IdMappingTable = React.createClass({
 
   getInitialState: function() {
     return {
-      text: "show details"
+      text: "show conversion table"
     }
   },
 
   fireMappingTableToggleEvent: function(e) {
     var $table = $('.id-mapping-table-wrapper');
     $table.toggle();
-    this.setState({text: $table.is(':visible') ? "hide details" : "show details"});
+    this.setState({text: $table.is(':visible') ? "hide conversion table" : "show conversion table"});
   },
 
   render: function () {
@@ -35,9 +35,9 @@ var IdMappingTable = React.createClass({
     return (
       <div>
         <p>
-          Entered: {this.props.inputGenes.length} genes.<br/>
-          Parsed annotation format: {this.props.idConversion['original_notation']}.<br/>
-          {orthologyInfo} {orthologyInfo !== null ? <br/> : null}
+          Entered: {this.props.inputGenes.length} genes. {' '}
+          Parsed annotation format: {this.props.idConversion['original_notation']}. {' '}
+          {orthologyInfo} {orthologyInfo !== null ? ' ' : null}
           Unique Entrez IDs: {this.props.idConversion['unique_entrez_count']}{' '}
           (<a onClick={this.fireMappingTableToggleEvent}>
             {this.state.text}
