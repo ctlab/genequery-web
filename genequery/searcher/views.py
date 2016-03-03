@@ -13,7 +13,7 @@ from django.views.generic import View
 
 from genequery.searcher.idconvertion import ToEntrezConversion, ToSymbolConversion, ToEntrezOrthologyConversion
 from genequery.utils.constants import ENSEMBL
-from math.fisher_empirical import FisherCalculationResult, fisher_empirical_p_values
+from math.fisher_empirical import FisherCalculationResult, calculate_fisher_p_values
 from genequery.main.views import BaseTemplateView
 from genequery.searcher.forms import SearchQueryForm
 from genequery.searcher.models import ModuleDescription, GQModule
@@ -228,7 +228,6 @@ def fisher_process_result_to_json(species, result, rank):
         'series_url': get_module_heat_map_url(species, result.gse, result.gpl, result.module_number),
         'gmt_url': get_gmt_url(species, result.gse, result.gpl),
         'log_p_value': max(result.log_pvalue, -325),
-        'adjusted_score': max(result.log_emp_pvalue, -325),
         'overlap_size': result.intersection_size,
         'module_size': result.module_size,
     }
@@ -249,7 +248,7 @@ def calculate_fisher_process_results(species, entrez_query):
         LOG.exception("Can't access REST service")
 
     LOG.info('Calculate using data from DB.')
-    results = fisher_empirical_p_values(species, GQModule.objects.filter(species=species), entrez_query)
+    results = calculate_fisher_p_values(species, GQModule.objects.filter(species=species), entrez_query)
     return sorted(results)
 
 
@@ -289,7 +288,6 @@ def calculate_fisher_p_values_via_rest(species, query_entrez_ids):
             module_size=row['moduleSize'],
             intersection_size=row['intersectionSize'],
             log10_pvalue=row['logPvalue'],
-            log10_emp_pvalue=row['logEmpiricalPvalue'],
         ))
 
     return results

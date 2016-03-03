@@ -142,15 +142,11 @@ div.row-margin {
 }
 
 .result-table-col-p-value {
-  width: 4%;
-}
-
-.result-table-col-adj-p-value {
-  width: 5%;
+  width: 6%;
 }
 
 .result-table-col-overlap {
-  width: 6%;
+  width: 7%;
 }
 
 .result-table-col-gse {
@@ -158,7 +154,7 @@ div.row-margin {
 }
 
 .result-table-col-gmt {
-  width: 3%;
+  width: 5%;
 }
 
 .fake-result-table th:first-child,

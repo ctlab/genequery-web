@@ -64,7 +64,7 @@ var ResultTable = React.createClass({
 
   downloadAsCSV: function() {
     var delimeter = ',';
-    var columns = ['rank', 'log_p_value', 'adjusted_score', 'series', 'platform',
+    var columns = ['rank', 'log_p_value', 'series', 'platform',
                    'module_number', 'overlap_size', 'module_size', 'title'];
     var content = [columns.join(delimeter)];
     _.each(this.props.children, row => {
@@ -93,7 +93,6 @@ var ResultTable = React.createClass({
           <th>Experiment title</th>
           <th>Module</th>
           <th>lg(p<sub>value</sub>)</th>
-          <th>lg(adj.p<sub>value</sub>)</th>
           <th>Overlap</th>
           <th>GSE</th>
           <th>GMT</th>
@@ -109,7 +108,6 @@ var ResultTable = React.createClass({
         <col className="result-table-col-title" />
         <col className="result-table-col-module" />
         <col className="result-table-col-p-value" />
-        <col className="result-table-col-adj-p-value" />
         <col className="result-table-col-overlap" />
         <col className="result-table-col-gse" />
         <col className="result-table-col-gmt" />
