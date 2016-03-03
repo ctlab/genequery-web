@@ -3,6 +3,7 @@
         <ul class="nav nav-pills pull-right">
             <li role="presentation" class="{% if menu_active == 'searcher' %}active{% endif %}"><a href="{% url 'searcher:index' %}">Search</a></li>
             <li role="presentation" class="{% if menu_active == 'example' %}active{% endif %}"><a href="{% url 'example' %}">Example</a></li>
+            <li role="presentation" class="{% if menu_active == 'downloads' %}active{% endif %}"><a href="{% url 'downloads' %}">Downloads</a></li>
             <li role="presentation" class="{% if menu_active == 'about' %}active{% endif %}"><a href="{% url 'about' %}">About</a></li>
             <li role="presentation" class="{% if menu_active == 'contacts'%}active{% endif %}"><a href="{% url 'contacts' %}">Contacts</a></li>
         </ul>

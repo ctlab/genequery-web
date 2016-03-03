@@ -9,6 +9,7 @@ urlpatterns = patterns('genequery',
                        url(r'^about/$', 'main.views.about_page_view', name='about'),
                        url(r'^contacts/$', 'main.views.contacts_page_view', name='contacts'),
                        url(r'^example/$', 'main.views.example_page_view', name='example'),
+                       url(r'^downloads/$', 'main.views.downloads_page_view', name='downloads'),
                        url(r'^searcher/', include(('genequery.searcher.urls', 'searcher', 'searcher'))),
                        url(r'^admin/', include(admin.site.urls)))
 urlpatterns += [url(r'^media/(?P<path>.*)$', 'django.views.static.serve',

@@ -40,8 +40,8 @@ var SearchResultRow = React.createClass({
         <td className="text-right">{this.state.rank}</td>
         <td>{this.state.title}</td>
         <td>{this.getHeatmapWithMaybeLink()}</td>
-        <td>{this.state.log_p_value > -325 ? this.state.log_p_value.toFixed(2) : "< -325"}</td>
-        <td>{this.state.adjusted_score > -325 ? this.state.adjusted_score.toFixed(2) : "< -325"}</td>
+        <td>{this.state.log_p_value > -325 ? this.state.log_p_value.toFixed(2) : "≤ -325"}</td>
+        <td>{this.state.adjusted_score > -325 ? this.state.adjusted_score.toFixed(2) : "≤ -325"}</td>
         <td align="center" valign="middle">{this.getOverlapLink()}</td>
         <td>
           <a href={GSE_ADDRESS_PREF + this.state.series} target="_blank">{this.state.series}</a>

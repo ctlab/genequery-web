@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block container %}
+    <div class="blog-header">
+        <div class="row">
+            <div class="col-sm-8 blog-main">
+                <div class="blog-post text-justify" >
+                  <h2>Database</h2>
+                  Database that is behind GeneQuery is collected for each species into GMT-like files.
+                  Each line of such file has the following format:
+                  <p><pre style="display: inline-block;">GSE1001_GPL85#2 690229,688721,688429,687346,685883,685867,...</pre></p>
+                  where:
+                  <ul>
+                    <li><code>GSE1001_GPL85#2</code> – module identifier (<code>GSE1001</code> – series, <code>GPL85</code> – platform, <code>2</code> – module number);</li>
+                    <li><code>690229,688721,688429,...</code> – comma-separated module genes' Entrez IDs;</li>
+                    <li>module identifier is separated from genes with TAB.</li>
+                  </ul>
+                  Please, find following links to download data:
+                  <ul>
+                    <li>all species at once: <a href="{{MEDIA_URL}}/downloads/genequery_modules_all_species.tar.bz2">genequery_modules_all_species.tar.bz2</a> (77M)</li>
+                    <li>human: <a href="{{MEDIA_URL}}/downloads/genequery_modules_human.tar.bz2">genequery_modules_human.tar.bz2</a> (41M)</li>
+                    <li>mouse: <a href="{{MEDIA_URL}}/downloads/genequery_modules_mouse.tar.bz2">genequery_modules_mouse.tar.bz2</a> (30M)</li>
+                    <li>rat: <a href="{{MEDIA_URL}}/downloads/genequery_modules_rat.tar.bz2">genequery_modules_rat.tar.bz2</a> (5M)</li>
+                  </ul>
+
+                  <h2>Hallmark pre-calculated GeneQeury results</h2>
+                  This is the output of all MsigDB <a target="_blank" href="http://software.broadinstitute.org/gsea/msigdb/collections.jsp">«hallmark» genesets</a>
+                  that was returned by GeneQuery when searched against all three available databases (human, mouse, and rat). <br>
+                  In order for the hyperlinks to work correctly, please make sure you are connected to the Internet. <br>
+                  <a href="{{ MEDIA_URL }}/downloads/genequery_hallmark_search_results.zip">Download offline version as web-report.</a> <br>
+                  Number of significant results returned for each geneset is given below.
+                  <br> Here must be the plot.
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

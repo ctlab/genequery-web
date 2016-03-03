@@ -29,3 +29,10 @@ class ExamplePageView(BaseTemplateView):
     menu_active = 'example'
 
 example_page_view = ExamplePageView.as_view()
+
+
+class DownloadsPageView(BaseTemplateView):
+    template_name = 'downloads.html'
+    menu_active = 'downloads'
+
+downloads_page_view = DownloadsPageView.as_view()
