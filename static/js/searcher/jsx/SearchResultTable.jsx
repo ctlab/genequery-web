@@ -92,7 +92,7 @@ var ResultTable = React.createClass({
           <th>#</th>
           <th>Experiment title</th>
           <th>Module</th>
-          <th>lg(p<sub>value</sub>)</th>
+          <th>log<sub>10</sub>(p<sub>value</sub>)</th>
           <th>Overlap</th>
           <th>GSE</th>
           <th>GMT</th>
