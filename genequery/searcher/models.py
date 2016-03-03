@@ -163,3 +163,25 @@ class Homologene(models.Model):
     def __unicode__(self):
         return u'group {},{}(entrez={},symbol={},refseq={})'.format(
             self.group_id, self.species, self.entrez_id, self.symbol_id, self.refseq_id)
+
+
+def get_gse_info(gse_gpl_name):
+    """
+    :type gse_gpl_name: str
+    :rtype: dict
+    """
+    gq_modules = GQModule.objects.filter(full_name__startswith=gse_gpl_name)
+    if not gq_modules:
+        return None
+    info = {'gse': gse_gpl_name,
+            'module_genes': {},
+            'module_len': {},
+            'all_genes': [],
+            'total_modules': len(gq_modules)}
+    for m in gq_modules:
+        num = m.split_full_name()[-1]
+        info['module_len'][num] = len(m.entrez_ids)
+        info['module_genes'][num] = m.entrez_ids
+        info['all_genes'] += m.entrez_ids
+
+    return info
