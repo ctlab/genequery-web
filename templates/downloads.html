@@ -5,6 +5,16 @@
         <div class="row">
             <div class="col-sm-8 blog-main">
                 <div class="blog-post text-justify" >
+                  <h2>Hallmark pre-calculated GeneQeury results</h2>
+                  <h4><a href="{{ MEDIA_URL }}/downloads/genequery_hallmark_search_results.zip">Download offline version as web-report</a></h4>
+
+                  This is the output of all MsigDB <a target="_blank" href="http://software.broadinstitute.org/gsea/msigdb/collections.jsp">«hallmark» genesets</a>
+                  that was returned by GeneQuery when searched against all three available databases (human, mouse, and rat). <br>
+                  In order for the hyperlinks to work correctly, please make sure you are connected to the Internet. <br>
+                  Number of significant results returned for each geneset is given below.
+                  <br>
+                  <img src="{% static "img/hm_stat.png" %}" class="img-thumbnail">
+
                   <h2>Database</h2>
                   Database that is behind GeneQuery is collected for each species into GMT-like files.
                   Each line of such file has the following format:
@@ -22,15 +32,6 @@
                     <li>mouse: <a href="{{MEDIA_URL}}/downloads/genequery_modules_mouse.tar.bz2">genequery_modules_mouse.tar.bz2</a> (30M)</li>
                     <li>rat: <a href="{{MEDIA_URL}}/downloads/genequery_modules_rat.tar.bz2">genequery_modules_rat.tar.bz2</a> (5M)</li>
                   </ul>
-
-                  <h2>Hallmark pre-calculated GeneQeury results</h2>
-                  This is the output of all MsigDB <a target="_blank" href="http://software.broadinstitute.org/gsea/msigdb/collections.jsp">«hallmark» genesets</a>
-                  that was returned by GeneQuery when searched against all three available databases (human, mouse, and rat). <br>
-                  In order for the hyperlinks to work correctly, please make sure you are connected to the Internet. <br>
-                  <a href="{{ MEDIA_URL }}/downloads/genequery_hallmark_search_results.zip">Download offline version as web-report.</a> <br>
-                  Number of significant results returned for each geneset is given below.
-                  <br>
-                  <img src="{% static "img/hm_stat.png" %}" class="img-thumbnail">
                 </div>
             </div>
         </div>
