@@ -3,64 +3,33 @@
 {% block container %}
     <div class="blog-header">
         <div class="row">
-            <div class="col-sm-8 blog-main">
+            <div class="col-lg-8 blog-main">
                 <div class="blog-post text-justify" >
-                    <p>Following is a list of 50 genes found to be among most up-regulated in primary murine macrophages upon stimulation with LPS.
-                    The expression data was obtained using RNA-Seq technology. The outputs will contain numerous experiments,
-                    most of them related to immune response.</p>
-                    <div class="text-right"><a href="{% url 'searcher:index' %}?example=symbol" role="button" target="_blank">Run it on search page</a></div>
-                    <pre><code>Cd274
-Nos2
-Irg1
-Gbp2
-Cxcl9
-Ptgs2
-Saa3
-Gbp5
-Iigp1
-Gbp4
-Gbp3
-Il1rn
-Il1b
-Oasl1
-Gbp6
-Cd86
-Rsad2
-Ccl5
-Tgtp2
-Clic5
-Zbp1
-Gbp7
-Socs3
-Serpina3g
-Procr
-Igtp
-Slco3a1
-Ly6a
-Slc7a2
-C3
-Cd40
-Ifit1
-Fam26f
-Clec4e
-Bst1
-Isg15
-Irf1
-Acsl1
-Cd38
-Ifit2
-Thbs1
-Ifi47
-Ifi44
-Irgm2
-Il15ra
-Ass1
-Slfn1
-Nod
-Il18bp
-Serpinb9</code></pre>
+                    <p>Following is a list of 185 genes found to be hallmark of hypoxia according to MsigDB. The output contains numerous experiments related to hypoxic response.</p>
+{#                    <div class="text-left">#}
+{#                      #}
+{#                      <a href="{% url 'searcher:index' %}?example=symbol" role="button" target="_blank">Run it on search page</a>#}
+{#                    </div>#}
 
-                    <p>You can also select "Homo sapiens". The engine will return all of the matches in the human database.</p>
+                  <pre style="display: inline-block;">
+Col5a1  Tgm2  Gpc1  Phkg1  Efna1  Ampd3  Tktl1  Pnrc1  Plaur  Glrx  Maff  Serpine1  Cited2  Gapdh  Errfi1  Ets1
+Aldoa  Tmem45a  Pdk1  Pgam2  Atf3  Aldoc  Gcnt2  Pgf  Gpc4  Nr3c1  Fbp1  Pgm1  Igfbp3  Tpd52  Ppfia4  Prkcdbp  Ldha  Rbpj  Pkp1  Plac8
+Dcn  Igfbp1  Cdkn1c  Slc37a4  Ppargc1a  Ugp2  Csrp2  Bhlhe40  Hmox1  Grhpr  Hk1  Jmjd6  Ndst2  Dpysl4  Hs3st1  Slc2a5  Tiparp  Siah2
+P4ha2  Ptrf  Adm  Hspa5  Pfkp  Pfkfb3  Hk2  Sdc3  Gpc3  Eno2  Ddit4  Mxi1  Gys1  Cav1  Srpx  Plin2  Gbe1  Ier3  Slc6a6  Ankzf1  Aldob
+Has1  Kdelr3  Anxa2  Bcan  Brs3  Btg1  Irs2  Selenbp1  Cxcr4  Klhl24  Cdkn1a  Sap30  Vhl  Mif  Dtna  Lox  Lxn  Cdkn1b  Map3k1  Ero1l
+Myh9  Pdk3  S100a4  Cp  Casp6  Il6  Tnfaip3  Vldlr  Pam  Nedd4l  Adora2b  Cyr61  Noct  Bnip3l  Tpi1  Scarb1  Nagk  Tpbg  Isg20  Hoxb9
+Pfkl  Zfp36  Ids  Klf6  Wsb1  Xpnpep1  Bcl2  Ddit3  Ldhc  Pck1  Ndst1  Ppp1r15a  B3galt6  Pgm2  Vegfa  Sult2b1  Stc1  Kif5a  Pgk1  Sdc2
+Slc25a1  Rragd  Jun  Fos  Tgfb3  Ilvbl  Ctgf  Gapdhs  Ccng2  Dusp1  Tpst2  Lalba  Ncan  Ndrg1  Inha  F3  Akap12  Tes  Galk1  Pdgfb
+Slc2a3  Fosl2  Hexa  Sdc4  Fam162a  Wisp2  Ak4  Chst3  Egfr  Eno1  Rora  Ppp1r3c  Efna3  Car12  Gck  Large  Nfil3  Tgfbi  Kdm3a  Edn2
+Bgn  Pygm  Foxo3  Pklr  P4ha1  Gaa  Stbd1  Prkca  Hdlbp  Eno3</pre>
+
+                  <div style="margin-bottom: 12px;">
+                    <a href="{% url 'searcher:index' %}?example=symbol"
+                       class="btn btn-default"
+                       role="button"
+                       target="_blank">Run the example on the search page</a>
+                  </div>
+                  <p>You can also select "Homo sapiens". The engine will return all of the matches in the human database.</p>
                 </div>
             </div>
         </div>
