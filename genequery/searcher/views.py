@@ -262,10 +262,10 @@ def query_rest(species, query_entrez_ids):
         'species': species,
         'genes': ' '.join(map(str, query_entrez_ids)),
     }
-    url = 'http://{}:{}/{}?{}'.format(
-        settings.REST_HOST, settings.REST_PORT, settings.REST_URI, urllib.urlencode(params)
-    )
-    return urllib2.urlopen(url).read()
+    encoded_params = urllib.urlencode(params)
+    url = 'http://{}:{}/{}'.format(settings.REST_HOST, settings.REST_PORT, settings.REST_URI)
+    request = urllib2.Request(url, encoded_params)
+    return urllib2.urlopen(request).read()
 
 
 def calculate_fisher_p_values_via_rest(species, query_entrez_ids):
