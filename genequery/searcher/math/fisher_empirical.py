@@ -5,7 +5,7 @@ from genequery.searcher.models import GQModule
 
 
 class FisherCalculationResult:
-    def __init__(self, gse, gpl, module_number, module_size, intersection_size,
+    def __init__(self, gse, gpl, module_number, module_size, intersection_size, species,
                  pvalue=None, log10_pvalue=None):
         """
         :type log10_pvalue: float
@@ -15,7 +15,9 @@ class FisherCalculationResult:
         :type gpl: str
         :type module_number: int
         :type module_size: int
+        :type species: str
         """
+        self.species = species
         self.gse = gse
         self.gpl = gpl
         self.module_number = module_number
@@ -31,15 +33,18 @@ class FisherCalculationResult:
             self.pvalue = math.pow(10, log10_pvalue)
             self.log_pvalue = log10_pvalue
 
+        self.adj_p_value = bonferroni_correction_of_inf(self.pvalue, species=species)
+        self.log_adj_p_value = get_log10_or_inf(self.adj_p_value)
+
     def __cmp__(self, other):
         if self.log_pvalue == other.log_pvalue:
             return 0
         return 1 if self.log_pvalue > other.log_pvalue else -1
 
     def __repr__(self):
-        return 'FisherResult[module={},inters={},lg(p-value)={}'.format(
+        return 'FisherResult[module={},inters={},lg(adj-p-value)={}'.format(
             GQModule.merge_full_name(self.gse, self.gpl, self.module_number),
-            self.intersection_size, self.log_pvalue)
+            self.intersection_size, self.log_adj_p_value)
 
 
 def calculate_overlaps(modules, query):
@@ -114,7 +119,7 @@ def calculate_fisher_p_values(species, modules, entrez_query, max_lg_p_value=Non
             continue
         result.append(
             FisherCalculationResult(gse, gpl, num, len(module.entrez_ids),
-                                    overlaps_with_each_module[gse, gpl][num],
+                                    overlaps_with_each_module[gse, gpl][num], species,
                                     pvalue=pvalue, log10_pvalue=lg_pvalue))
     return result
 
@@ -126,3 +131,25 @@ def right_p_value(a, b, c, d):
 
 def get_log10_or_inf(x):
     return math.log10(x) if x != 0 else -INF
+
+
+def log10_bonferroni_correction_of_inf(log_p_value, species):
+    """
+    Return log_p_value after Bonferroni correction on modules count for the species.
+
+    :type species: str
+    :type log_p_value: float
+    """
+    from django.conf import settings
+    return (log_p_value - settings.BONFERRONI_ADJ_LOG_P_VALUE[species]) if log_p_value != -INF else -INF
+
+
+def bonferroni_correction_of_inf(p_value, species):
+    """
+    Return p_value after Bonferroni correction on modules count for the species.
+
+    :type species: str
+    :type p_value: float
+    """
+    from django.conf import settings
+    return p_value * settings.MODULES_COUNT[species]

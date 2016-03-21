@@ -134,19 +134,19 @@ div.row-margin {
 }
 
 .result-table-col-title {
-  width: 73%;
+  width: 72%;
 }
 
 .result-table-col-module {
   width: 2%;
 }
 
-.result-table-col-p-value {
-  width: 6%;
+.result-table-col-adj-p-value {
+  width: 10%;
 }
 
 .result-table-col-overlap {
-  width: 7%;
+  width: 6%;
 }
 
 .result-table-col-gse {
@@ -154,7 +154,7 @@ div.row-margin {
 }
 
 .result-table-col-gmt {
-  width: 5%;
+  width: 3%;
 }
 
 .fake-result-table th:first-child,

@@ -20,7 +20,7 @@ var SearchResultRow = React.createClass({
     overlap_size: React.PropTypes.number.isRequired,
     module_size: React.PropTypes.number.isRequired,
     series_url: React.PropTypes.string,
-    log_p_value: React.PropTypes.number.isRequired,
+    log_adj_p_value: React.PropTypes.number.isRequired,
     gmt_url: React.PropTypes.string,
     overlapOnClick: React.PropTypes.func.isRequired
   },
@@ -39,7 +39,7 @@ var SearchResultRow = React.createClass({
         <td className="text-right">{this.state.rank}</td>
         <td>{this.state.title}</td>
         <td>{this.getHeatmapWithMaybeLink()}</td>
-        <td>{this.state.log_p_value >= -325 ? this.state.log_p_value.toFixed(2) : "≤ -325"}</td>
+        <td>{this.state.log_adj_p_value >= -325 ? this.state.log_adj_p_value.toFixed(2) : "≤ -325"}</td>
         <td align="center" valign="middle">{this.getOverlapLink()}</td>
         <td>
           <a href={GSE_ADDRESS_PREF + this.state.series} target="_blank">{this.state.series}</a>
