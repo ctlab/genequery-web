@@ -1,3 +1,4 @@
+jinja2
 numpy==1.10.1
 scipy==0.16.1
 Django==1.7.4
