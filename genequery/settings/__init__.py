@@ -87,10 +87,6 @@ LOGGING = {
             'format': '%(levelname)s %(name)s %(asctime)s %(module)s.py, line %(lineno)d, in %(funcName)s:\t%(message)s',
             'datefmt': "%Y-%m-%d %H:%M:%S",
         },
-        'rpc_verbose': {
-            'format': '%(levelname)s %(name)s %(asctime)s %(module)s:%(lineno)d\tthread-%(thread)d\tprocess-%(process)d\t%(message)s',
-            'datefmt': "%Y-%m-%d %H:%M:%S",
-        },
         'simple': {
             'format': '%(levelname)s %(message)s'
         },
@@ -121,22 +117,10 @@ LOGGING = {
             'backupCount': 10,
             'formatter': 'verbose',
         },
-        'rpc_stats_file': {
-            'level': 'INFO',
-            'class': 'logging.handlers.RotatingFileHandler',
-            'filename': here(LOG_DIR, 'rpc_stats.log'),
-            'maxBytes': 1024 * 1024 * 30,
-            'backupCount': 10,
-            'formatter': 'rpc_verbose',
-        },
     },
     'loggers': {
         'genequery': {
             'handlers': ['console', 'common_file'],
-            'level': 'DEBUG',
-        },
-        'rpc': {
-            'handlers': ['console', 'rpc_stats_file'],
             'level': 'DEBUG',
         },
     }
