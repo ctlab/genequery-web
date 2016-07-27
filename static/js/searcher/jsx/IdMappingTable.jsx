@@ -30,13 +30,13 @@ var IdMappingTable = React.createClass({
   },
 
   render: function () {
-    var orthologyInfo = this.props.idConversion['orthology'] ? "Orthology was applied." : null;
+    var orthologyInfo = this.props.idConversion['orthology_used'] ? "Orthology was applied." : null;
 
     return (
       <div>
         <p>
           Entered: {this.props.inputGenes.length} genes. {' '}
-          Parsed annotation format: {this.props.idConversion['original_notation']}. {' '}
+          Parsed annotation format: {this.props.idConversion['identified_gene_format']}. {' '}
           {orthologyInfo} {orthologyInfo !== null ? ' ' : null}
           Unique Entrez IDs: {this.props.idConversion['unique_entrez_count']}{' '}
           (<a onClick={this.fireMappingTableToggleEvent}>
@@ -102,36 +102,26 @@ var IdMappingTable = React.createClass({
   },
 
   showProxyColumn: function() {
-    return this.props.idConversion['showProxyColumn'];
+    //return this.props.idConversion['showProxyColumn'];
+    return false;
   },
 
   onDownloadClick: function() {
+    // TODO make all event names constants
     Eventbus.emit('download-as-csv');
   },
 
   getRows: function() {
     var not_annotated_msg = '(not annotated)';
-    var to_entrez = this.props.idConversion['to_entrez_conversion'];
-    var to_proxy_entrez = this.showProxyColumn() ? this.props.idConversion['to_proxy_entrez_conversion'] : null;
+    var to_entrez = this.props.idConversion['input_genes_to_final_entrez'];
 
     return  _.chain(this.props.inputGenes)
       .map((gene, i) => {
-        var entrez_ids = '';
-        var proxy_entrez_ids = '';
-
-        if (gene in to_entrez) {
-          entrez_ids = to_entrez[gene].join(',');
-        }
-        if (to_proxy_entrez !== null && gene in to_proxy_entrez) {
-          proxy_entrez_ids = to_proxy_entrez[gene].join(',');
-        }
-
         return (
-          <tr key={i} className={entrez_ids === '' ? "danger" : ""}>
+          <tr key={i} className={gene in to_entrez ? "": "danger"}>
             <td>{i + 1}</td>
             <td>{gene}</td>
-            {to_proxy_entrez !== null ? <td>{proxy_entrez_ids || not_annotated_msg}</td> : null}
-            <td>{entrez_ids || not_annotated_msg}</td>
+            <td>{to_entrez[gene] || not_annotated_msg}</td>
           </tr>
         );
       })

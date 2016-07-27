@@ -12,6 +12,7 @@ from django.utils.html import format_html
 from django.views.generic import View
 
 from genequery.searcher.idconvertion import ToEntrezConversion, ToSymbolConversion, ToEntrezOrthologyConversion
+from genequery.searcher.restapi import RestApiProxyMethods
 from genequery.utils.constants import ENSEMBL
 from math.fisher_empirical import FisherCalculationResult, calculate_fisher_p_values
 from genequery.main.views import BaseTemplateView
@@ -76,6 +77,30 @@ class SearchPageView(BaseTemplateView):
 search_page_view = SearchPageView.as_view()
 
 
+def json_response_ok(data):
+    return JsonResponse({
+        'success': True,
+        'errors': None,
+        'result': data
+    })
+
+
+def json_response_errors(errors):
+    return JsonResponse({
+        'success': False,
+        'errors': errors,
+        'result': None
+    })
+
+
+def json_response_system_error():
+    return JsonResponse({
+        'success': False,
+        'errors': ['System error'],
+        'result': None
+    })
+
+
 class SearchProcessorView(View):
     @log_get(LOG)
     def post(self, request):
@@ -86,133 +111,62 @@ class SearchProcessorView(View):
         form = SearchQueryForm(request.POST)
         if not form.is_valid():
             LOG.info('Invalid form data: {}'.format('\n'.join(form.get_error_messages_as_list())))
-            return JsonResponse({'error': ('\n'.join(form.get_error_messages_as_list()))})
+            return json_response_errors(form.get_error_messages_as_list())
 
-        original_notation = form.get_genes_id_type()
-        query_species = form.cleaned_data['query_species']
-        db_species = form.cleaned_data['db_species']
+        species_from = form.cleaned_data['query_species']
+        species_to = form.cleaned_data['db_species']
 
-        original_to_clean_genes = form.get_original_to_clean_genes_dict()
-        LOG.info('GET request: genes {}, query_species {}, db_species: {}, query type: {}.'.format(
-            gene_list_pprint(original_to_clean_genes.keys()), query_species, db_species, original_notation))
-
-        start_time = time()
-
-        genes = list(set(original_to_clean_genes.values()))
-        if query_species == db_species:
-            id_convertion = ToEntrezConversion.convert(db_species, original_notation, genes)
-        else:
-            id_convertion = ToEntrezOrthologyConversion.convert(query_species, db_species, original_notation, genes)
-        input_entrez_ids = id_convertion.get_final_entrez_ids()
-
-        if not input_entrez_ids:
-            return JsonResponse(build_search_result_data(
-                [],
-                0,
-                db_species,
-                original_notation,
-                id_convertion,
-                original_to_clean_genes,
-            ))
+        raw_genes = form.cleaned_data['genes']
+        LOG.info('GET request: genes {}, query_species {}, db_species: {}.'.format(
+            gene_list_pprint(raw_genes), species_from, species_to))
 
         try:
-            sorted_results = calculate_fisher_process_results(db_species, input_entrez_ids)
+            start_time = time()
+            result_wrapper = RestApiProxyMethods.perform_enrichment_method.call(raw_genes, species_from, species_to)
+            processing_time = round(time() - start_time, 3)
         except:
             LOG.exception('Error while calculating p-values')
-            return JsonErrorResponse('System error')
+            return json_response_system_error()
 
-        processing_time = round(time() - start_time, 3)
+        id_conversion = {
+            'identified_gene_format': result_wrapper.result.identified_gene_format,
+            'orthology_used': species_from == species_to,
+            'input_genes_to_final_entrez': result_wrapper.result.gene_conversion_map
 
-        return JsonResponse(build_search_result_data(
-            sorted_results,
-            processing_time,
-            db_species,
-            original_notation,
-            id_convertion,
-            original_to_clean_genes,
+        }
+        LOG.info('Found {} items in {} sec'.format(len(result_wrapper.result.enrichment_result_items), processing_time))
+
+        return json_response_ok(build_search_result_data(
+            result_wrapper.result.enrichment_result_items,
+            result_wrapper.result.identified_gene_format,
+            id_conversion,
         ))
 
 
 search_processor_view = SearchProcessorView.as_view()
 
 
-def _replace_dict_keys(dictionary, key_map, original_notation):
-    """
-    :type dictionary: dict[int, list] | dict[str, list]
-    :type key_map: dict[str, str]
-    :type original_notation: str
-    :rtype dict[str, int] | dict[str, str]
-    """
-    if dictionary is None:
-        return None
-
-    res = {}
-    for original_key, key in key_map.items():
-        res[original_key] = dictionary[key]
-    return res
-
-
-def id_conversion_to_response(original_notation, id_conversion, original_to_clean_genes):
-    """
-    :type original_notation: str
-    :type id_conversion: ToEntrezConversion | ToEntrezOrthologyConversion
-    :type original_to_clean_genes: dict[str, str]
-    :rtype: dict
-    """
-    result = {
-        'orthology': False,
-        'showProxyColumn': False,
-        'to_entrez_conversion': {},
-        'to_proxy_entrez_conversion': None,
-        'original_notation': original_notation,
-        'unique_entrez_count': len(id_conversion.get_final_entrez_ids()),
-    }
-    if isinstance(id_conversion, ToEntrezOrthologyConversion):
-        result['orthology'] = True
-        result['showProxyColumn'] = original_notation == ENSEMBL
-        result['to_entrez_conversion'] = _replace_dict_keys(id_conversion.to_final_entrez,
-                                                            original_to_clean_genes,
-                                                            original_notation)
-        result['to_proxy_entrez_conversion'] = _replace_dict_keys(id_conversion.to_proxy_entrez,
-                                                                  original_to_clean_genes,
-                                                                  original_notation)
-    else:
-        result['to_entrez_conversion'] = _replace_dict_keys(id_conversion.to_entrez,
-                                                            original_to_clean_genes,
-                                                            original_notation)
-
-    return result
-
-
 def build_search_result_data(
-        sorted_fisher_processing_results,
-        processing_time,
+        enrichment_result_items,
         db_species,
-        original_notation,
-        id_conversion,
-        original_to_clean_genes):
+        id_conversion):
     """
-    :type id_conversion: ToEntrezConversion | ToEntrezOrthologyConversion
-    :type sorted_fisher_processing_results: list of FisherCalculationResult
-    :type processing_time: float
+    :type id_conversion: dict
+    :type enrichment_result_items: list[FisherCalculationResult]
     :type db_species: str
-    :type original_notation: str
-    :type original_to_clean_genes: dict[str, str]
     :rtype: dict
     """
     results = []
-    for i, r in enumerate(sorted_fisher_processing_results):
-        results.append(fisher_process_result_to_json(db_species, r, i + 1))
+    for i, r in enumerate(enrichment_result_items):
+        results.append(enrichment_result_item_to_json(db_species, r, i + 1))
 
     return {
         'rows': results,
-        'time': processing_time,
-        'total_found': len(results),
-        'id_conversion': id_conversion_to_response(original_notation, id_conversion, original_to_clean_genes),
+        'id_conversion': id_conversion,
     }
 
 
-def fisher_process_result_to_json(species, result, rank):
+def enrichment_result_item_to_json(species, result, rank):
     """
     :type species: str
     :type rank: int
@@ -232,67 +186,6 @@ def fisher_process_result_to_json(species, result, rank):
         'overlap_size': result.intersection_size,
         'module_size': result.module_size,
     }
-
-
-def calculate_fisher_process_results(species, entrez_query):
-    """
-    :type entrez_query: list of int
-    :type species: str
-    :rtype: list of FisherCalculationResult
-    :returns sorted results
-    """
-    try:
-        LOG.info('Trying REST service first')
-        # Already sorted on back-end
-        return calculate_fisher_p_values_via_rest(species, entrez_query)
-    except Exception:
-        LOG.exception("Can't access REST service")
-
-    LOG.info('Calculate using data from DB.')
-    results = calculate_fisher_p_values(species, GQModule.objects.filter(species=species), entrez_query)
-    return sorted(results)
-
-
-def query_rest(species, query_entrez_ids):
-    """
-    :type query_entrez_ids: list of int
-    :type species: str
-    :rtype str
-    """
-    params = {
-        'species': species,
-        'genes': ' '.join(map(str, query_entrez_ids)),
-    }
-    encoded_params = urllib.urlencode(params)
-    url = 'http://{}:{}/{}'.format(settings.REST_HOST, settings.REST_PORT, settings.REST_URI)
-    request = urllib2.Request(url, encoded_params)
-    return urllib2.urlopen(request).read()
-
-
-def calculate_fisher_p_values_via_rest(species, query_entrez_ids):
-    """
-    :type query_entrez_ids: list of int
-    :type species: str
-    :rtype list of FisherCalculationResult
-    """
-    # from genequery.utils.test import get_test_rest_response
-    # response = json.loads(get_test_rest_response(species))
-
-    response = json.loads(query_rest(species, query_entrez_ids))
-
-    results = []
-    for row in response:
-        results.append(FisherCalculationResult(
-            gse=row['gse'],
-            gpl=row['gpl'],
-            module_number=row['moduleNumber'],
-            module_size=row['moduleSize'],
-            intersection_size=row['intersectionSize'],
-            species=species,
-            log10_pvalue=row['logPvalue'],
-        ))
-
-    return results
 
 
 class GetOverlapView(View):

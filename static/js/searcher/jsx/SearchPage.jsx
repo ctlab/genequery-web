@@ -45,24 +45,31 @@ var SearchPage = React.createClass({
   },
 
   // TODO move validation checks to separate method
-  onSearchSuccess: function(data) {
-    console.log('OK', data);
+  onSearchSuccess: function(payload) {
+    console.log('OK', payload);
 
     var state = {showLoading: false, lastRequestData: this.state.lastRequestData};
 
-    if (_.has(data, 'error')) {
-      state.errorMessage = data.error;
-    } else if (_.isArray(data.rows) && _.isObject(data.id_conversion)) {
-      state.total = data.total_found;
-      state.rows = data.rows;
-      state.idConversion = data.id_conversion;
-    } else {
+    try {
+      var success = payload['success'];
+      var data = payload['result'];
+      var errors = payload['errors'];
+    } catch (e) {
+      console.log('fail to parse payload', e);
       state.errorMessage = "Seems like server error. Wrong response format.";
+    }
+
+    if (success === true) {
+      state.rows = data['rows'];
+      state.total = state.rows.length;
+      state.idConversion = data['id_conversion'];
+    } else {
+      state.errorMessage = errors.join('\n');
     }
 
     this.replaceState(state);
 
-    if (_.isArray(data.rows) && !_.isEmpty(data.rows)) {
+    if (_.isArray(payload.rows) && !_.isEmpty(payload.rows)) {
       Utils.scrollToTop(ReactDOM.findDOMNode(this.refs.idMappingTable));
     }
   },
