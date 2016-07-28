@@ -1,9 +1,7 @@
 import logging
 import os
-import json
 from time import time
-import urllib
-import urllib2
+
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.http import JsonResponse
@@ -11,26 +9,16 @@ from django.shortcuts import render
 from django.utils.html import format_html
 from django.views.generic import View
 
-from genequery.searcher.idconvertion import ToEntrezConversion, ToSymbolConversion, ToEntrezOrthologyConversion
-from genequery.searcher.restapi import RestApiProxyMethods
-from genequery.utils.constants import ENSEMBL
-from math.fisher_empirical import FisherCalculationResult, calculate_fisher_p_values
 from genequery.main.views import BaseTemplateView
 from genequery.searcher.forms import SearchQueryForm
+from genequery.searcher.idconvertion import ToEntrezConversion, ToSymbolConversion, ToEntrezOrthologyConversion
 from genequery.searcher.models import ModuleDescription, GQModule
-from genequery.utils import log_get, gene_list_pprint, here
+from genequery.searcher.restapi import RestApiProxyMethods, PerformEnrichmentRestProxyMethod
+from genequery.utils import log_get, gene_list_pprint, here, require_ajax
 
 LOG = logging.getLogger('genequery')
 
 HTML_NEG_INF = format_html('-&infin;')
-
-
-class JsonErrorResponse(JsonResponse):
-    def __init__(self, error_message, status_code=500, **kwargs):
-        super(JsonErrorResponse, self).__init__({
-            'error': error_message,
-            'code': status_code,
-        }, **kwargs)
 
 
 def get_module_heat_map_url(species, gse, gpl, module_number):
@@ -86,11 +74,13 @@ def json_response_ok(data):
 
 
 def json_response_errors(errors):
-    return JsonResponse({
-        'success': False,
-        'errors': errors,
-        'result': None
-    })
+    if errors:
+        return JsonResponse({
+            'success': False,
+            'errors': errors,
+            'result': None
+        })
+    return json_response_unknown_error()
 
 
 def json_response_system_error():
@@ -101,17 +91,27 @@ def json_response_system_error():
     })
 
 
+def json_response_unknown_error():
+    return JsonResponse({
+        'success': False,
+        'errors': ['Unknown error'],
+        'result': None
+    })
+
+
+def handle_not_valid_search_form(search_query_form):
+    if not search_query_form.is_valid():
+        LOG.info('Invalid form data: {}'.format(search_query_form.get_error_messages_as_list()))
+        return json_response_errors(search_query_form.get_error_messages_as_list())
+
+
 class SearchProcessorView(View):
     @log_get(LOG)
+    @require_ajax
     def post(self, request):
-        if not request.is_ajax():
-            LOG.warning('Search request must be AJAX.')
-            return JsonErrorResponse('Method not allowed', status_code=405)
-
         form = SearchQueryForm(request.POST)
         if not form.is_valid():
-            LOG.info('Invalid form data: {}'.format('\n'.join(form.get_error_messages_as_list())))
-            return json_response_errors(form.get_error_messages_as_list())
+            return handle_not_valid_search_form(form)
 
         species_from = form.cleaned_data['query_species']
         species_to = form.cleaned_data['db_species']
@@ -128,78 +128,65 @@ class SearchProcessorView(View):
             LOG.exception('Error while calculating p-values')
             return json_response_system_error()
 
-        id_conversion = {
-            'identified_gene_format': result_wrapper.result.identified_gene_format,
-            'orthology_used': species_from == species_to,
-            'input_genes_to_final_entrez': result_wrapper.result.gene_conversion_map
+        if not result_wrapper.success:
+            return json_response_errors(result_wrapper.errors)
 
-        }
-        LOG.info('Found {} items in {} sec'.format(len(result_wrapper.result.enrichment_result_items), processing_time))
+        result = result_wrapper.result
+        LOG.info('Found {} enriched items in {} sec'.format(len(result.enrichment_result_items), processing_time))
 
-        return json_response_ok(build_search_result_data(
-            result_wrapper.result.enrichment_result_items,
-            result_wrapper.result.identified_gene_format,
-            id_conversion,
-        ))
+        return json_response_ok(prepare_json_data(result, species_from, species_to))
 
 
 search_processor_view = SearchProcessorView.as_view()
 
 
-def build_search_result_data(
-        enrichment_result_items,
-        db_species,
-        id_conversion):
+def prepare_json_data(response_result, species_from, species_to):
     """
-    :type id_conversion: dict
-    :type enrichment_result_items: list[FisherCalculationResult]
-    :type db_species: str
+    :type response_result: PerformEnrichmentRestProxyMethod.Result
+    :type species_from: str
+    :type species_to: str
     :rtype: dict
     """
     results = []
-    for i, r in enumerate(enrichment_result_items):
-        results.append(enrichment_result_item_to_json(db_species, r, i + 1))
+    for rank, enriched_item in enumerate(response_result.enrichment_result_items):
+        results.append({
+            'title': ModuleDescription.get_title_or_default(enriched_item.gse, 'No title'),
+            'rank': rank + 1,
+            'series': enriched_item.gse,
+            'platform': enriched_item.gpl,
+            'module_number': enriched_item.module_number,
+            'series_url': get_module_heat_map_url(species_to,
+                                                  enriched_item.gse,
+                                                  enriched_item.gpl,
+                                                  enriched_item.module_number),
+            'gmt_url': get_gmt_url(species_to, enriched_item.gse, enriched_item.gpl),
+            'log_p_value': enriched_item.log_pvalue,
+            'log_adj_p_value': enriched_item.log_adj_p_value,
+            'overlap_size': enriched_item.intersection_size,
+            'module_size': enriched_item.module_size,
+        })
 
-    return {
-        'rows': results,
-        'id_conversion': id_conversion,
+    id_conversion = {
+        'identified_gene_format': response_result.identified_gene_format,
+        'orthology_used': species_from == species_to,
+        'input_genes_to_final_entrez': response_result.gene_conversion_map
+
     }
 
-
-def enrichment_result_item_to_json(species, result, rank):
-    """
-    :type species: str
-    :type rank: int
-    :type result: FisherCalculationResult
-    :rtype: dict
-    """
     return {
-        'title': ModuleDescription.get_title_or_default(result.gse, 'No title'),
-        'rank': rank,
-        'series': result.gse,
-        'platform': result.gpl,
-        'module_number': result.module_number,
-        'series_url': get_module_heat_map_url(species, result.gse, result.gpl, result.module_number),
-        'gmt_url': get_gmt_url(species, result.gse, result.gpl),
-        'log_p_value': max(result.log_pvalue, -325),
-        'log_adj_p_value': max(result.log_adj_p_value, -325),
-        'overlap_size': result.intersection_size,
-        'module_size': result.module_size,
+        'enriched_modules': results,
+        'id_conversion': id_conversion,
     }
 
 
 class GetOverlapView(View):
     @log_get(LOG)
+    @require_ajax
+    # TODO make it POST
     def get(self, request):
-        if not request.is_ajax():
-            LOG.warning('Must be AJAX.')
-            return JsonErrorResponse('Method not allowed', status_code=405)
-
         form = SearchQueryForm(request.GET)
         if not form.is_valid():
-            message = '\n'.join(form.get_error_messages_as_list())
-            LOG.info('Invalid form data: {}'.format(message))
-            return JsonResponse({'error': message})
+            return handle_not_valid_search_form(form)
 
         original_notation = form.get_genes_id_type()
         query_species = form.cleaned_data['query_species']
@@ -223,8 +210,9 @@ class GetOverlapView(View):
 
         symbol_result = ToSymbolConversion.convert(db_species, 'entrez', intersection)
 
-        return JsonResponse({'genes': symbol_result.get_final_symbol_ids(),
-                             'failed': []})  # TODO remove this param
+        return json_response_ok({
+            'genes': symbol_result.get_final_symbol_ids()
+        })
 
 
 get_overlap = GetOverlapView.as_view()

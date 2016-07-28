@@ -4,7 +4,7 @@ from genequery.utils.constants import INF, BONFERRONI_THRESHOLD
 from genequery.searcher.models import GQModule
 
 
-class FisherCalculationResult:
+class EnrichmentResultItem:
     def __init__(self, gse, gpl, module_number, module_size, intersection_size, species,
                  pvalue=None, log10_pvalue=None):
         """
@@ -42,7 +42,7 @@ class FisherCalculationResult:
         return 1 if self.log_pvalue > other.log_pvalue else -1
 
     def __repr__(self):
-        return 'FisherResult[module={},inters={},lg(adj-p-value)={}'.format(
+        return 'EnrichmentResultItem[module={},inters={},lg(adj-p-value)={}'.format(
             GQModule.merge_full_name(self.gse, self.gpl, self.module_number),
             self.intersection_size, self.log_adj_p_value)
 
@@ -97,7 +97,7 @@ def calculate_fisher_p_values(species, modules, entrez_query, max_lg_p_value=Non
     :param entrez_query: list of entrez ids
     :type entrez_query: list of int
     :return: [(series, platform, module_number, log(p-value), log(empirical p-value), intersection_size, module_size]
-    :rtype: list of FisherCalculationResult
+    :rtype: list of EnrichmentResultItem
     """
     max_lg_p_value = max_lg_p_value if max_lg_p_value is not None else BONFERRONI_THRESHOLD[species]
     overlaps_with_each_module = calculate_overlaps(modules, entrez_query)
@@ -118,9 +118,9 @@ def calculate_fisher_p_values(species, modules, entrez_query, max_lg_p_value=Non
         if lg_pvalue > max_lg_p_value:
             continue
         result.append(
-            FisherCalculationResult(gse, gpl, num, len(module.entrez_ids),
-                                    overlaps_with_each_module[gse, gpl][num], species,
-                                    pvalue=pvalue, log10_pvalue=lg_pvalue))
+            EnrichmentResultItem(gse, gpl, num, len(module.entrez_ids),
+                                 overlaps_with_each_module[gse, gpl][num], species,
+                                 pvalue=pvalue, log10_pvalue=lg_pvalue))
     return result
 
 

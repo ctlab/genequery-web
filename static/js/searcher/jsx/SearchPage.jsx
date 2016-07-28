@@ -37,7 +37,7 @@ var SearchPage = React.createClass({
   getInitialState: function() {
     return {
       showLoading: false,
-      rows: undefined,
+      enrichedModules: undefined,
       total: undefined,
       idConversion: undefined,
       errorMessage: undefined
@@ -60,16 +60,18 @@ var SearchPage = React.createClass({
     }
 
     if (success === true) {
-      state.rows = data['rows'];
-      state.total = state.rows.length;
+      state.enrichedModules = data['enriched_modules'];
+      state.total = state.enrichedModules.length;
       state.idConversion = data['id_conversion'];
+
+      Utils.scrollToTop(ReactDOM.findDOMNode(this.refs.idMappingTable));
     } else {
       state.errorMessage = errors.join('\n');
     }
 
     this.replaceState(state);
 
-    if (_.isArray(payload.rows) && !_.isEmpty(payload.rows)) {
+    if (_.isArray(state.enrichedModules) && !_.isEmpty(state.enrichedModules)) {
       Utils.scrollToTop(ReactDOM.findDOMNode(this.refs.idMappingTable));
     }
   },
@@ -85,7 +87,7 @@ var SearchPage = React.createClass({
       showLoading: true,
       errorMessage: undefined,
       idConversion: undefined,
-      rows: undefined,
+      enrichedModules: undefined,
       total: undefined,
       lastRequestData: {dbSpecies: db_species, querySpecies: query_species, genes: genes}
     });
@@ -93,7 +95,7 @@ var SearchPage = React.createClass({
   },
 
   onSearchComplete: function() {
-    //this.setState({showLoading: false});
+    this.setState({showLoading: false});
   },
 
   render: function () {
@@ -154,7 +156,7 @@ var SearchPage = React.createClass({
 
     return (
       <div className="row row-margin">
-        <div className="col-md-4">
+        <div className="col-md-6">
           <IdMappingTable totalFound={this.state.total}
                           idConversion={this.state.idConversion}
                           inputGenes={this.state.lastRequestData.genes}
@@ -169,17 +171,17 @@ var SearchPage = React.createClass({
       return <ErrorBlock message={this.state.errorMessage} />;
     }
 
-    if (_.isUndefined(this.state.rows)) {
+    if (_.isUndefined(this.state.enrichedModules)) {
       return null;
     }
 
-    if (_.isArray(this.state.rows) && _.isEmpty(this.state.rows)) {
+    if (_.isArray(this.state.enrichedModules) && _.isEmpty(this.state.enrichedModules)) {
       return <span>No modules were found.</span>;
     }
 
-    var rows = [];
-    $(this.state.rows).each((i, row) => {
-      rows.push(<SearchResultRow key={i} overlapOnClick={this.overlapOnClick} {...row} />);
+    var enrichedModules = [];
+    $(this.state.enrichedModules).each((i, row) => {
+      enrichedModules.push(<SearchResultRow key={i} overlapOnClick={this.overlapOnClick} {...row} />);
     });
 
     return (
@@ -192,7 +194,7 @@ var SearchPage = React.createClass({
         <div className="row">
           <div className="col-md-12">
             <SearchResultTable ref="searchResultTable">
-              {rows}
+              {enrichedModules}
             </SearchResultTable>
           </div>
         </div>

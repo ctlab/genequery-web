@@ -4,12 +4,14 @@ import urllib2
 
 from django.conf import settings
 
-from genequery.searcher.math.fisher_empirical import FisherCalculationResult
+from genequery.searcher.math.gea import EnrichmentResultItem
 
 
 class RestResponseWrapperProxy:
     def __init__(self, rest_response):
         """
+        Wrapper for raw REST API response
+
         :type rest_response: dict
         """
         self.errors = rest_response['errors']
@@ -38,18 +40,35 @@ class AbstractRestProxyMethod:
             json.dumps(params),
             headers
         )
-        return RestResponseWrapperProxy(json.loads(urllib2.urlopen(request).read()))
+        try:
+            resp = urllib2.urlopen(request)
+        except urllib2.HTTPError, error:
+            if error.getcode() == 400:
+                resp = error
+            else:
+                raise error
+        return RestResponseWrapperProxy(json.loads(resp.read()))
 
 
 class PerformEnrichmentRestProxyMethod(AbstractRestProxyMethod):
 
     class Result:
         def __init__(self, response_result_data, species_to):
+            """
+            Typed version of the `result` field of the REST API response.
+
+            :type response_result_data: dict
+            :type species_to: str
+            :return:
+            """
+            if response_result_data is None:
+                raise Exception('response result must be non-null')
+
             self.gene_conversion_map = response_result_data['geneConversionMap']
             self.identified_gene_format = response_result_data['identifiedGeneFormat']
             self.enrichment_result_items = []
             for enriched_item in response_result_data['enrichmentResultItems']:
-                self.enrichment_result_items.append(FisherCalculationResult(
+                self.enrichment_result_items.append(EnrichmentResultItem(
                     gse='GSE{}'.format(enriched_item['gse']),
                     gpl='GPL{}'.format(enriched_item['gpl']),
                     module_number=enriched_item['moduleNumber'],
@@ -62,6 +81,8 @@ class PerformEnrichmentRestProxyMethod(AbstractRestProxyMethod):
     class ResultWrapper:
         def __init__(self, success, result, errors):
             """
+            Wrapper for raw REST API response with typed `result` field.
+
             :type success: bool
             :type result: PerformEnrichmentRestProxyMethod.Result or None
             :type errors: list[str] or None
@@ -89,7 +110,7 @@ class PerformEnrichmentRestProxyMethod(AbstractRestProxyMethod):
         response = self._make_request(params)
         return PerformEnrichmentRestProxyMethod.ResultWrapper(
             response.success,
-            self.Result(response.raw_result, species_to),
+            self.Result(response.raw_result, species_to) if response.success else None,
             response.errors
         )
 

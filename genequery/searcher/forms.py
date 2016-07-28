@@ -51,6 +51,7 @@ class SearchQueryForm(forms.Form):
         data = self.cleaned_data['genes']
         genes = data.split()
 
+        # TODO remove validation (rest api can handle it)
         #  Calculate input id type by first gene
         first_gene = genes[0]
         first_gene_type = get_gene_id_type(first_gene)
@@ -84,37 +85,37 @@ class SearchQueryForm(forms.Form):
         self.genes_id_type = first_gene_type
         return genes
 
-    # def get_original_to_clean_genes_dict(self):
-    #     """
-    #     :rtype: dict[str, str]
-    #     """
-    #     genes = self.cleaned_data['genes']
-    #     query_species = self.cleaned_data['query_species']
-    #     notation_type = self.get_genes_id_type()
-    #
-    #     res = {}
-    #     for gene in genes:
-    #         gene_original = gene
-    #         # remove the first dot and the rest after it
-    #         if notation_type in [REFSEQ, ENSEMBL] and '.' in gene:
-    #             gene = gene[:gene.find('.')]
-    #         # change register according to query species
-    #         if notation_type == SYMBOL:
-    #             if query_species in [MM, RT]:
-    #                 gene = gene.capitalize()
-    #             else:
-    #                 gene = gene.upper()
-    #         if notation_type == ENTREZ:
-    #             gene = int(gene)
-    #         res[gene_original] = gene
-    #
-    #     return res
+    def get_original_to_clean_genes_dict(self):
+        """
+        :rtype: dict[str, str]
+        """
+        genes = self.cleaned_data['genes']
+        query_species = self.cleaned_data['query_species']
+        notation_type = self.get_genes_id_type()
 
-    # def get_genes_id_type(self):
-    #     """
-    #     :rtype: str
-    #     """
-    #     return self.genes_id_type
+        res = {}
+        for gene in genes:
+            gene_original = gene
+            # remove the first dot and the rest after it
+            if notation_type in [REFSEQ, ENSEMBL] and '.' in gene:
+                gene = gene[:gene.find('.')]
+            # change register according to query species
+            if notation_type == SYMBOL:
+                if query_species in [MM, RT]:
+                    gene = gene.capitalize()
+                else:
+                    gene = gene.upper()
+            if notation_type == ENTREZ:
+                gene = int(gene)
+            res[gene_original] = gene
+
+        return res
+
+    def get_genes_id_type(self):
+        """
+        :rtype: str
+        """
+        return self.genes_id_type
 
     def get_error_messages_as_list(self):
         """

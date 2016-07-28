@@ -1,4 +1,8 @@
 import os
+
+from django.core.exceptions import PermissionDenied
+from django.utils.six import wraps
+
 from constants import ALLOWED_SPECIES
 
 
@@ -34,3 +38,13 @@ def only_digits_with_dot(s):
         return True
     except ValueError:
         return False
+
+
+def require_ajax(view):
+    @wraps(view)
+    def _wrapped_view(self_view, request, *args, **kwargs):
+        if request.is_ajax():
+            return view(self_view, request, *args, **kwargs)
+        else:
+            raise PermissionDenied()
+    return _wrapped_view
