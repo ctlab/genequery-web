@@ -136,7 +136,7 @@ var SearchPage = React.createClass({
       db_species: this.state.lastRequestData.dbSpecies,
       query_species: this.state.lastRequestData.querySpecies
     };
-    Utils.showPopupAjax(
+    Utils.showPopupAjaxPost(
       'search/get_overlap/',
       data,
       response_data => (

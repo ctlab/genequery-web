@@ -182,9 +182,8 @@ def prepare_json_data(response_result, species_from, species_to):
 class GetOverlapView(View):
     @log_get(LOG)
     @require_ajax
-    # TODO make it POST
-    def get(self, request):
-        form = SearchQueryForm(request.GET)
+    def post(self, request):
+        form = SearchQueryForm(request.POST)
         if not form.is_valid():
             return handle_not_valid_search_form(form)
 
@@ -192,7 +191,7 @@ class GetOverlapView(View):
         query_species = form.cleaned_data['query_species']
         db_species = form.cleaned_data['db_species']
         input_genes = list(set(form.get_original_to_clean_genes_dict().values()))
-        full_module_name = request.GET['module']
+        full_module_name = request.POST['module']
 
         LOG.info('GET overlap: type={}, query_species={}, db_species={}, module={}, genes={}'.format(
             original_notation, query_species, db_species, full_module_name, input_genes,

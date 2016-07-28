@@ -3,6 +3,7 @@
  */
 
 var ReactDOMServer = require('react-dom/server');
+var _ = require('underscore');
 
 var Utils = {
 
@@ -42,11 +43,12 @@ var Utils = {
    * Show popup with data received via AJAX (e.g. genes from overlap with module).
    *
    * @param url url to send ajax request to
+   * @param method passed to ajax settings
    * @param data ajax request data
    * @param getElementByData function: Object -> ReactElement, transform response to element
    * @param getErrorElement function: Object -> ReactElement, show error
    */
-  showPopupAjax: function(url, data, getElementByData, getErrorElement) {
+  showPopupAjax: function(url, method, data, getElementByData, getErrorElement) {
     $.magnificPopup.open({
       items: {
         type: 'ajax'
@@ -54,6 +56,7 @@ var Utils = {
       alignTop: true,
       ajax: {
         settings: {
+          method: method,
           url: url,
           data: data
         }
@@ -72,6 +75,31 @@ var Utils = {
         }
       }
     }, 0);
+  },
+
+  /**
+   * Show popup with data received via AJAX GET request.
+   *
+   * @param url url to send ajax request to
+   * @param data ajax request data
+   * @param getElementByData function: Object -> ReactElement, transform response to element
+   * @param getErrorElement function: Object -> ReactElement, show error
+   */
+  showPopupAjaxGet: function(url, data, getElementByData, getErrorElement) {
+    Utils.showPopupAjax(url, 'GET', data, getElementByData, getErrorElement);
+  },
+
+  /**
+   * Show popup with data received via AJAX POST request.
+   *
+   * @param url url to send ajax request to
+   * @param data ajax request data
+   * @param getElementByData function: Object -> ReactElement, transform response to element
+   * @param getErrorElement function: Object -> ReactElement, show error
+   */
+  showPopupAjaxPost: function(url, data, getElementByData, getErrorElement) {
+    _.extend(data, {'csrfmiddlewaretoken': Utils.getCSRFToken()});
+    Utils.showPopupAjax(url, 'POST', data, getElementByData, getErrorElement);
   },
 
   /**
