@@ -21,6 +21,18 @@ class RestResponseWrapperProxy:
 
 class AbstractRestProxyMethod:
 
+    class Result:
+        """
+        Typed version of the `result` field of the REST API response.
+        """
+        pass
+
+    class ResultWrapper:
+        """
+        Wrapper for raw REST API response with typed `result` field.
+        """
+        pass
+
     _url = None
 
     def get_url(self):
@@ -52,11 +64,9 @@ class AbstractRestProxyMethod:
 
 class PerformEnrichmentRestMethod(AbstractRestProxyMethod):
 
-    class Result:
+    class Result(AbstractRestProxyMethod.Result):
         def __init__(self, response_result_data, species_to):
             """
-            Typed version of the `result` field of the REST API response.
-
             :type response_result_data: dict
             :type species_to: str
             :return:
@@ -79,11 +89,9 @@ class PerformEnrichmentRestMethod(AbstractRestProxyMethod):
                 ))
             self.gse_to_title = response_result_data['gseToTitle']
 
-    class ResultWrapper:
+    class ResultWrapper(AbstractRestProxyMethod.ResultWrapper):
         def __init__(self, success, result, errors):
             """
-            Wrapper for raw REST API response with typed `result` field.
-
             :type success: bool
             :type result: PerformEnrichmentRestMethod.Result or None
             :type errors: list[str] or None
