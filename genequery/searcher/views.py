@@ -187,30 +187,22 @@ class GetOverlapView(View):
         if not form.is_valid():
             return handle_not_valid_search_form(form)
 
-        original_notation = form.get_genes_id_type()
-        query_species = form.cleaned_data['query_species']
-        db_species = form.cleaned_data['db_species']
+        species_from = form.cleaned_data['query_species']
+        species_to = form.cleaned_data['db_species']
         input_genes = list(set(form.get_original_to_clean_genes_dict().values()))
         full_module_name = request.POST['module']
 
-        LOG.info('GET overlap: type={}, query_species={}, db_species={}, module={}, genes={}'.format(
-            original_notation, query_species, db_species, full_module_name, input_genes,
+        LOG.info('GET overlap: species_from={}, species_to={}, module={}, genes={}'.format(
+            species_from, species_to, full_module_name, gene_list_pprint(input_genes),
         ))
 
-        module_genes_entrez = GQModule.objects.get(species=db_species, full_name=full_module_name).entrez_ids
-
-        if query_species == db_species:
-            id_conversion = ToEntrezConversion.convert(db_species, original_notation, input_genes)
-        else:
-            id_conversion = ToEntrezOrthologyConversion.convert(
-                query_species, db_species, original_notation, input_genes)
-
-        intersection = list(set(module_genes_entrez) & set(id_conversion.get_final_entrez_ids()))
-
-        symbol_result = ToSymbolConversion.convert(db_species, 'entrez', intersection)
+        result_wrapper = RestApiProxyMethods.overlap_genes_with_module.call(
+            input_genes, species_from, species_to, full_module_name)
+        if not result_wrapper.success:
+            return json_response_errors(result_wrapper.errors)
 
         return json_response_ok({
-            'genes': symbol_result.get_final_symbol_ids()
+            'genes': result_wrapper.result.overlap_symbol_genes
         })
 
 

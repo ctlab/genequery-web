@@ -1,5 +1,4 @@
 import json
-import urllib
 import urllib2
 
 from django.conf import settings
@@ -69,7 +68,6 @@ class PerformEnrichmentRestMethod(AbstractRestProxyMethod):
             """
             :type response_result_data: dict
             :type species_to: str
-            :return:
             """
             if response_result_data is None:
                 raise Exception('response result must be non-null')
@@ -124,5 +122,55 @@ class PerformEnrichmentRestMethod(AbstractRestProxyMethod):
         )
 
 
+class OverlapGenesWithModuleRestMethod(AbstractRestProxyMethod):
+
+    class Result(AbstractRestProxyMethod.Result):
+        def __init__(self, response_result_data):
+            """
+            :type response_result_data: dict
+            """
+            if response_result_data is None:
+                raise Exception('response result must be non-null')
+
+            self.overlap_symbol_genes = response_result_data['overlapSymbolGenes']
+
+    class ResultWrapper(AbstractRestProxyMethod.ResultWrapper):
+        def __init__(self, success, result, errors):
+            """
+            :type success: bool
+            :type result: OverlapGenesWithModuleRestMethod.Result or None
+            :type errors: list[str] or None
+            """
+            self.success = success
+            self.result = result
+            self.errors = errors
+
+    _url = 'http://{}:{}/{}'.format(settings.NEW_REST_HOST, settings.NEW_REST_PORT, 'find-overlap')
+
+    def call(self, genes, species_from, species_to, module_name):
+        """
+        :type genes: iterable[str]
+        :type species_from: str
+        :type species_to: str
+        :type module_name: str
+
+        :returns: (success, result payload, errors)
+        :rtype: OverlapGenesWithModuleRestMethod.ResultWrapper
+        """
+        params = {
+            'genes': genes,
+            'speciesFrom': species_from,
+            'speciesTo': species_to,
+            'moduleName': module_name,
+        }
+        response = self._make_request(params)
+        return OverlapGenesWithModuleRestMethod.ResultWrapper(
+            response.success,
+            self.Result(response.raw_result) if response.success else None,
+            response.errors
+        )
+
+
 class RestApiProxyMethods:
     perform_enrichment_method = PerformEnrichmentRestMethod()
+    overlap_genes_with_module = OverlapGenesWithModuleRestMethod()
