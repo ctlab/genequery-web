@@ -13,7 +13,7 @@ from genequery.main.views import BaseTemplateView
 from genequery.searcher.forms import SearchQueryForm
 from genequery.searcher.idconvertion import ToEntrezConversion, ToSymbolConversion, ToEntrezOrthologyConversion
 from genequery.searcher.models import GQModule
-from genequery.searcher.restapi import RestApiProxyMethods, PerformEnrichmentRestProxyMethod
+from genequery.searcher.restapi import RestApiProxyMethods, PerformEnrichmentRestMethod
 from genequery.utils import log_get, gene_list_pprint, here, require_ajax
 
 LOG = logging.getLogger('genequery')
@@ -142,7 +142,7 @@ search_processor_view = SearchProcessorView.as_view()
 
 def prepare_json_data(response_result, species_from, species_to):
     """
-    :type response_result: PerformEnrichmentRestProxyMethod.Result
+    :type response_result: PerformEnrichmentRestMethod.Result
     :type species_from: str
     :type species_to: str
     :rtype: dict

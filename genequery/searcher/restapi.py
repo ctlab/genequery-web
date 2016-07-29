@@ -50,7 +50,7 @@ class AbstractRestProxyMethod:
         return RestResponseWrapperProxy(json.loads(resp.read()))
 
 
-class PerformEnrichmentRestProxyMethod(AbstractRestProxyMethod):
+class PerformEnrichmentRestMethod(AbstractRestProxyMethod):
 
     class Result:
         def __init__(self, response_result_data, species_to):
@@ -85,7 +85,7 @@ class PerformEnrichmentRestProxyMethod(AbstractRestProxyMethod):
             Wrapper for raw REST API response with typed `result` field.
 
             :type success: bool
-            :type result: PerformEnrichmentRestProxyMethod.Result or None
+            :type result: PerformEnrichmentRestMethod.Result or None
             :type errors: list[str] or None
             """
             self.success = success
@@ -101,7 +101,7 @@ class PerformEnrichmentRestProxyMethod(AbstractRestProxyMethod):
         :type species_to: str
 
         :returns: (success, result payload, errors)
-        :rtype: PerformEnrichmentRestProxyMethod.ResultWrapper
+        :rtype: PerformEnrichmentRestMethod.ResultWrapper
         """
         params = {
             'genes': genes,
@@ -109,7 +109,7 @@ class PerformEnrichmentRestProxyMethod(AbstractRestProxyMethod):
             'speciesTo': species_to,
         }
         response = self._make_request(params)
-        return PerformEnrichmentRestProxyMethod.ResultWrapper(
+        return PerformEnrichmentRestMethod.ResultWrapper(
             response.success,
             self.Result(response.raw_result, species_to) if response.success else None,
             response.errors
@@ -117,4 +117,4 @@ class PerformEnrichmentRestProxyMethod(AbstractRestProxyMethod):
 
 
 class RestApiProxyMethods:
-    perform_enrichment_method = PerformEnrichmentRestProxyMethod()
+    perform_enrichment_method = PerformEnrichmentRestMethod()
