@@ -12,7 +12,7 @@ from django.views.generic import View
 from genequery.main.views import BaseTemplateView
 from genequery.searcher.forms import SearchQueryForm
 from genequery.searcher.idconvertion import ToEntrezConversion, ToSymbolConversion, ToEntrezOrthologyConversion
-from genequery.searcher.models import ModuleDescription, GQModule
+from genequery.searcher.models import GQModule
 from genequery.searcher.restapi import RestApiProxyMethods, PerformEnrichmentRestProxyMethod
 from genequery.utils import log_get, gene_list_pprint, here, require_ajax
 
@@ -150,7 +150,7 @@ def prepare_json_data(response_result, species_from, species_to):
     results = []
     for rank, enriched_item in enumerate(response_result.enrichment_result_items):
         results.append({
-            'title': ModuleDescription.get_title_or_default(enriched_item.gse, 'No title'),
+            'title': response_result.gse_to_title[enriched_item.gse],
             'rank': rank + 1,
             'series': enriched_item.gse,
             'platform': enriched_item.gpl,

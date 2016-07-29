@@ -77,6 +77,7 @@ class PerformEnrichmentRestProxyMethod(AbstractRestProxyMethod):
                     species=species_to,
                     log10_pvalue=enriched_item['logPvalue'],
                 ))
+            self.gse_to_title = response_result_data['gseToTitle']
 
     class ResultWrapper:
         def __init__(self, success, result, errors):
