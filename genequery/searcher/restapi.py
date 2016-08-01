@@ -3,7 +3,7 @@ import urllib2
 
 from django.conf import settings
 
-from genequery.searcher.math.gea import EnrichmentResultItem
+from genequery.searcher.gea import EnrichmentResultItem
 
 
 class RestResponseWrapperProxy:
@@ -83,7 +83,10 @@ class PerformEnrichmentRestMethod(AbstractRestProxyMethod):
                     module_size=enriched_item['moduleSize'],
                     intersection_size=enriched_item['intersectionSize'],
                     species=species_to,
+                    pvalue=enriched_item['pvalue'],
                     log10_pvalue=enriched_item['logPvalue'],
+                    adj_pvalue=enriched_item['adjPvalue'],
+                    log10_adj_pvalue=enriched_item['logAdjPvalue'],
                 ))
             self.gse_to_title = response_result_data['gseToTitle']
 

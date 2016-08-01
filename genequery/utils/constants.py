@@ -4,7 +4,7 @@ SYMBOL = 'symbol'
 ENSEMBL = 'ensembl'
 
 INF = 1e10
-EPS = 1e-325
+EPS = 1e-323
 
 HS = 'hs'
 MM = 'mm'
@@ -19,8 +19,3 @@ BONFERRONI_THRESHOLD = {
     MM: MM_BONFERRONI_THRESHOLD,
     RT: RT_BONFERRONI_THRESHOLD,
 }
-
-ALLOWED_SPECIES = (HS, MM)
-
-GENEQUERY_2013_DB_NAME = 'genequery'
-GENEQUERY_2015_DB_NAME = 'genequery_2015'

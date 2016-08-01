@@ -3,8 +3,6 @@ import os
 from django.core.exceptions import PermissionDenied
 from django.utils.six import wraps
 
-from constants import ALLOWED_SPECIES
-
 
 here = os.path.join
 

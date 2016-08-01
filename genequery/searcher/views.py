@@ -11,8 +11,6 @@ from django.views.generic import View
 
 from genequery.main.views import BaseTemplateView
 from genequery.searcher.forms import SearchQueryForm
-from genequery.searcher.idconvertion import ToEntrezConversion, ToSymbolConversion, ToEntrezOrthologyConversion
-from genequery.searcher.models import GQModule
 from genequery.searcher.restapi import RestApiProxyMethods, PerformEnrichmentRestMethod
 from genequery.utils import log_get, gene_list_pprint, here, require_ajax
 
@@ -189,15 +187,15 @@ class GetOverlapView(View):
 
         species_from = form.cleaned_data['query_species']
         species_to = form.cleaned_data['db_species']
-        input_genes = list(set(form.get_original_to_clean_genes_dict().values()))
+        raw_genes = form.cleaned_data['genes']
         full_module_name = request.POST['module']
 
         LOG.info('GET overlap: species_from={}, species_to={}, module={}, genes={}'.format(
-            species_from, species_to, full_module_name, gene_list_pprint(input_genes),
+            species_from, species_to, full_module_name, gene_list_pprint(raw_genes),
         ))
 
         result_wrapper = RestApiProxyMethods.overlap_genes_with_module.call(
-            input_genes, species_from, species_to, full_module_name)
+            raw_genes, species_from, species_to, full_module_name)
         if not result_wrapper.success:
             return json_response_errors(result_wrapper.errors)
 
