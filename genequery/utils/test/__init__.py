@@ -23,11 +23,18 @@ class GQTestCase(TestCase):
         for m in members:
             self.assertIn(m, container)
 
-    def send_ajax(self, url, data={}, ok=True):
-        response = self.client.get(url, data, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+    def assert_200_if_ok(self, response, ok):
         if ok:
             self.assert_200(response)
         return response
+
+    def send_get(self, url, data={}, ok=True):
+        response = self.client.get(url, data, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+        return self.assert_200_if_ok(response, ok)
+
+    def send_post(self, url, data={}, ok=True):
+        response = self.client.post(url, data, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+        return self.assert_200_if_ok(response, ok)
 
 
 class SharedFixtureTestCase(GQTestCase):
@@ -84,6 +91,18 @@ def split_suite(suite):
         else:
             tests['base'].addTest(test)
     return TestSuite(tests.values())
+
+
+class NoDbTestRunner(DiscoverRunner):
+    """ A test runner to test without database creation """
+
+    def setup_databases(self, **kwargs):
+        """ Override the database creation defined in parent class """
+        pass
+
+    def teardown_databases(self, old_config, **kwargs):
+        """ Override the database teardown defined in parent class """
+        pass
 
 
 class GQTestRunner(DiscoverRunner):

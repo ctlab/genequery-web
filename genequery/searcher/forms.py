@@ -1,5 +1,4 @@
 from django import forms
-from django.core.exceptions import ValidationError
 
 from genequery.utils.constants import *
 
@@ -10,9 +9,10 @@ SPECIES_CHOICES = (
 )
 
 
-DB_SPECIES_REQUIRED = 'Data base species are not specified.'
-QUERY_SPECIES_REQUIRED = 'Query genes species are not specified.'
+DB_SPECIES_REQUIRED = 'Data base species are invalid or not specified.'
+QUERY_SPECIES_REQUIRED = 'Query genes species are invalid or not specified.'
 GENE_LIST_REQUIRED = 'Gene list is empty.'
+MODULE_REQUIRED = 'Module name is not specified.'
 
 
 class SearchQueryForm(forms.Form):
@@ -50,3 +50,7 @@ class SearchQueryForm(forms.Form):
         for m in self.errors.values():
             messages.append(m[0])
         return messages
+
+
+class OverlapQueryForm(SearchQueryForm):
+    module = forms.CharField(required=True, error_messages={'required': MODULE_REQUIRED})

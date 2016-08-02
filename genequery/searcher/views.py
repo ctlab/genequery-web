@@ -10,7 +10,7 @@ from django.utils.html import format_html
 from django.views.generic import View
 
 from genequery.main.views import BaseTemplateView
-from genequery.searcher.forms import SearchQueryForm
+from genequery.searcher.forms import SearchQueryForm, OverlapQueryForm
 from genequery.searcher.restapi import RestApiProxyMethods, PerformEnrichmentRestMethod
 from genequery.utils import log_get, gene_list_pprint, here, require_ajax
 
@@ -181,14 +181,14 @@ class GetOverlapView(View):
     @log_get(LOG)
     @require_ajax
     def post(self, request):
-        form = SearchQueryForm(request.POST)
+        form = OverlapQueryForm(request.POST)
         if not form.is_valid():
             return handle_not_valid_search_form(form)
 
         species_from = form.cleaned_data['query_species']
         species_to = form.cleaned_data['db_species']
         raw_genes = form.cleaned_data['genes']
-        full_module_name = request.POST['module']
+        full_module_name = form.cleaned_data['module']
 
         LOG.info('GET overlap: species_from={}, species_to={}, module={}, genes={}'.format(
             species_from, species_to, full_module_name, gene_list_pprint(raw_genes),
