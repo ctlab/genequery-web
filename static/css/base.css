@@ -1,3 +1,14 @@
+body {
+  /*background-color: #ebeff2;*/
+  /*font-family: Roboto, 'Open Sans', Arial, sans-serif;*/
+  /*font-size: 14px;*/
+  /*-ms-text-size-adjust: 100%;*/
+  /*-webkit-text-size-adjust: 100%;*/
+  /*color: #515151;*/
+  /*-moz-osx-font-smoothing: grayscale;*/
+  /*-webkit-font-smoothing: antialiased !important;*/
+}
+
 html, body, .base-content{
   height: 100%;
   color: #696969;
@@ -37,6 +48,12 @@ a label {
   max-width: 95%;
 }
 
+.result-table {
+  margin-bottom: 0;
+  border-right: 0;
+  border-left: 0;
+}
+
 .sticky-result-table-header {
   max-width: 95%;
   top: -27px;
@@ -67,9 +84,6 @@ div.toggle-sticky-header div.sticky-result-table-header {
   max-height: 400px;
 }
 
-.search-result table thead {
-  background-color: #f5f5f5;
-}
 
 a.full-heatmap-link {
   font-weight: bold;
@@ -164,4 +178,174 @@ div.row-margin {
 
 .error-alert-block {
   overflow-wrap: break-word;
+}
+
+.panel {
+  background-color: #fff;
+  border: 0;
+  margin-bottom: 24px;
+  border-radius: 0;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.16), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+}
+.panel hr {
+  border-color: rgba(0,0,0,0.1);
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+.panel-body:after, .panel-body:before {
+  content: " ";
+  display: table
+}
+.panel-body:after {
+  clear: both
+}
+.panel-heading {
+  padding: 10px 15px;
+  border-bottom: 1px solid transparent;
+  border-top-right-radius: 3px;
+  border-top-left-radius: 3px
+}
+.panel-title {
+  margin-top: 0;
+  margin-bottom: 0;
+  font-size: 16px;
+  color: inherit
+}
+.panel-title>.small, .panel-title>.small>a, .panel-title>small, .panel-title>small>a {
+  color: inherit;
+  font-size: 80%;
+}
+.panel-footer {
+  background-color: #f5f5f5;
+  border-top: 1px solid #ddd;
+  border-bottom-right-radius: 3px;
+  border-bottom-left-radius: 3px
+}
+
+.panel-group .panel-heading {
+  border-bottom: 0
+}
+.panel-group .panel-heading+.panel-collapse>.list-group,
+.panel-group .panel-heading+.panel-collapse>.panel-body {
+  border-top: 1px solid #ddd
+}
+.panel-group .panel-footer {
+  border-top: 0
+}
+.panel-group .panel-footer+.panel-collapse .panel-body {
+  border-bottom: 1px solid #ddd
+}
+
+.panel>.panel-heading+.panel-collapse>.panel-body {
+  border-top: 0
+}
+
+.panel-heading {
+  position: relative;
+  height: 50px;
+  padding: 0
+}
+.panel-title {
+  font-weight: 300;
+  padding: 0 20px 0 15px;
+  font-size: 1.416em;
+  line-height: 50px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis
+}
+.panel-footer * {
+  color: #515151;
+  border-color: #eaedf0;
+  position: relative
+}
+.panel-group.accordion .panel-body:before {
+  border: 0 !important
+}
+.panel .with-line-on-top:before {
+  content: '';
+  display: block;
+  position: absolute;
+  height: 0;
+  left: 15px;
+  right: 15px;
+  border-bottom: 1px solid rgba(0,0,0,0.1)
+}
+.panel-collapse {
+  position: relative;
+}
+
+.panel-group .panel {
+  border-radius: 0;
+  margin-bottom: 20px
+}
+
+/*http://shapebootstrap.net/item/1525552-sensationapp-bootstrap-admin-template-with-angularjs/live-demo*/
+
+.gene-conversion-panel {
+  width: 50%;
+  box-shadow: none;
+}
+
+.gene-conversion-panel .panel-title {
+  line-height: inherit;
+}
+
+.gene-conversion-panel .panel-heading {
+  height: inherit;
+}
+
+.gene-conversion-panel .panel-title,
+.gene-conversion-panel .panel-body {
+  padding: 0;
+}
+
+.summary-panel,
+.result-groups>.panel {
+  margin-bottom: 0;
+}
+
+.result-groups .panel+.panel {
+  margin-top: 0;
+}
+
+.nav {
+  margin-bottom: 0;
+  padding-left: 0;
+  list-style: none;
+}
+
+.nav-justified, .nav-tabs.nav-justified {
+  width: 100%;
+}
+
+.nav {
+  margin-bottom: 0;
+  padding-left: 0;
+  list-style: none;
+}
+
+ol, ul {
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+*, :after, :before {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.separate-line>a:after {
+  position: absolute;
+  z-index: 1;
+  content: "";
+  width: 1px;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-image: -webkit-linear-gradient(top,rgba(215,224,226,.2)0,#d7e0e2 50%,rgba(215,224,226,.2)100%);
+  background-image: -moz-linear-gradient(top,rgba(215,224,226,.2)0,#d7e0e2 50%,rgba(215,224,226,.2)100%);
+  background-image: -o-linear-gradient(top,rgba(215,224,226,.2)0,#d7e0e2 50%,rgba(215,224,226,.2)100%);
+  background-image: linear-gradient(to bottom,rgba(215,224,226,.2)0,#d7e0e2 50%,rgba(215,224,226,.2)100%);
 }

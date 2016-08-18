@@ -11,7 +11,7 @@ from django.views.generic import View
 
 from genequery.main.views import BaseTemplateView
 from genequery.searcher.forms import SearchQueryForm, OverlapQueryForm
-from genequery.searcher.restapi import RestApiProxyMethods, PerformEnrichmentRestMethod
+from genequery.searcher.restapi import RestApiProxyMethods, PerformEnrichmentRestMethod, NetworkClusteringGroup
 from genequery.utils import log_get, gene_list_pprint, here, require_ajax
 
 LOG = logging.getLogger('genequery')
@@ -145,9 +145,10 @@ def prepare_json_data(response_result, species_from, species_to):
     :type species_to: str
     :rtype: dict
     """
-    results = []
+    results = {}
     for rank, enriched_item in enumerate(response_result.enrichment_result_items):
-        results.append({
+        result_id = '{}_{}#{}'.format(enriched_item.gse, enriched_item.gpl, enriched_item.module_number)
+        results[result_id] = {
             'title': response_result.gse_to_title[enriched_item.gse],
             'rank': rank + 1,
             'series': enriched_item.gse,
@@ -162,7 +163,7 @@ def prepare_json_data(response_result, species_from, species_to):
             'log_adj_p_value': enriched_item.log_adj_p_value,
             'overlap_size': enriched_item.intersection_size,
             'module_size': enriched_item.module_size,
-        })
+        }
 
     id_conversion = {
         'identified_gene_format': response_result.identified_gene_format,
@@ -171,9 +172,23 @@ def prepare_json_data(response_result, species_from, species_to):
 
     }
 
+    network_clustering = None
+    if response_result.network_clustering_groups is not None:
+        network_clustering_groups = []
+        free_group = None
+        for group in response_result.network_clustering_groups.values():
+            group_data = {'module_names': group.module_names, 'annotation': group.annotation, 'group_id': group.group_id,
+                          'score': group.score}
+            if group.group_id != NetworkClusteringGroup.FREE_CLUSTER_ID:
+                network_clustering_groups.append(group_data)
+            else:
+                free_group = group_data
+        network_clustering = {'free_group': free_group, 'other_groups': network_clustering_groups}
+
     return {
         'enriched_modules': results,
         'id_conversion': id_conversion,
+        'network_clustering': network_clustering
     }
 
 

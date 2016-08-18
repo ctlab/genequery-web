@@ -13,6 +13,8 @@ var ErrorBlock = require('./ErrorBlock');
 var IdMappingTable = require('./IdMappingTable');
 var OverlapLayout = require('./OverlapLayout');
 var PopupLayout = require('./PopupLayout');
+var SummaryPanel = require('./SummaryPanel');
+var GroupPanelSet = require('./GroupPanelSet');
 
 var Utils = require('../../utils');
 var _ = require('underscore');
@@ -40,6 +42,7 @@ var SearchPage = React.createClass({
       enrichedModules: undefined,
       total: undefined,
       idConversion: undefined,
+      networkClustering: undefined,
       errorMessage: undefined
     };
   },
@@ -63,6 +66,7 @@ var SearchPage = React.createClass({
       state.enrichedModules = data['enriched_modules'];
       state.total = state.enrichedModules.length;
       state.idConversion = data['id_conversion'];
+      state.networkClustering = data['network_clustering'];
 
       Utils.scrollToTop(ReactDOM.findDOMNode(this.refs.idMappingTable));
     } else {
@@ -87,6 +91,7 @@ var SearchPage = React.createClass({
       showLoading: true,
       errorMessage: undefined,
       idConversion: undefined,
+      networkClustering: undefined,
       enrichedModules: undefined,
       total: undefined,
       lastRequestData: {dbSpecies: db_species, querySpecies: query_species, genes: genes}
@@ -113,15 +118,13 @@ var SearchPage = React.createClass({
           </div>
         </div>
         <div className="search-result">
-          <div className={this.state.showLoading ? "loader-wrap" : ""}
-               ref="loader">
+          <div className={this.state.showLoading ? "loader-wrap" : ""} ref="loader">
             <Loader loaded={!this.state.showLoading}
                     lines={17} length={31} width={10} radius={38}
                     color="#777" speed={1.5}
                     trail={79} className="load-spinner"
                     zIndex={2e9} left="50%" scale={0.75}>
-              {this.getIdConvertionTableOrNull()}
-              {this.getTableOrErrorOrNull()}
+              {this.getSummaryPanel()}
             </Loader>
           </div>
         </div>
@@ -147,6 +150,16 @@ var SearchPage = React.createClass({
       ),
       error => <PopupLayout>Error while parsing data.</PopupLayout>
     );
+  },
+
+  getSummaryPanel: function() {
+    //return <SummaryPanel />;
+    if (_.isUndefined(this.state.enrichedModules)) {
+      return null;
+    }
+    return <GroupPanelSet freeGroup={this.state.networkClustering['free_group']}
+                          otherGroups={this.state.networkClustering['other_groups']}
+                          allEnrichedModules={this.state.enrichedModules} />;
   },
 
   getIdConvertionTableOrNull: function() {

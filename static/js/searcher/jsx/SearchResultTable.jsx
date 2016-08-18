@@ -14,7 +14,7 @@ var ResultTable = React.createClass({
 
   getDefaultProps: function() {
     return {
-      fake: false
+      fake: false,
     };
   },
 
@@ -28,7 +28,7 @@ var ResultTable = React.createClass({
   componentDidMount: function() {
     if (!this.props.fake) {
       $(window).scroll(this.onTableHeaderVisibilityChanged);
-      Eventbus.addListener('download-as-csv', this.downloadAsCSV);
+      //Eventbus.addListener('download-as-csv', this.downloadAsCSV);
     }
   },
 

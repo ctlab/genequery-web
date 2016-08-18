@@ -1,5 +1,6 @@
 import json
 import urllib2
+from pprint import pprint
 
 from django.conf import settings
 
@@ -61,6 +62,19 @@ class AbstractRestProxyMethod:
         return RestResponseWrapperProxy(json.loads(resp.read()))
 
 
+class NetworkClusteringGroup:
+    FREE_CLUSTER_ID = 0
+
+    def __init__(self, raw_data):
+        """
+        :type raw_data: dict
+        """
+        self.annotation = raw_data['annotation']
+        self.group_id = raw_data['groupId']
+        self.module_names = raw_data['moduleNames']
+        self.score = raw_data['score']
+
+
 class PerformEnrichmentRestMethod(AbstractRestProxyMethod):
 
     class Result(AbstractRestProxyMethod.Result):
@@ -89,6 +103,10 @@ class PerformEnrichmentRestMethod(AbstractRestProxyMethod):
                     log10_adj_pvalue=enriched_item['logAdjPvalue'],
                 ))
             self.gse_to_title = response_result_data['gseToTitle']
+            self.network_clustering_groups = {group_id: NetworkClusteringGroup(raw_group_data)
+                                              for group_id, raw_group_data
+                                              in response_result_data['networkClusteringGroups'].items()} \
+                if response_result_data['networkClusteringGroups'] is not None else None
 
     class ResultWrapper(AbstractRestProxyMethod.ResultWrapper):
         def __init__(self, success, result, errors):
