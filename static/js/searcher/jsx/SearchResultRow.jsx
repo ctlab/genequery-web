@@ -5,6 +5,7 @@
 
 var React = require('react');
 var Utils = require('../../utils');
+var Eventbus = require('../../eventbus');
 
 var GSE_ADDRESS_PREF = 'http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=';
 
@@ -21,8 +22,7 @@ var SearchResultRow = React.createClass({
     module_size: React.PropTypes.number.isRequired,
     series_url: React.PropTypes.string,
     log_adj_p_value: React.PropTypes.number.isRequired,
-    gmt_url: React.PropTypes.string,
-    overlapOnClick: React.PropTypes.func.isRequired
+    gmt_url: React.PropTypes.string
   },
 
   overlapOnClick: function() {
@@ -90,7 +90,7 @@ var SearchResultRow = React.createClass({
 
   getOverlapLink: function() {
     return (
-      <a onClick={this.overlapOnClick}>
+      <a onClick={() => Eventbus.emit(Utils.Event.SHOW_GENES_OVERLAP, this.state.series, this.state.platform, this.state.module_number)}>
         {this.state.overlap_size + '/' + this.state.module_size}
       </a>
     );

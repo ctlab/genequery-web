@@ -15,6 +15,7 @@ var OverlapLayout = require('./OverlapLayout');
 var PopupLayout = require('./PopupLayout');
 var SummaryPanel = require('./SummaryPanel');
 var GroupPanelSet = require('./GroupPanelSet');
+var LoadedSearchResultPanel = require('./LoadedSearchResultPanel');
 
 var Utils = require('../../utils');
 var _ = require('underscore');
@@ -124,56 +125,16 @@ var SearchPage = React.createClass({
                     color="#777" speed={1.5}
                     trail={79} className="load-spinner"
                     zIndex={2e9} left="50%" scale={0.75}>
-              {this.getSummaryPanel()}
+              {_.isUndefined(this.state.enrichedModules)
+                ? null
+                : <LoadedSearchResultPanel speciesFrom={this.state.lastRequestData.querySpecies}
+                                           speciesTo={this.state.lastRequestData.dbSpecies}
+                                           inputGenes={this.state.lastRequestData.genes}
+                                           enrichedModules={this.state.enrichedModules}
+                                           idConversionInfo={this.state.idConversion}
+                                           networkClustering={this.state.networkClustering}/> }
             </Loader>
           </div>
-        </div>
-      </div>
-    );
-  },
-
-  overlapOnClick: function(series, platform, module_number) {
-    var data = {
-      module: series + '_' + platform + '#' + module_number,
-      genes: this.state.lastRequestData.genes.join(' '),
-      db_species: this.state.lastRequestData.dbSpecies,
-      query_species: this.state.lastRequestData.querySpecies
-    };
-    Utils.showPopupAjaxPost(
-      'search/get_overlap/',
-      data,
-      response_data => (
-        <OverlapLayout series={series}
-                       platform={platform}
-                       moduleNumber={module_number}
-                       responseData={response_data} />
-      ),
-      error => <PopupLayout>Error while parsing data.</PopupLayout>
-    );
-  },
-
-  getSummaryPanel: function() {
-    //return <SummaryPanel />;
-    if (_.isUndefined(this.state.enrichedModules)) {
-      return null;
-    }
-    return <GroupPanelSet freeGroup={this.state.networkClustering['free_group']}
-                          otherGroups={this.state.networkClustering['other_groups']}
-                          allEnrichedModules={this.state.enrichedModules} />;
-  },
-
-  getIdConvertionTableOrNull: function() {
-    if (_.isUndefined(this.state.idConversion)) {
-      return null;
-    }
-
-    return (
-      <div className="row row-margin">
-        <div className="col-md-6">
-          <IdMappingTable totalFound={this.state.total}
-                          idConversion={this.state.idConversion}
-                          inputGenes={this.state.lastRequestData.genes}
-                          ref="idMappingTable" />
         </div>
       </div>
     );

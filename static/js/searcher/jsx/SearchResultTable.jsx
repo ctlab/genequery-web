@@ -1,10 +1,6 @@
 'use strict';
 var React = require('react');
 var ReactDOM = require('react-dom');
-var Utils = require('../../utils');
-var Eventbus = require('../../eventbus');
-
-var _ = require('underscore');
 
 var ResultTable = React.createClass({
 
@@ -14,21 +10,19 @@ var ResultTable = React.createClass({
 
   getDefaultProps: function() {
     return {
-      fake: false,
+      fake: false
     };
   },
 
   componentWillUnmount: function() {
     if (!this.props.fake) {
       $(window).off('scroll', this.onTableHeaderVisibilityChanged);
-      Eventbus.removeListener('download-as-csv', this.downloadAsCSV);
     }
   },
 
   componentDidMount: function() {
     if (!this.props.fake) {
       $(window).scroll(this.onTableHeaderVisibilityChanged);
-      //Eventbus.addListener('download-as-csv', this.downloadAsCSV);
     }
   },
 
@@ -60,29 +54,6 @@ var ResultTable = React.createClass({
         </tbody>
       </table>
     );
-  },
-
-  downloadAsCSV: function() {
-    var delimeter = ',';
-    var columns = ['rank', 'log_p_value', 'log_adj_p_value', 'series', 'platform',
-                   'module_number', 'overlap_size', 'module_size', 'title'];
-    var content = [columns.join(delimeter)];
-    _.each(this.props.children, row => {
-      var csv_row = _.map(columns, field => {
-        if (field === 'title') {
-          return '"' + row.props[field] + '"';
-        }
-        return row.props[field];
-      });
-      content.push(csv_row.join(delimeter))
-    });
-
-    var now = new Date();
-    var dateString = now.getHours() + "-" + now.getMinutes() + "_"
-      + now.getMonth() + "-" + (now.getDay() + 1) + "-" + now.getFullYear();
-    var filename = 'genequery_search_result_' + dateString + '.csv';
-
-    Utils.downloadDataAsCSV(filename, content.join('\n'));
   },
 
   getHeader: function () {

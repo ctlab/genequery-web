@@ -3,8 +3,6 @@
  * Created by smolcoder on 18/08/16.
  */
 var React = require('react');
-var Eventbus = require('../../eventbus');
-var Utils = require('../../utils');
 var SearchResultRow = require('./SearchResultRow');
 var SearchResultTable = require('./SearchResultTable');
 
@@ -12,7 +10,7 @@ var _ = require('underscore');
 
 var GroupPanel = React.createClass({
   propTypes: {
-    isFreeGroup: React.PropTypes.bool,
+    isGroupFree: React.PropTypes.bool,
     annotation: React.PropTypes.string,
     score: React.PropTypes.number.isRequired,
     groupId: React.PropTypes.number.isRequired,
@@ -22,7 +20,7 @@ var GroupPanel = React.createClass({
 
   getDefaultProps: function() {
     return {
-      isFreeGroup: false,
+      isGroupFree: false,
       annotation: null
     };
   },
@@ -38,10 +36,9 @@ var GroupPanel = React.createClass({
   render: function() {
     var enrichedModules = [];
     $(this.state.moduleNames).each((i, module_name) => {
-      enrichedModules.push(<SearchResultRow
-        key={this.state.groupId + "_" + i}
-        overlapOnClick={() => {}}
-        {...this.state.allEnrichedModules[module_name]} />);
+      enrichedModules.push(
+        <SearchResultRow key={this.state.groupId + "_" + i} {...this.state.allEnrichedModules[module_name]} />
+      );
     });
     enrichedModules = _.sortBy(enrichedModules, (element) => element.props.log_adj_p_value);
     var bestScore = enrichedModules[0].props.log_adj_p_value.toFixed(2);
@@ -50,7 +47,7 @@ var GroupPanel = React.createClass({
       <div className="panel">
         <div className="panel-heading" data-target={"#" + this.getGroupHTMLId()} data-toggle="collapse" data-parent="#result-groups-accordion">
           <div className="panel-title">
-            <a>{this.props.isFreeGroup ? "FREE GROUP" : "Group #" + this.state.groupId} {" "}</a>
+            <a>{this.props.isGroupFree ? "FREE GROUP" : "Group #" + this.state.groupId} {" "}</a>
             <small>{"Best p-value: " + bestScore + ", " + this.state.annotation}</small>
           </div>
         </div>

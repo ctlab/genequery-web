@@ -3,8 +3,6 @@
  * Created by smolcoder on 18/08/16.
  */
 var React = require('react');
-var Eventbus = require('../../eventbus');
-var Utils = require('../../utils');
 var SearchResultRow = require('./SearchResultRow');
 var GroupPanel = require('./GroupPanel');
 
@@ -22,16 +20,14 @@ var GroupPanelSet = React.createClass({
   },
 
   render: function() {
-    console.log(this.state);
-
-    var groups = [<GroupPanel
-      key={this.state.freeGroup['group_id']}
-      isFreeGroup={true}
-      score={this.state.freeGroup['score']}
-      groupId={this.state.freeGroup['group_id']}
-      moduleNames={this.state.freeGroup['module_names']}
-      allEnrichedModules={this.state.allEnrichedModules}
-    />];
+    var groups = [
+      <GroupPanel key={this.state.freeGroup['group_id']}
+                  isGroupFree={true}
+                  score={this.state.freeGroup['score']}
+                  groupId={this.state.freeGroup['group_id']}
+                  moduleNames={this.state.freeGroup['module_names']}
+                  allEnrichedModules={this.state.allEnrichedModules} />
+    ];
 
     $(this.state.otherGroups).each((i, group_data) => {
       groups.push(<GroupPanel
