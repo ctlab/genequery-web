@@ -36,6 +36,10 @@ var LoadedSearchResultPanel = React.createClass({
   },
 
   render: function () {
+    if (_.isEmpty(this.props.enrichedModules)) {
+      return <span>No modules found.</span>;
+    }
+
     return (
       <div>
         { this.getSummaryPanel() }

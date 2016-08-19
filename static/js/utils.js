@@ -9,7 +9,8 @@ var Utils = {
 
   Event: {
     DOWNLOAD_ALL_AS_CSV_EVENT: 'download-as-csv',
-    SHOW_GENES_OVERLAP: 'show-genes-overlap'
+    SHOW_GENES_OVERLAP: 'show-genes-overlap',
+    RUN_EXAMPLE: 'example-run'
   },
 
   Species: {

@@ -58,7 +58,7 @@ var IdMappingTable = React.createClass({
     return  _.chain(this.props.inputGenes)
       .map((gene, i) => {
         return (
-          <tr key={i} className={gene in to_entrez ? "": "danger"}>
+          <tr key={i} className={to_entrez[gene] ? "": "danger"}>
             <td>{i + 1}</td>
             <td>{gene}</td>
             <td>{to_entrez[gene] || NOT_ANNOTATED_MSG}</td>

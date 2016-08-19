@@ -8,11 +8,7 @@ var React = require('react');
 
 var ErrorBlock = React.createClass({
   propTypes: {
-    message: React.PropTypes.string.isRequired
-  },
-
-  getInitialState: function() {
-    return this.props;
+    messages: React.PropTypes.arrayOf(React.PropTypes.string).isRequired
   },
 
   render: function () {
@@ -20,7 +16,7 @@ var ErrorBlock = React.createClass({
       <div className="row">
         <div className="col-md-6">
           <div className="alert alert-danger error-alert-block" role="alert">
-            <span className="sr-only">Error:</span> {this.state.message}
+            {this.props.messages.join('\n')}
           </div>
         </div>
       </div>

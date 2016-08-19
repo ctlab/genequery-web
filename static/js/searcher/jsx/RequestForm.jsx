@@ -112,11 +112,11 @@ var RequestForm = React.createClass({
   },
 
   getInitialState: function() {
-    return {species: '', genes: ''};
+    return {db_species: '', query_species: '', genes: ''};
   },
 
   componentDidMount: function() {
-    Eventbus.once('example-run', this.runExample)
+    Eventbus.once(Utils.Event.RUN_EXAMPLE, this.runExample)
   },
 
   componentWillUnmount: function() {
@@ -129,8 +129,8 @@ var RequestForm = React.createClass({
     // TODO use Underscore to check if it function
     if (this.props.beforeSend) {
       this.props.beforeSend(
-        this.state.db_species,
         this.state.query_species,
+        this.state.db_species,
         this.state.genes.trim().split(/[\s]+/)
       );
     }
@@ -167,13 +167,13 @@ var RequestForm = React.createClass({
     this.setState({genes: event.currentTarget.value});
   },
 
-  runExample: function(data) {
+  runExample: function(geneFormat) {
     var genes;
-    if (data.notation === 'ensembl') {
+    if (geneFormat === 'ensembl') {
       genes = ENSEMBL_GENES_EXAMPLE;
-    } else if (data.notation === 'refseq') {
+    } else if (geneFormat === 'refseq') {
       genes = REFSEQ_GENES_EXAMPLE;
-    } else if (data.notation === 'entrez') {
+    } else if (geneFormat === 'entrez') {
       genes = ENTREZ_GENES_EXAMPLE;
     } else {
       genes = SYMBOL_GENES_EXAMPLE;
@@ -196,21 +196,21 @@ var RequestForm = React.createClass({
             <div className="col-md-8">
               <div className="radio">
                 <label>
-                  <input type="radio" name="db_species" value="hs" checked={this.state.db_species === 'hs'}
+                  <input type="radio" name="db_species" value="hs" checked={this.state.db_species === Utils.Species.HUMAN}
                          onChange={this.handleDBSpeciesChange} />
                   Homo Sapiens
                 </label>
               </div>
               <div className="radio">
                 <label>
-                  <input type="radio" name="db_species" value="mm" checked={this.state.db_species === 'mm'}
+                  <input type="radio" name="db_species" value="mm" checked={this.state.db_species === Utils.Species.MOUSE}
                          onChange={this.handleDBSpeciesChange} />
                   Mus Musculus
                 </label>
               </div>
               <div className="radio">
                 <label>
-                  <input type="radio" name="db_species" value="rt" checked={this.state.db_species === 'rt'}
+                  <input type="radio" name="db_species" value="rt" checked={this.state.db_species === Utils.Species.RAT}
                          onChange={this.handleDBSpeciesChange} />
                   Rattus Norvegicus
                 </label>
@@ -227,21 +227,21 @@ var RequestForm = React.createClass({
             <div className="col-md-8">
               <div className="radio">
                 <label>
-                  <input type="radio" name="query_species" value="hs" checked={this.state.query_species === 'hs'}
+                  <input type="radio" name="query_species" value="hs" checked={this.state.query_species === Utils.Species.HUMAN}
                          onChange={this.handleQuerySpeciesChange} />
                   Homo Sapiens
                 </label>
               </div>
               <div className="radio">
                 <label>
-                  <input type="radio" name="query_species" value="mm" checked={this.state.query_species === 'mm'}
+                  <input type="radio" name="query_species" value="mm" checked={this.state.query_species === Utils.Species.MOUSE}
                          onChange={this.handleQuerySpeciesChange} />
                   Mus Musculus
                 </label>
               </div>
               <div className="radio">
                 <label>
-                  <input type="radio" name="query_species" value="rt" checked={this.state.query_species === 'rt'}
+                  <input type="radio" name="query_species" value="rt" checked={this.state.query_species === Utils.Species.RAT}
                          onChange={this.handleQuerySpeciesChange} />
                   Rattus Norvegicus
                 </label>
@@ -270,10 +270,10 @@ var RequestForm = React.createClass({
               <span className="caret" />
             </button>
             <ul className="dropdown-menu" aria-labelledby="exampleButtonId">
-              <li><a onClick={() => this.runExample({notation: 'symbol'})}>with Symbol</a></li>
-              <li><a onClick={() => this.runExample({notation: 'ensembl'})}>with Ensembl</a></li>
-              <li><a onClick={() => this.runExample({notation: 'refseq'})}> with RefSeq</a></li>
-              <li><a onClick={() => this.runExample({notation: 'entrez'})}> with Entrez</a></li>
+              <li><a onClick={() => this.runExample('symbol')}>with Symbol</a></li>
+              <li><a onClick={() => this.runExample('ensembl')}>with Ensembl</a></li>
+              <li><a onClick={() => this.runExample('refseq')}> with RefSeq</a></li>
+              <li><a onClick={() => this.runExample('entrez')}> with Entrez</a></li>
             </ul>
           </div>
         </div>

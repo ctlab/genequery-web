@@ -27,76 +27,55 @@ var SearchPage = React.createClass({
 
   componentWillMount: function() {
     new Clipboard('.copy-to-clipboard');
+    this.initExampleRunner();
+  },
 
-    var example = Utils.getUrlParameter('example');
-    if (example === 'symbol' || example === 'entrez' || example === 'refseq' || example === 'ensembl') {
-      setTimeout(
-        () => Eventbus.emit('example-run', {'notation': example}),
-        250
-      )
+  initExampleRunner: function() {
+    var exampleGeneFormat = Utils.getUrlParameter('example');
+    if (_.contains(['symbol', 'entrez', 'refseq', 'ensembl'], exampleGeneFormat)) {
+      setTimeout(() => Eventbus.emit(Utils.Event.RUN_EXAMPLE, exampleGeneFormat), 250)
     }
   },
 
   getInitialState: function() {
     return {
       showLoading: false,
-      enrichedModules: undefined,
-      total: undefined,
-      idConversion: undefined,
-      networkClustering: undefined,
-      errorMessage: undefined
+      resultPayload: null,
+      success: true,
+      errors: null,
+      lastRequestData: undefined
     };
   },
 
-  // TODO move validation checks to separate method
   onSearchSuccess: function(payload) {
-    console.log('OK', payload);
+    console.log('PAYLOAD', payload);
 
-    var state = {showLoading: false, lastRequestData: this.state.lastRequestData};
-
+    var new_state = this.getInitialState();
+    new_state.lastRequestData = this.state.lastRequestData;
+    new_state.showLoading = false;
     try {
-      var success = payload['success'];
-      var data = payload['result'];
-      var errors = payload['errors'];
+      new_state.success = payload['success'];
+      new_state.resultPayload = payload['result'];
+      new_state.errors = payload['errors'];
+      Utils.scrollToTop(ReactDOM.findDOMNode(this.refs.searchResultPanel));
     } catch (e) {
       console.log('fail to parse payload', e);
-      state.errorMessage = "Seems like server error. Wrong response format.";
-    }
-
-    if (success === true) {
-      state.enrichedModules = data['enriched_modules'];
-      state.total = state.enrichedModules.length;
-      state.idConversion = data['id_conversion'];
-      state.networkClustering = data['network_clustering'];
-
-      Utils.scrollToTop(ReactDOM.findDOMNode(this.refs.idMappingTable));
-    } else {
-      state.errorMessage = errors.join('\n');
-    }
-
-    this.replaceState(state);
-
-    if (_.isArray(state.enrichedModules) && !_.isEmpty(state.enrichedModules)) {
-      Utils.scrollToTop(ReactDOM.findDOMNode(this.refs.idMappingTable));
+      new_state.errors = "Seems like server error. Wrong response format.";
+    } finally {
+      this.setState(new_state);
     }
   },
 
   onSearchFail: function(jqxhr, textStatus, error) {
-    this.replaceState({showLoading: false, errorMessage: "Server error."});
+    this.replaceState({showLoading: false, errors: ["Server error."]});
     console.log('FAIL', jqxhr, textStatus, error);
   },
 
-  beforeSend: function(db_species, query_species, genes) {
-    this.setState({
-      // Todo can we just replaceState({showLoading: true}, lastRequestData:...)?
-      showLoading: true,
-      errorMessage: undefined,
-      idConversion: undefined,
-      networkClustering: undefined,
-      enrichedModules: undefined,
-      total: undefined,
-      lastRequestData: {dbSpecies: db_species, querySpecies: query_species, genes: genes}
-    });
+  beforeSend: function(species_from, species_to, input_genes) {
+    var new_state = this.getInitialState();
+    new_state.lastRequestData = {dbSpecies: species_to, querySpecies: species_from, genes: input_genes};
+    new_state.showLoading = true;
+    this.setState(new_state);
     Utils.scrollToTop(ReactDOM.findDOMNode(this.refs.loader));
   },
 
@@ -114,7 +93,6 @@ var SearchPage = React.createClass({
               onFail={this.onSearchFail}
               beforeSend={this.beforeSend}
               onComplete={this.onSearchComplete}
-              ref="request_form"
             />
           </div>
         </div>
@@ -125,14 +103,7 @@ var SearchPage = React.createClass({
                     color="#777" speed={1.5}
                     trail={79} className="load-spinner"
                     zIndex={2e9} left="50%" scale={0.75}>
-              {_.isUndefined(this.state.enrichedModules)
-                ? null
-                : <LoadedSearchResultPanel speciesFrom={this.state.lastRequestData.querySpecies}
-                                           speciesTo={this.state.lastRequestData.dbSpecies}
-                                           inputGenes={this.state.lastRequestData.genes}
-                                           enrichedModules={this.state.enrichedModules}
-                                           idConversionInfo={this.state.idConversion}
-                                           networkClustering={this.state.networkClustering}/> }
+              { this.getLoadedResultOrErrorOrNull() }
             </Loader>
           </div>
         </div>
@@ -140,42 +111,25 @@ var SearchPage = React.createClass({
     );
   },
 
-  getTableOrErrorOrNull: function () {
-    if (!_.isUndefined(this.state.errorMessage)) {
-      return <ErrorBlock message={this.state.errorMessage} />;
-    }
-
-    if (_.isUndefined(this.state.enrichedModules)) {
+  getLoadedResultOrErrorOrNull: function () {
+    console.log(this.state);
+    if (_.isUndefined(this.state.lastRequestData)) {
       return null;
     }
-
-    if (_.isArray(this.state.enrichedModules) && _.isEmpty(this.state.enrichedModules)) {
-      return <span>No modules were found.</span>;
+    if (!_.isNull(this.state.errors) && _.isArray(this.state.errors) && !_.isEmpty(this.state.errors)) {
+      return <ErrorBlock messages={this.state.errors} />;
     }
-
-    var enrichedModules = [];
-    $(this.state.enrichedModules).each((i, row) => {
-      enrichedModules.push(<SearchResultRow key={i} overlapOnClick={this.overlapOnClick} {...row} />);
-    });
-
-    return (
-      <div>
-        <div className="row sticky-result-table-header">
-          <div className="col-md-12">
-            <SearchResultTable fake={true}/>
-          </div>
-        </div>
-        <div className="row">
-          <div className="col-md-12">
-            <SearchResultTable ref="searchResultTable">
-              {enrichedModules}
-            </SearchResultTable>
-          </div>
-        </div>
-      </div>
-    );
+    if (_.isNull(this.state.resultPayload)) {
+      return null;
+    }
+    return <LoadedSearchResultPanel speciesFrom={this.state.lastRequestData.querySpecies}
+                                    speciesTo={this.state.lastRequestData.dbSpecies}
+                                    inputGenes={this.state.lastRequestData.genes}
+                                    enrichedModules={this.state.resultPayload['enriched_modules']}
+                                    idConversionInfo={this.state.resultPayload['id_conversion']}
+                                    networkClustering={this.state.resultPayload['network_clustering']}
+                                    ref="searchResultPanel"/>;
   }
-
 });
 
 module.exports = SearchPage;
