@@ -53,7 +53,7 @@ var GroupPanel = React.createClass({
             </div>
             <div className="title-modules-found">
               <a>{this.state.moduleNames.length}</a>
-              <span>modules</span>
+              <span>{this.state.moduleNames.length > 1 ? "modules" : "module"}</span>
             </div>
             <div className="title-min-pv">
               <a>{bestScore}</a>
@@ -74,7 +74,7 @@ var GroupPanel = React.createClass({
             </p>
 
           </div>
-          <div className="panel-body pad-no mar-no">
+          <div className="pad-no mar-no">
             <SearchResultTable ref="searchResultTable">
               {enrichedModules}
             </SearchResultTable>

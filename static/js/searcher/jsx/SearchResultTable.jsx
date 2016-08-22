@@ -45,7 +45,7 @@ var ResultTable = React.createClass({
 
   render: function () {
     return (
-      <table className={"table table-bordered table-hover " + (this.props.fake ? "fake-result-table" : "result-table")}
+      <table className={"table table-hover " + (this.props.fake ? "fake-result-table" : "result-table")}
              ref="table">
         {this.getColGroup()}
         {this.getHeader()}

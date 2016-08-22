@@ -44,7 +44,7 @@ var SearchResultRow = React.createClass({
         <td>
           <a href={GSE_ADDRESS_PREF + this.state.series} target="_blank">{this.state.series}</a>
         </td>
-        <td className="text-center">{this.getGmtDowloadActiveOrIdleIcon()}</td>
+        <td>{this.getGmtDowloadActiveOrIdleIcon()}</td>
       </tr>
     );
   },
