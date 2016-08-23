@@ -15,7 +15,8 @@ var SummaryPanel = React.createClass({
     inputGenes: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
     identifiedGeneFormat: React.PropTypes.string.isRequired,
     isOrthologyUsed: React.PropTypes.bool.isRequired,
-    inputGenesToFinalEntrez: React.PropTypes.object.isRequired
+    inputGenesToFinalEntrez: React.PropTypes.object.isRequired,
+    handleGroupingCheckbox: React.PropTypes.func.isRequired
   },
 
   getDefaultProps: function() {
@@ -30,8 +31,21 @@ var SummaryPanel = React.createClass({
         <div className="panel-body">
           {this.getBasicInfo()}
           {this.getConversionPanel()}
+          {this.getGropingCheckbox()}
           {this.getDownloadButton()}
         </div>
+      </div>
+    );
+  },
+
+  getGropingCheckbox: function() {
+    return (
+      <div className="group-result-checkbox">
+        <label>
+          <input type="checkbox"
+                 name="grouping-checkbox"
+                 onChange={this.props.handleGroupingCheckbox} /> group results
+        </label>
       </div>
     );
   },

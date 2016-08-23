@@ -7,6 +7,7 @@ var React = require('react');
 var GroupPanelSet = require('./GroupPanelSet');
 var SummaryPanel = require('./SummaryPanel');
 var OverlapLayout = require('./OverlapLayout');
+var UngroupedResultPanel = require('./UngroupedResultPanel');
 
 var Utils = require('../../utils');
 var Eventbus = require('../../eventbus');
@@ -25,6 +26,12 @@ var LoadedSearchResultPanel = React.createClass({
     networkClustering: React.PropTypes.object
   },
 
+  getInitialState: function() {
+    return {
+      isResultGrouped: false
+    }
+  },
+
   componentWillUnmount: function() {
     Eventbus.removeListener(Utils.Event.DOWNLOAD_ALL_AS_CSV_EVENT, this.downloadAsCSV);
     Eventbus.removeListener(Utils.Event.SHOW_GENES_OVERLAP, this.showGenesOverlap);
@@ -35,6 +42,10 @@ var LoadedSearchResultPanel = React.createClass({
     Eventbus.addListener(Utils.Event.SHOW_GENES_OVERLAP, this.showGenesOverlap);
   },
 
+  handleGroupingCheckbox: function(event) {
+    this.setState({isResultGrouped: event.target.checked})
+  },
+
   render: function () {
     if (_.isEmpty(this.props.enrichedModules)) {
       return <span>No modules found.</span>;
@@ -43,7 +54,9 @@ var LoadedSearchResultPanel = React.createClass({
     return (
       <div>
         { this.getSummaryPanel() }
-        { this.getGroupPanelSet() }
+        { this.state.isResultGrouped
+          ? this.getGroupPanelSet()
+          : <UngroupedResultPanel allEnrichedModules={this.props.enrichedModules} /> }
       </div>
     );
   },
@@ -53,7 +66,8 @@ var LoadedSearchResultPanel = React.createClass({
                          numberOfModulesFound={_.size(this.props.enrichedModules)}
                          identifiedGeneFormat={this.props.idConversionInfo['identified_gene_format']}
                          isOrthologyUsed={this.props.idConversionInfo['orthology_used']}
-                         inputGenesToFinalEntrez={this.props.idConversionInfo['input_genes_to_final_entrez']} />;
+                         inputGenesToFinalEntrez={this.props.idConversionInfo['input_genes_to_final_entrez']}
+                         handleGroupingCheckbox={this.handleGroupingCheckbox} />;
   },
 
   getGroupPanelSet: function() {

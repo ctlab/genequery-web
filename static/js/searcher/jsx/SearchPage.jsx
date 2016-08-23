@@ -41,7 +41,7 @@ var SearchPage = React.createClass({
     return {
       showLoading: false,
       resultPayload: null,
-      success: true,
+      success: false,
       errors: null,
       lastRequestData: undefined
     };
@@ -83,6 +83,12 @@ var SearchPage = React.createClass({
     this.setState({showLoading: false});
   },
 
+  componentDidUpdate: function() {
+    if (this.state.success) {
+      Utils.scrollToTop(ReactDOM.findDOMNode(this.refs.searchResultPanel));
+    }
+  },
+
   render: function () {
     return (
       <div>
@@ -112,11 +118,8 @@ var SearchPage = React.createClass({
   },
 
   getLoadedResultOrErrorOrNull: function () {
-    console.log(this.state);
-    if (_.isUndefined(this.state.lastRequestData)) {
-      return null;
-    }
-    if (!_.isNull(this.state.errors) && _.isArray(this.state.errors) && !_.isEmpty(this.state.errors)) {
+    if (!this.atLeastOneRequestMade()) return null;
+    if (this.lastRequestHasErrors()) {
       return <ErrorBlock messages={this.state.errors} />;
     }
     if (_.isNull(this.state.resultPayload)) {
@@ -129,6 +132,13 @@ var SearchPage = React.createClass({
                                     idConversionInfo={this.state.resultPayload['id_conversion']}
                                     networkClustering={this.state.resultPayload['network_clustering']}
                                     ref="searchResultPanel"/>;
+  },
+
+  atLeastOneRequestMade: function() {
+    return !_.isUndefined(this.state.lastRequestData)
+  },
+  lastRequestHasErrors: function() {
+    return !_.isNull(this.state.errors) && _.isArray(this.state.errors) && !_.isEmpty(this.state.errors);
   }
 });
 

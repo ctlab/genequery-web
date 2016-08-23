@@ -208,7 +208,7 @@ div.row-margin {
   background-color: rgb(242, 242, 242);
 }
 .panel-title.flexible-title>div:not(:last-of-type) {
-  border-right: 1px solid rgba(0, 0, 0, 0.1);
+  border-right: 1px solid #ddd;
 }
 .panel-title {
   white-space: nowrap;
@@ -263,15 +263,20 @@ div.row-margin {
 .panel-group.accordion .panel-body:before {
   border: 0 !important
 }
-.panel .with-line-on-top:before {
-  content: '';
-  display: block;
-  position: absolute;
-  height: 0;
-  left: 15px;
-  right: 15px;
-  border-bottom: 1px solid rgba(0,0,0,0.1)
+/*.panel .with-line-on-top:before {*/
+  /*content: '';*/
+  /*display: block;*/
+  /*position: absolute;*/
+  /*height: 0;*/
+  /*left: 15px;*/
+  /*right: 15px;*/
+  /*border-bottom: 1px solid rgba(0,0,0,0.1)*/
+/*}*/
+
+.panel-group .panel-heading:not(.collapsed) {
+  border-bottom: 1px solid rgba(0,0,0,0.1);
 }
+
 .panel-collapse {
   position: relative;
 }
@@ -301,9 +306,14 @@ div.row-margin {
   padding: 0;
 }
 
-.summary-panel,
+.summary-panel {
+  margin-bottom: 0;
+}
 .result-groups>.panel {
   margin-bottom: 10px;
+}
+.result-groups>.panel:first-child {
+  margin-top: 10px;
 }
 
 .result-groups .panel+.panel {
@@ -354,4 +364,8 @@ div.title-group-annotation {
 .table.result-table {
   font-size: inherit;
   line-height: 1.5;
+}
+
+.group-result-checkbox {
+  float: right;
 }

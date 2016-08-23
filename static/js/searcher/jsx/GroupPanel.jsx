@@ -45,10 +45,10 @@ var GroupPanel = React.createClass({
 
     return (
       <div className="panel">
-        <div className="panel-heading" data-target={"#" + this.getGroupHTMLId()} data-toggle="collapse" data-parent="#result-groups-accordion">
+        <div className="panel-heading collapsed" data-target={"#" + this.getGroupHTMLId()} data-toggle="collapse" data-parent="#result-groups-accordion">
           <div className="panel-title flexible-title">
             <div className="title-group-id">
-              <a>#{this.state.groupId}</a>
+              <a>{this.props.isGroupFree ? "FREE" : "#" + this.state.groupId}</a>
               <span>group ID</span>
             </div>
             <div className="title-modules-found">
@@ -60,7 +60,7 @@ var GroupPanel = React.createClass({
               <span>min.adj.p-value</span>
             </div>
             <div className="title-group-annotation">
-              <a>{this.state.annotation}</a>
+              <a>{this.props.isGroupFree ? "Modules that didn't fall in any group." : this.state.annotation}</a>
               <span>group annotation</span>
             </div>
           </div>
@@ -74,11 +74,9 @@ var GroupPanel = React.createClass({
             </p>
 
           </div>
-          <div className="pad-no mar-no">
-            <SearchResultTable ref="searchResultTable">
-              {enrichedModules}
-            </SearchResultTable>
-          </div>
+          <SearchResultTable>
+            {enrichedModules}
+          </SearchResultTable>
         </div>
       </div>
     );
