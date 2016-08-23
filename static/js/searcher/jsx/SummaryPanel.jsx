@@ -38,7 +38,7 @@ var SummaryPanel = React.createClass({
           {this.getModuleSummary()}
           {this.getGenesSummary()}
         </div>
-        {!this.resultIsEmpty ? this.getFooter() : null}
+        {!this.resultIsEmpty() ? this.getFooter() : null}
       </div>
     );
   },
