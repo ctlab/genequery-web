@@ -27,6 +27,10 @@ var SummaryPanel = React.createClass({
     }
   },
 
+  resultIsEmpty: function() {
+    return _.isEmpty(this.props.allEnrichedModules);
+  },
+
   render: function() {
     return (
       <div className="panel summary-panel">
@@ -34,7 +38,7 @@ var SummaryPanel = React.createClass({
           {this.getModuleSummary()}
           {this.getGenesSummary()}
         </div>
-        {this.getFooter()}
+        {!this.resultIsEmpty ? this.getFooter() : null}
       </div>
     );
   },
@@ -49,7 +53,7 @@ var SummaryPanel = React.createClass({
           <dt>Detected groups</dt>
           <dd>{this.props.numberOfGroups}</dd>
           <dt>min log<sub>10</sub>(adj.p<sub>value</sub>)</dt>
-          <dd>{min_p_value.toFixed(2)}</dd>
+          <dd>{this.resultIsEmpty() ? "–" : min_p_value.toFixed(2)}</dd>
         </dl>
       </div>
     );
@@ -61,16 +65,16 @@ var SummaryPanel = React.createClass({
       <div className="summary-description">
         <dl className="dl-horizontal">
           <dt>Detected gene format</dt>
-          <dd>{this.props.identifiedGeneFormat}</dd>
+          <dd className="text-uppercase">{this.props.identifiedGeneFormat}</dd>
           <dt>Genes entered</dt>
           <dd>{this.props.inputGenes.length}</dd>
+          <dt>Unique entrez IDs</dt>
+          <dd>{unique_entrez_ids}</dd>
           <dd>
             <button className="btn btn-default btn-xs" onClick={this.showConversionTable}>
               show gene conversion table
             </button>
           </dd>
-          <dt>Unique entrez IDs</dt>
-          <dd>{unique_entrez_ids}</dd>
           <dt>Apply orthology</dt>
           <dd>{this.props.isOrthologyUsed ? "yes" : "no"}</dd>
         </dl>

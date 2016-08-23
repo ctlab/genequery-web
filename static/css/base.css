@@ -341,6 +341,9 @@ div.row-margin {
   color: #fff;
   border-color: inherit;
 }
+.result-groups .panel-heading {
+  cursor: pointer;
+}
 .result-groups>.panel {
   margin-bottom: 10px;
 }
