@@ -9,6 +9,10 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+.header .nav * {
+  font-size: 14px;
+}
+
 html, body, .base-content{
   height: 100%;
   color: #696969;
@@ -214,7 +218,7 @@ div.row-margin {
   white-space: nowrap;
   margin-top: 0;
   margin-bottom: 0;
-  font-size: 18px;
+  font-size: 16px;
   color: inherit;
   font-weight: 300;
   padding: 0 20px 0 15px;
