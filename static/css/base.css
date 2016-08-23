@@ -256,22 +256,23 @@ div.row-margin {
 }
 
 .panel-footer * {
-  color: #515151;
-  border-color: #eaedf0;
+  /*color: #515151;*/
+  /*border-color: #eaedf0;*/
   position: relative
 }
 .panel-group.accordion .panel-body:before {
   border: 0 !important
 }
-/*.panel .with-line-on-top:before {*/
-  /*content: '';*/
-  /*display: block;*/
-  /*position: absolute;*/
-  /*height: 0;*/
+.with-line-on-top:before {
+  content: '';
+  display: block;
+  position: relative;
+  height: 0;
   /*left: 15px;*/
   /*right: 15px;*/
-  /*border-bottom: 1px solid rgba(0,0,0,0.1)*/
-/*}*/
+  /*top: -10px;*/
+  border-bottom: 1px solid rgba(0,0,0,0.1)
+}
 
 .panel-group .panel-heading:not(.collapsed) {
   border-bottom: 1px solid rgba(0,0,0,0.1);
@@ -307,14 +308,46 @@ div.row-margin {
 }
 
 .summary-panel {
-  margin-bottom: 0;
+  margin-bottom: 10px;
+}
+.summary-panel>.panel-footer {
+  background-color: inherit;
+  border-top: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+.summary-panel>.panel-footer>div {
+  display: inline-block;
+  padding: 10px;
+}
+.summary-panel>.panel-footer>div:first-child {
+  padding-left: 0;
+}
+.summary-panel>.panel-footer>div:after {
+  position: absolute;
+  z-index: 1;
+  content: "";
+  width: 1px;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-image: linear-gradient(to bottom,rgba(215,224,226,.2)0,#d7e0e2 50%,rgba(215,224,226,.2)100%);
+}
+.summary-panel>.panel-footer>.download-btn * {
+  color: #fff;
+  border-color: inherit;
 }
 .result-groups>.panel {
   margin-bottom: 10px;
 }
-.result-groups>.panel:first-child {
-  margin-top: 10px;
+
+.summary-description {
+  display: inline-block;
+  vertical-align: top;
 }
+/*.result-groups>.panel:first-child {*/
+  /*margin-top: 10px;*/
+/*}*/
 
 .result-groups .panel+.panel {
   margin-top: 10px;
@@ -323,7 +356,7 @@ div.row-margin {
 .flexible-title>div {
   text-align: center;
   /*line-height: normal;*/
-  padding: 5px 5px 5px 5px;
+  padding: 10px 5px 5px 5px;
 }
 
 .flexible-title>div>span {
@@ -367,5 +400,16 @@ div.title-group-annotation {
 }
 
 .group-result-checkbox {
-  float: right;
+  /*float: right;*/
 }
+
+/*.separate-line:after {*/
+  /*position: absolute;*/
+  /*z-index: 1;*/
+  /*content: "";*/
+  /*width: 1px;*/
+  /*right: 0;*/
+  /*top: 0;*/
+  /*bottom: 0;*/
+  /*background-image: linear-gradient(to bottom,rgba(215,224,226,.2)0,#d7e0e2 50%,rgba(215,224,226,.2)100%);*/
+/*}*/

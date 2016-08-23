@@ -90,6 +90,21 @@ var Utils = {
   },
 
   /**
+   * Show popup with custom React element.
+   *
+   * @param src ReactElement which will be rendered inside the popup
+   */
+  showPopupInlineReactElement: function(src) {
+    $.magnificPopup.open({
+      items: {
+        src: Utils.reactElementToString(src),
+        type: 'inline'
+      },
+      alignTop: true
+    }, 0);
+  },
+
+  /**
    * Show popup with data received via AJAX GET request.
    *
    * @param url url to send ajax request to

@@ -167,7 +167,7 @@ def prepare_json_data(response_result, species_from, species_to):
 
     id_conversion = {
         'identified_gene_format': response_result.identified_gene_format,
-        'orthology_used': species_from == species_to,
+        'orthology_used': species_from != species_to,
         'input_genes_to_final_entrez': response_result.gene_conversion_map
 
     }

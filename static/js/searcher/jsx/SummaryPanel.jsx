@@ -5,13 +5,15 @@
 var React = require('react');
 var IdMappingTable = require('./IdMappingTable');
 var Eventbus = require('../../eventbus');
+var PopupLayout = require('./PopupLayout');
 
 var Utils = require('../../utils');
 var _ = require('underscore');
 
 var SummaryPanel = React.createClass({
   propTypes: {
-    numberOfModulesFound: React.PropTypes.number,
+    allEnrichedModules: React.PropTypes.object.isRequired,
+    numberOfGroups: React.PropTypes.number,
     inputGenes: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
     identifiedGeneFormat: React.PropTypes.string.isRequired,
     isOrthologyUsed: React.PropTypes.bool.isRequired,
@@ -21,7 +23,7 @@ var SummaryPanel = React.createClass({
 
   getDefaultProps: function() {
     return {
-      numberOfModulesFound: 0
+      numberOfGroups: 0
     }
   },
 
@@ -29,61 +31,80 @@ var SummaryPanel = React.createClass({
     return (
       <div className="panel summary-panel">
         <div className="panel-body">
-          {this.getBasicInfo()}
-          {this.getConversionPanel()}
-          {this.getGropingCheckbox()}
-          {this.getDownloadButton()}
+          {this.getModuleSummary()}
+          {this.getGenesSummary()}
         </div>
+        {this.getFooter()}
       </div>
     );
   },
 
-  getGropingCheckbox: function() {
+  getModuleSummary: function() {
+    var min_p_value = _.min(_.map(this.props.allEnrichedModules, (data, name) => data.log_adj_p_value));
     return (
-      <div className="group-result-checkbox">
-        <label>
-          <input type="checkbox"
-                 name="grouping-checkbox"
-                 onChange={this.props.handleGroupingCheckbox} /> group results
-        </label>
+      <div className="summary-description">
+        <dl className="dl-horizontal">
+          <dt>Modules</dt>
+          <dd>{_.size(this.props.allEnrichedModules)}</dd>
+          <dt>Detected groups</dt>
+          <dd>{this.props.numberOfGroups}</dd>
+          <dt>min log<sub>10</sub>(adj.p<sub>value</sub>)</dt>
+          <dd>{min_p_value.toFixed(2)}</dd>
+        </dl>
       </div>
     );
   },
 
-  getBasicInfo: function() {
+  getGenesSummary: function() {
+    var unique_entrez_ids = _.size(_.without(_.uniq(_.values(this.props.inputGenesToFinalEntrez)), null));
     return (
-      <p>
-        Entered: {this.props.inputGenes.length} genes. {' '}
-        Identified gene format: {this.props.identifiedGeneFormat}. {' '}
-        {this.props.isOrthologyUsed ? "Orthology was applied." : ""} {' '}
-        Unique Entrez IDs: {_.size(_.without(_.uniq(_.values(this.props.inputGenesToFinalEntrez)), null))}.
-      </p>
-    );
-  },
-
-  getConversionPanel: function() {
-    return (
-      <div className="panel gene-conversion-panel">
-        <div className="panel-heading">
-          <div className="panel-title">
-            <a data-toggle="collapse" data-target="#conversion-table-wrapper">Gene Conversion Table</a>
-          </div>
-        </div>
-        <div className="panel-body panel-collapse collapse" id="conversion-table-wrapper">
-          <IdMappingTable inputGenesToFinalEntrez={this.props.inputGenesToFinalEntrez}
-                          inputGenes={this.props.inputGenes} />
-        </div>
+      <div className="summary-description">
+        <dl className="dl-horizontal">
+          <dt>Detected gene format</dt>
+          <dd>{this.props.identifiedGeneFormat}</dd>
+          <dt>Genes entered</dt>
+          <dd>{this.props.inputGenes.length}</dd>
+          <dd>
+            <button className="btn btn-default btn-xs" onClick={this.showConversionTable}>
+              show gene conversion table
+            </button>
+          </dd>
+          <dt>Unique entrez IDs</dt>
+          <dd>{unique_entrez_ids}</dd>
+          <dt>Apply orthology</dt>
+          <dd>{this.props.isOrthologyUsed ? "yes" : "no"}</dd>
+        </dl>
       </div>
     );
   },
 
-  getDownloadButton: function() {
-    return this.props.numberOfModulesFound > 0
-      ? <button className="btn btn-primary btn-xs"
-                onClick={() => Eventbus.emit(Utils.Event.DOWNLOAD_ALL_AS_CSV_EVENT)}>Download results as CSV</button>
-      : null;
+
+  showConversionTable: function() {
+    Utils.showPopupInlineReactElement(
+      <PopupLayout>
+        <IdMappingTable inputGenesToFinalEntrez={this.props.inputGenesToFinalEntrez}
+                        inputGenes={this.props.inputGenes} />
+      </PopupLayout>
+    );
+  },
+  
+  getFooter: function() {
+    return (
+      <div className="with-line-on-top panel-footer">
+        <div className="download-btn">
+          <button className="btn btn-primary btn-xs"
+                  onClick={() => Eventbus.emit(Utils.Event.DOWNLOAD_ALL_AS_CSV_EVENT)}>Download results as CSV</button>
+        </div>
+        <div className="group-result-checkbox">
+          <label>
+            <input type="checkbox"
+                   name="grouping-checkbox"
+                   onChange={this.props.handleGroupingCheckbox} /> Group results
+          </label>
+        </div>
+      </div>
+    );
   }
-
 });
 
 module.exports = SummaryPanel;

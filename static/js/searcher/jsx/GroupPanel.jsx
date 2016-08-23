@@ -48,7 +48,7 @@ var GroupPanel = React.createClass({
         <div className="panel-heading collapsed" data-target={"#" + this.getGroupHTMLId()} data-toggle="collapse" data-parent="#result-groups-accordion">
           <div className="panel-title flexible-title">
             <div className="title-group-id">
-              <a>{this.props.isGroupFree ? "FREE" : "#" + this.state.groupId}</a>
+              <a>{"#" + this.state.groupId}</a>
               <span>group ID</span>
             </div>
             <div className="title-modules-found">
@@ -65,7 +65,7 @@ var GroupPanel = React.createClass({
             </div>
           </div>
         </div>
-        <div className="panel-collapse collapse with-line-on-top" id={this.getGroupHTMLId()}>
+        <div className="panel-collapse collapse" id={this.getGroupHTMLId()}>
           <div className="panel-body">
             <p><strong>Results found: </strong>{this.state.moduleNames.length}</p>
             <p>

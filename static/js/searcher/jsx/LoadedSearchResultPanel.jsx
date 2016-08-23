@@ -63,7 +63,8 @@ var LoadedSearchResultPanel = React.createClass({
 
   getSummaryPanel: function() {
     return <SummaryPanel inputGenes={this.props.inputGenes}
-                         numberOfModulesFound={_.size(this.props.enrichedModules)}
+                         allEnrichedModules={this.props.enrichedModules}
+                         numberOfGroups={this.props.networkClustering['other_groups'].length}
                          identifiedGeneFormat={this.props.idConversionInfo['identified_gene_format']}
                          isOrthologyUsed={this.props.idConversionInfo['orthology_used']}
                          inputGenesToFinalEntrez={this.props.idConversionInfo['input_genes_to_final_entrez']}
