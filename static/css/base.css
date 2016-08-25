@@ -208,7 +208,7 @@ div.row-margin {
   border-top-right-radius: 3px;
   border-top-left-radius: 3px
 }
-.panel-title.flexible-title:hover {
+.result-groups>.panel>.panel-heading:hover {
   background-color: rgb(242, 242, 242);
 }
 .panel-title.flexible-title>div:not(:last-of-type) {
@@ -420,3 +420,23 @@ div.title-group-annotation {
   /*bottom: 0;*/
   /*background-image: linear-gradient(to bottom,rgba(215,224,226,.2)0,#d7e0e2 50%,rgba(215,224,226,.2)100%);*/
 /*}*/
+
+.dropdown-menu {
+  top: inherit;
+  left: inherit;
+}
+
+.overlap-link+.dropdown-menu small {
+  color: grey;
+  float: right;
+  padding: 3px;
+}
+
+.copy-to-clipboard {
+  float: right;
+}
+
+.overlap-genes-list>pre {
+  white-space: pre-wrap;
+  word-break: normal;
+}

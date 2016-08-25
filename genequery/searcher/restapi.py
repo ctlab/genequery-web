@@ -154,6 +154,7 @@ class OverlapGenesWithModuleRestMethod(AbstractRestProxyMethod):
                 raise Exception('response result must be non-null')
 
             self.overlap_symbol_genes = response_result_data['overlapSymbolGenes']
+            self.other_module_symbol_genes = response_result_data['otherModuleSymbolGenes']
 
     class ResultWrapper(AbstractRestProxyMethod.ResultWrapper):
         def __init__(self, success, result, errors):

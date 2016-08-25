@@ -26,6 +26,7 @@ var Clipboard = require('clipboard');
 var SearchPage = React.createClass({
 
   componentWillMount: function() {
+    // TODO don't work on Safari browser
     new Clipboard('.copy-to-clipboard');
     this.initExampleRunner();
   },

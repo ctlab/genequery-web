@@ -215,7 +215,8 @@ class GetOverlapView(View):
             return json_response_errors(result_wrapper.errors)
 
         return json_response_ok({
-            'genes': result_wrapper.result.overlap_symbol_genes
+            'overlap_genes': result_wrapper.result.overlap_symbol_genes,
+            'other_module_genes': result_wrapper.result.other_module_symbol_genes
         })
 
 
