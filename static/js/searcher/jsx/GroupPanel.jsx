@@ -67,11 +67,14 @@ var GroupPanel = React.createClass({
         </div>
         <div className="panel-collapse collapse" id={this.getGroupHTMLId()}>
           <div className="panel-body">
-            <p><strong>Results found: </strong>{this.state.moduleNames.length}</p>
-            <p>
-              <strong>Group key-words: </strong>
-              {this.state.annotation}
-            </p>
+            {
+              _.isEmpty(this.state.annotation)
+              ? null
+              : <p>
+                  <strong>Group key-words: </strong>
+                  {this.state.annotation}
+                </p>
+            }
 
           </div>
           <SearchResultTable>

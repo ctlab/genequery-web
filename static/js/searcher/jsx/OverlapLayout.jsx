@@ -29,21 +29,33 @@ var OverlapLayout = React.createClass({
           <p>Overlap of input genes with module {this.props.moduleNumber} of {this.props.series}.</p>
         </div>
         <div className="overlap-genes-controls">
+          <label>
+            <input type="checkbox"
+                   onChange={this.handleShowAllGenes} /> show other genes of the module
+          </label>
           <a data-clipboard-target={'#' + module_id}
              className="copy-to-clipboard">Copy genes to clipboard</a>
         </div>
         <div className="overlap-genes-list">
-          <pre id={module_id}>
-            <mark>{this.props.responseData.result['overlap_genes'].join(' ')}</mark>{' '}
-            {this.props.responseData.result['other_module_genes'].join(' ')}
-          </pre>
+          {
+            this.state.showAllGenes
+            ? <pre id={module_id}>
+                <b>
+                  {this.props.responseData.result['overlap_genes'].join(' ')}
+                </b>{' '}
+                {this.props.responseData.result['other_module_genes'].join(' ')}
+              </pre>
+            : <pre id={module_id}>
+                {this.props.responseData.result['overlap_genes'].join(' ')}
+              </pre>
+          }
+
         </div>
       </PopupLayout>
     );
   },
 
   handleShowAllGenes: function(event) {
-    console.log(event.target.checked);
     this.setState({showAllGenes: event.target.checked});
   }
 });

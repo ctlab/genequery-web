@@ -6,5 +6,5 @@ $(document).ready(function() {
   ReactDOM.render(
     React.createElement(SearchPage),
     document.getElementById('search-page')
-  )
+  );
 });

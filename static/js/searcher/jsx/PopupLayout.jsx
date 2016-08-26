@@ -10,7 +10,7 @@ var PopupLayout = React.createClass({
 
   render: function () {
     return (
-      <div className="white-popup-block">
+      <div>
         {this.props.children}
       </div>
     );

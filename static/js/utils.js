@@ -3,7 +3,10 @@
  */
 
 var ReactDOMServer = require('react-dom/server');
+var ReactDOM = require('react-dom');
 var _ = require('underscore');
+
+var OVERLAY_POPUP_ID = 'overlay-popup';
 
 var Utils = {
 
@@ -52,6 +55,23 @@ var Utils = {
   },
 
   /**
+   * Embed custom react element into hidden auxiliary element of the DOM.
+   * Preserves all React event handlers.
+   *
+   * @param element React element to show in popup
+   * @param callback function to be passed as callback to ReactDOM.render method
+   */
+  embedReactElementToPopup: function(element, callback) {
+    $('#auxiliary-data').append(
+      $('<div>').attr('id', OVERLAY_POPUP_ID).addClass('white-popup-block'));
+    ReactDOM.render(
+      element,
+      document.getElementById(OVERLAY_POPUP_ID),
+      callback
+    );
+  },
+
+  /**
    * Show popup with data received via AJAX (e.g. genes from overlap with module).
    *
    * @param url url to send ajax request to
@@ -83,7 +103,9 @@ var Utils = {
             console.error(e);
             element = getErrorElement(e);
           }
-          response.data = Utils.reactElementToString(element);
+          Utils.embedReactElementToPopup(
+            element,
+            () => response.data = document.getElementById(OVERLAY_POPUP_ID));
         }
       }
     }, 0);
@@ -95,13 +117,21 @@ var Utils = {
    * @param src ReactElement which will be rendered inside the popup
    */
   showPopupInlineReactElement: function(src) {
-    $.magnificPopup.open({
-      items: {
-        src: Utils.reactElementToString(src),
-        type: 'inline'
-      },
-      alignTop: true
-    }, 0);
+    Utils.embedReactElementToPopup(
+      src,
+      () => $.magnificPopup.open({
+              items: {
+                src: document.getElementById(OVERLAY_POPUP_ID),
+                type: 'inline'
+              },
+              callbacks: {
+                close: function() {
+                  document.getElementById(OVERLAY_POPUP_ID).remove();
+                }
+              },
+              alignTop: true
+            }, 0)
+    );
   },
 
   /**
