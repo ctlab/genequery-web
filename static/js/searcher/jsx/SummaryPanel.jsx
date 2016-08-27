@@ -97,7 +97,7 @@ var SummaryPanel = React.createClass({
       <div className="with-line-on-top panel-footer">
         <div className="download-btn">
           <button className="btn btn-primary btn-xs"
-                  onClick={() => Eventbus.emit(Utils.Event.DOWNLOAD_ALL_AS_CSV_EVENT)}>Download results as CSV</button>
+                  onClick={() => Eventbus.emit(Utils.Event.DOWNLOAD_ALL_AS_CSV_EVENT)}>Export result to CSV</button>
         </div>
         <div className="group-result-checkbox">
           <label>

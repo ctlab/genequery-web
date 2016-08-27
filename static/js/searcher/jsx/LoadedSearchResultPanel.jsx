@@ -82,20 +82,43 @@ var LoadedSearchResultPanel = React.createClass({
   },
 
   downloadAsCSV: function() {
+    var module_to_group_id = _.mapObject(this.props.enrichedModules, (data, module_name) => 0);
+
+    if (_.isObject(this.props.networkClustering) && !_.isEmpty(this.props.networkClustering)) {
+      _.each(this.props.networkClustering['other_groups'], (group_data, group_id) => {
+        _.each(group_data['module_names'], (name) => module_to_group_id[name] = group_id);
+      });
+    }
+
+    console.log(module_to_group_id);
+
     var sortedEnrichedModules = _.sortBy(_.values(this.props.enrichedModules),'rank');
     var delimiter = ',';
-    var columns = ['rank', 'log_p_value', 'log_adj_p_value', 'series', 'platform',
-      'module_number', 'overlap_size', 'module_size', 'title'];
+    var columns = [
+      'rank',
+      'log_p_value',
+      'log_adj_p_value',
+      'series',
+      'platform',
+      'module_number',
+      'overlap_size',
+      'module_size',
+      'group_id',
+      'title'];
+
     var content = [columns.join(delimiter)];
-    console.log(sortedEnrichedModules);
     _.each(sortedEnrichedModules, module => {
       var csv_row = _.map(columns, field => {
         if (field === 'title') {
           return '"' + module[field] + '"';
         }
+        if (field === 'group_id') {
+          var module_id = module['series'] + '_' + module['platform'] + '#' + module['module_number'];
+          return module_to_group_id[module_id];
+        }
         return module[field];
       });
-      content.push(csv_row.join(delimiter))
+      content.push(csv_row.join(delimiter));
     });
 
     var now = new Date();
