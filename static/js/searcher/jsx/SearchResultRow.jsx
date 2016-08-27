@@ -11,7 +11,8 @@ var GSE_ADDRESS_PREF = 'http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=';
 
 var SearchResultRow = React.createClass({
 
-  // In case of renaming of the properties watch out the CSV building!
+  // NOTE: in case of renaming of the properties watch out for the CSV building!
+  // NOTE: use underscore-style of naming in order to pass all the props as-is using ellipsis syntax `{...data}`
   propTypes: {
     title: React.PropTypes.string.isRequired,
     rank: React.PropTypes.number.isRequired,
@@ -26,23 +27,19 @@ var SearchResultRow = React.createClass({
   },
 
   overlapOnClick: function() {
-    this.props.overlapOnClick(this.state.series, this.state.platform, this.state.module_number);
-  },
-
-  getInitialState: function() {
-    return this.props;
+    this.props.overlapOnClick(this.props.series, this.props.platform, this.props.module_number);
   },
 
   render: function () {
     return (
       <tr>
-        <td className="text-right">{this.state.rank}</td>
-        <td>{this.state.title}</td>
+        <td className="text-right">{this.props.rank}</td>
+        <td>{this.props.title}</td>
         <td>{this.getHeatmapWithMaybeLink()}</td>
-        <td>{this.state.log_adj_p_value >= -325 ? this.state.log_adj_p_value.toFixed(2) : "≤ -325"}</td>
+        <td>{this.props.log_adj_p_value >= -325 ? this.props.log_adj_p_value.toFixed(2) : "≤ -325"}</td>
         <td align="center" valign="middle">{this.getOverlapLink()}</td>
         <td>
-          <a href={GSE_ADDRESS_PREF + this.state.series} target="_blank">{this.state.series}</a>
+          <a href={GSE_ADDRESS_PREF + this.props.series} target="_blank">{this.props.series}</a>
         </td>
         <td>{this.getGmtDowloadActiveOrIdleIcon()}</td>
       </tr>
@@ -52,10 +49,10 @@ var SearchResultRow = React.createClass({
   heatmapOnClick: function(e) {
     e.preventDefault();
     Utils.showPopupImage(
-      this.state.series_url,
+      this.props.series_url,
       <p>
-        {this.state.series}, module #{this.state.module_number}.{' '}
-        <a href={this.state.series_url} target="_blank" className="full-heatmap-link">
+        {this.props.series}, module #{this.props.module_number}.{' '}
+        <a href={this.props.series_url} target="_blank" className="full-heatmap-link">
           Open full picture on new tab
         </a>.
       </p>
@@ -63,24 +60,24 @@ var SearchResultRow = React.createClass({
   },
 
   getHeatmapWithMaybeLink: function() {
-    if (this.state.series_url !== null) {
+    if (this.props.series_url !== null) {
       return (
         <a className="module-heatmap-img"
-           data-gse={this.state.series}
-           data-module={this.state.module_number}
-           href={this.state.series_url}
+           data-gse={this.props.series}
+           data-module={this.props.module_number}
+           href={this.props.series_url}
            onClick={this.heatmapOnClick}>
-          {this.state.module_number}
+          {this.props.module_number}
         </a>
       );
     }
-    return this.state.module_number;
+    return this.props.module_number;
   },
 
   getGmtDowloadActiveOrIdleIcon: function() {
-    if (this.state.gmt_url !== null) {
+    if (this.props.gmt_url !== null) {
       return (
-        <a href={this.state.gmt_url} target="_blank">
+        <a href={this.props.gmt_url} target="_blank">
           <span className="glyphicon glyphicon-download" />
         </a>
       );
@@ -90,8 +87,8 @@ var SearchResultRow = React.createClass({
 
   getOverlapLink: function() {
     return (
-      <a onClick={() => Eventbus.emit(Utils.Event.SHOW_GENES_OVERLAP, this.state.series, this.state.platform, this.state.module_number)}>
-        {this.state.overlap_size + '/' + this.state.module_size}
+      <a onClick={() => Eventbus.emit(Utils.Event.SHOW_GENES_OVERLAP, this.props.series, this.props.platform, this.props.module_number)}>
+        {this.props.overlap_size + '/' + this.props.module_size}
       </a>
     );
   }

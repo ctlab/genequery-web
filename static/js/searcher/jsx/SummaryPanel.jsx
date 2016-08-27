@@ -52,7 +52,7 @@ var SummaryPanel = React.createClass({
           <dd>{_.size(this.props.allEnrichedModules)}</dd>
           <dt>Detected groups</dt>
           <dd>{this.props.numberOfGroups}</dd>
-          <dt>min log<sub>10</sub>(adj.p<sub>value</sub>)</dt>
+          <dt>Min log<sub>10</sub>(adj.p<sub>value</sub>)</dt>
           <dd>{this.resultIsEmpty() ? "–" : min_p_value.toFixed(2)}</dd>
         </dl>
       </div>

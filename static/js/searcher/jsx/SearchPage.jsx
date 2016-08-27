@@ -7,14 +7,7 @@ var Loader = require('react-loader');
 var React = require('react');
 var ReactDOM = require('react-dom');
 var RequestForm = require('./RequestForm');
-var SearchResultTable = require('./SearchResultTable');
-var SearchResultRow = require('./SearchResultRow');
 var ErrorBlock = require('./ErrorBlock');
-var IdMappingTable = require('./IdMappingTable');
-var OverlapLayout = require('./OverlapLayout');
-var PopupLayout = require('./PopupLayout');
-var SummaryPanel = require('./SummaryPanel');
-var GroupPanelSet = require('./GroupPanelSet');
 var LoadedSearchResultPanel = require('./LoadedSearchResultPanel');
 
 var Utils = require('../../utils');
