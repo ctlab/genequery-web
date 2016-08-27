@@ -90,8 +90,6 @@ var LoadedSearchResultPanel = React.createClass({
       });
     }
 
-    console.log(module_to_group_id);
-
     var sortedEnrichedModules = _.sortBy(_.values(this.props.enrichedModules),'rank');
     var delimiter = ',';
     var columns = [

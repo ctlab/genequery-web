@@ -440,3 +440,18 @@ div.title-group-annotation {
   white-space: pre-wrap;
   word-break: normal;
 }
+
+.id-mapping-table td:first-child,
+.id-mapping-table th:first-child {
+  max-width: 10px;
+}
+
+.id-mapping-table td:nth-child(2),
+.id-mapping-table th:nth-child(2) {
+  text-align: right;
+}
+
+.id-mapping-table td:last-child,
+.id-mapping-table th:last-child {
+  max-width: 50px;
+}
